@@ -1,0 +1,16 @@
+{
+    "formCommon": {
+        "invalid": "{{name}} không hợp lệ"
+    },
+    "signIn": {
+        "title": "Đăng nhập",
+        "description": "Nhập email của bạn vào bên dưới để đăng nhập vào tài khoản của bạn.",
+        "username": "Tên tài khoản",
+        "password": "Mật khẩu",
+        "forgotPassword": "Quên mật khẩu?",
+        "login": "Đăng nhập",
+        "noAccount": "Không có tài khoản?",
+        "signUp": "Đăng ký",
+        "signIn": "Đăng nhập"
+    }
+}

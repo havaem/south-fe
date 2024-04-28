@@ -1,0 +1,16 @@
+{
+    "formCommon": {
+        "invalid": "Invalid {{name}}"
+    },
+    "signIn": {
+        "title": "Sign in",
+        "description": "Enter your email below to login to your account.",
+        "username": "Username",
+        "password": "Password",
+        "forgotPassword": "Forgot your password?",
+        "login": "Login",
+        "noAccount": "Don't have an account?",
+        "signIn": "Sign in",
+        "signUp": "Sign up"
+    }
+}

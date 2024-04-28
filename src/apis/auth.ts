@@ -1,0 +1,30 @@
+import { post } from "@/configs";
+
+const ENDPOINT = "/auth";
+export const ApiAuth = {
+    register: (data: IAuthRegisterPayload) => post<IAuthRegisterResponse>(`${ENDPOINT}/register`, data),
+    login: (data: IAuthLoginPayload) => post<IAuthLoginResponse>(`${ENDPOINT}/login`, data),
+};
+
+interface IAuthRegisterPayload {
+    name: {
+        first: string;
+        last: string;
+    };
+    email: string;
+    password: string;
+}
+interface IAuthRegisterResponse
+    extends IResponse<{
+        token: {
+            accessToken: string;
+            refreshToken: string;
+        };
+        user: any;
+    }> {}
+
+interface IAuthLoginPayload {
+    username: string;
+    password: string;
+}
+interface IAuthLoginResponse extends IAuthRegisterResponse {}
