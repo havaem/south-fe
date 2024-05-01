@@ -3,7 +3,6 @@ export const APP_PATH = {
         SIGN_IN: "/auth/sign-in",
         SIGN_UP: "/auth/sign-up",
     },
-    DASHBOARD: "/dashboard",
     HOME: "/",
     NOT_FOUND: "/404",
     PROFILE: "/profile",

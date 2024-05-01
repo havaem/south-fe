@@ -9,6 +9,7 @@ const AuthLayout: React.FC<PropsWithChildren> = ({ children }) => {
             messages={{
                 formCommon: messages.formCommon,
                 signIn: messages.signIn,
+                signUp: messages.signUp,
             }}
         >
             <div className="min-h-screen px-2 py-4 flex-center">{children}</div>

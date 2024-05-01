@@ -1,16 +1,22 @@
 {
     "formCommon": {
-        "invalid": "Invalid {{name}}"
+        "invalid": "Invalid {{name}}",
+        "signIn": "Sign in",
+        "signUp": "Sign up",
+        "password": "Password"
     },
     "signIn": {
-        "title": "Sign in",
         "description": "Enter your email below to login to your account.",
         "username": "Username",
-        "password": "Password",
         "forgotPassword": "Forgot your password?",
         "login": "Login",
-        "noAccount": "Don't have an account?",
-        "signIn": "Sign in",
-        "signUp": "Sign up"
+        "noAccount": "Don't have an account?"
+    },
+    "signUp": {
+        "description": "Enter your information to create an account",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "createAnAccount": "Create an account",
+        "alreadyHaveAnAccount": "Already have an account?"
     }
 }

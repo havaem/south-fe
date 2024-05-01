@@ -1,7 +1,10 @@
 import axios from "axios";
 
+import { ENV } from "./env";
+
 const axiosService = axios.create({
-    baseURL: process.env.API_URL,
+    baseURL: ENV.API_URL,
+    timeout: 10000,
 });
 axiosService.interceptors.request.use(
     function (config) {

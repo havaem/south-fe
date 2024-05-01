@@ -1,6 +1,19 @@
-import { useTranslations } from "next-intl";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
 
-export default function Index() {
-    const t = useTranslations("signIn");
-    return <h1>{t("title")}</h1>;
+import HomeSwitch from "./pages/HomeSwitch";
+
+export default async function Index() {
+    //* i18
+    const messages = await getMessages();
+
+    return (
+        <NextIntlClientProvider
+            messages={{
+                formCommon: messages.formCommon,
+            }}
+        >
+            <HomeSwitch />
+        </NextIntlClientProvider>
+    );
 }

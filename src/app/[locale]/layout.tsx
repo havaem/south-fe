@@ -3,8 +3,9 @@ import { Inter as FontSans } from "next/font/google";
 import { unstable_setRequestLocale } from "next-intl/server";
 import { ReactNode } from "react";
 
+import { Compose } from "@/components/compose";
 import { locales } from "@/configs";
-import { QueryProviders } from "@/providers";
+import { QueryProviders, RootStoreProvider } from "@/providers";
 import { cn } from "@/utils";
 
 const fontSans = FontSans({
@@ -38,10 +39,10 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
     return (
         <html className="h-full" lang={locale}>
             <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
-                <QueryProviders>
+                <Compose providers={[QueryProviders, RootStoreProvider]}>
                     {children}
                     <ReactQueryDevtools initialIsOpen={false} />
-                </QueryProviders>
+                </Compose>
             </body>
         </html>
     );

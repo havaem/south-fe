@@ -2,42 +2,48 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-// import { Link } from "@/app/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { APP_PATH } from "@/constants";
+import { APP_PATH, LOCAL_STORAGE_KEY } from "@/constants";
+import { selectAuth, useRootStore } from "@/providers";
 
 import { useSignIn } from "../../../../hooks";
 import { signInSchema } from "./schema";
 
 const SignIn = () => {
+    const router = useRouter();
     const formCommon = useTranslations("formCommon");
     const t = useTranslations("signIn");
+    const { mutateAsync, isPending } = useSignIn();
 
-    const { mutate, isPending } = useSignIn();
+    const { login } = useRootStore(selectAuth);
 
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
-        defaultValues: {
-            username: "",
-        },
     });
 
     function handleSubmit(values: z.infer<typeof signInSchema>) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values);
+        mutateAsync(values).then(({ data }) => {
+            const { token, user } = data;
+            localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, token.accessToken);
+            localStorage.setItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN, token.refreshToken);
+            // update user in store
+            login(user);
+            // redirect to dashboard
+            router.push(APP_PATH.HOME);
+        });
     }
     return (
         <Card className="mx-auto max-w-sm">
             <CardHeader>
-                <CardTitle>{t("title")}</CardTitle>
+                <CardTitle>{formCommon("signIn")}</CardTitle>
                 <CardDescription>{t("description")}</CardDescription>
             </CardHeader>
             <CardContent>
@@ -61,9 +67,9 @@ const SignIn = () => {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>{t("password")}</FormLabel>
+                                    <FormLabel>{formCommon("password")}</FormLabel>
                                     <FormControl>
-                                        <Input type="password" {...field} />
+                                        <Input placeholder="********" type="password" {...field} />
                                     </FormControl>
                                     <FormMessage i18Fn={formCommon} />
                                 </FormItem>
@@ -80,7 +86,7 @@ const SignIn = () => {
                 <div className="mt-4 text-center text-sm">
                     {t("noAccount")}{" "}
                     <Link className="underline" href={APP_PATH.AUTH.SIGN_UP}>
-                        {t("signUp")}
+                        {formCommon("signUp")}
                     </Link>
                 </div>
             </CardContent>
