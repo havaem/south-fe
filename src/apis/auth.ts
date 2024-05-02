@@ -2,6 +2,7 @@ import { post } from "@/configs";
 
 const ENDPOINT = "/auth";
 export const ApiAuth = {
+    getProfile: () => post<IResponse<IAuthGetProfileResponse>>(ENDPOINT),
     register: (data: IAuthRegisterPayload) => post<IAuthRegisterResponse>(`${ENDPOINT}/register`, data),
     login: (data: IAuthLoginPayload) => post<IAuthLoginResponse>(`${ENDPOINT}/login`, data),
 };
@@ -28,3 +29,5 @@ interface IAuthLoginPayload {
     password: string;
 }
 interface IAuthLoginResponse extends IAuthRegisterResponse {}
+
+interface IAuthGetProfileResponse extends IResponse<{}> {}

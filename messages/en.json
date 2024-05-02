@@ -3,7 +3,9 @@
         "invalid": "Invalid {{name}}",
         "signIn": "Sign in",
         "signUp": "Sign up",
-        "password": "Password"
+        "password": "Password",
+        "invalid_username": "Username is invalid",
+        "invalid_password": "Password is invalid"
     },
     "signIn": {
         "description": "Enter your email below to login to your account.",

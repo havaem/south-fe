@@ -3,7 +3,9 @@
         "invalid": "{{name}} không hợp lệ",
         "signUp": "Đăng ký",
         "signIn": "Đăng nhập",
-        "password": "Mật khẩu"
+        "password": "Mật khẩu",
+        "invalid_username": "Tên tài khoản không hợp lệ",
+        "invalid_password": "Mật khẩu không hợp lệ"
     },
     "signIn": {
         "description": "Nhập email của bạn vào bên dưới để đăng nhập vào tài khoản của bạn.",

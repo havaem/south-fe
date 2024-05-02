@@ -14,14 +14,14 @@ import { Input } from "@/components/ui/input";
 import { APP_PATH, LOCAL_STORAGE_KEY } from "@/constants";
 import { selectAuth, useRootStore } from "@/providers";
 
-import { useSignIn } from "../../../../hooks";
+import { useAuthSignIn } from "../../../../hooks";
 import { signInSchema } from "./schema";
 
 const SignIn = () => {
     const router = useRouter();
     const formCommon = useTranslations("formCommon");
     const t = useTranslations("signIn");
-    const { mutateAsync, isPending } = useSignIn();
+    const { mutateAsync, isPending } = useAuthSignIn();
 
     const { login } = useRootStore(selectAuth);
 
