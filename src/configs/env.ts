@@ -4,6 +4,11 @@ class Environment {
         if (!value) throw new Error("API_URL is not defined");
         return value;
     }
+    get GOOGLE_CLIENT_ID(): string {
+        const value = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+        if (!value) throw new Error("GOOGLE_CLIENT_ID is not defined");
+        return value;
+    }
 }
 
 export const ENV = new Environment();

@@ -1,11 +1,13 @@
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Inter as FontSans } from "next/font/google";
+import Head from "next/head";
+import Script from "next/script";
 import { unstable_setRequestLocale } from "next-intl/server";
 import { ReactNode } from "react";
 
 import { Compose } from "@/components/compose";
 import { locales } from "@/configs";
-import { QueryProviders, RootStoreProvider } from "@/providers";
+import { GoogleProvider, QueryProviders, RootStoreProvider } from "@/providers";
 import { cn } from "@/utils";
 
 const fontSans = FontSans({
@@ -38,8 +40,9 @@ export default async function LocaleLayout({ children, params: { locale } }: Pro
 
     return (
         <html className="h-full" lang={locale}>
+            <Script async src="https://accounts.google.com/gsi/client" />
             <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
-                <Compose providers={[QueryProviders, RootStoreProvider]}>
+                <Compose providers={[QueryProviders, RootStoreProvider, GoogleProvider]}>
                     {children}
                     <ReactQueryDevtools initialIsOpen={false} />
                 </Compose>

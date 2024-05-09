@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useGoogleLogin } from "@react-oauth/google";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -27,6 +28,10 @@ const SignIn = () => {
 
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
+    });
+
+    const googleLogin = useGoogleLogin({
+        onSuccess: (tokenResponse) => console.log(tokenResponse),
     });
 
     function handleSubmit(values: z.infer<typeof signInSchema>) {
@@ -80,9 +85,10 @@ const SignIn = () => {
                         </Button>
                     </form>
                 </Form>
-                <Button className="mt-4 w-full" variant="outline">
+                <Button className="mt-4 w-full" variant="outline" onClick={() => googleLogin()}>
                     Login with Google
                 </Button>
+
                 <div className="mt-4 text-center text-sm">
                     {t("noAccount")}{" "}
                     <Link className="underline" href={APP_PATH.AUTH.SIGN_UP}>
