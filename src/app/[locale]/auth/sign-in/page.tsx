@@ -13,16 +13,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { APP_PATH, LOCAL_STORAGE_KEY } from "@/constants";
+import { useAuthSignIn } from "@/hooks";
+import { useAuthLoginWithGoogle } from "@/hooks/queries/useAuthLoginGoogle";
 import { selectAuth, useRootStore } from "@/providers";
 
-import { useAuthSignIn } from "../../../../hooks";
 import { signInSchema } from "./schema";
 
 const SignIn = () => {
     const router = useRouter();
     const formCommon = useTranslations("formCommon");
     const t = useTranslations("signIn");
-    const { mutateAsync, isPending } = useAuthSignIn();
+    const { mutateAsync: mutateAuthSignIn, isPending: isPendingAuthSignIn } = useAuthSignIn();
+    const { mutateAsync: mutateAsyncAuthLoginWithGoogle, isPending: isPendingAuthLoginWithGoogle } =
+        useAuthLoginWithGoogle();
 
     const { login } = useRootStore(selectAuth);
 
@@ -31,12 +34,17 @@ const SignIn = () => {
     });
 
     const googleLogin = useGoogleLogin({
-        onSuccess: (tokenResponse) => console.log(tokenResponse),
+        onSuccess: ({ access_token }) => {
+            mutateAsyncAuthLoginWithGoogle({
+                token: access_token,
+            });
+        },
     });
 
     function handleSubmit(values: z.infer<typeof signInSchema>) {
-        mutateAsync(values).then(({ data }) => {
+        mutateAuthSignIn(values).then(({ data }) => {
             const { token, user } = data;
+
             localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, token.accessToken);
             localStorage.setItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN, token.refreshToken);
             // update user in store
@@ -80,7 +88,11 @@ const SignIn = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button className="w-full" loading={isPending} type="submit">
+                        <Button
+                            className="w-full"
+                            loading={isPendingAuthSignIn || isPendingAuthLoginWithGoogle}
+                            type="submit"
+                        >
                             {t("login")}
                         </Button>
                     </form>

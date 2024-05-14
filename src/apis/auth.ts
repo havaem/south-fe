@@ -5,6 +5,8 @@ export const ApiAuth = {
     getProfile: () => post<IResponse<IAuthGetProfileResponse>>(ENDPOINT),
     register: (data: IAuthRegisterPayload) => post<IAuthRegisterResponse>(`${ENDPOINT}/register`, data),
     login: (data: IAuthLoginPayload) => post<IAuthLoginResponse>(`${ENDPOINT}/login`, data),
+    loginWithGoogle: (data: IAuthLoginWithGooglePayload) =>
+        post<IAuthLoginResponse>(`${ENDPOINT}/login-with-google`, data),
 };
 
 interface IAuthRegisterPayload {
@@ -31,3 +33,7 @@ interface IAuthLoginPayload {
 interface IAuthLoginResponse extends IAuthRegisterResponse {}
 
 interface IAuthGetProfileResponse extends IResponse<{}> {}
+
+interface IAuthLoginWithGooglePayload {
+    token: string;
+}
