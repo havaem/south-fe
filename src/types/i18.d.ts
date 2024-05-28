@@ -1,8 +1,12 @@
-import en from "../../messages/en.json";
-import vi from "../../messages/vi.json";
-type Messages = typeof en & typeof vi;
+import en from "../../public/locales/en/translation.json";
+import vi from "../../public/locales/vi/translation.json";
+type Lang = typeof en & typeof vi;
 
-declare global {
-    // Use type safe message keys with `next-intl`
-    interface IntlMessages extends Messages {}
+declare module "i18next" {
+    interface CustomTypeOptions {
+        defaultNS: "translation";
+        resources: {
+            translation: Lang;
+        };
+    }
 }

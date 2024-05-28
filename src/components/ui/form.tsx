@@ -113,7 +113,7 @@ FormDescription.displayName = "FormDescription";
 const FormMessage = React.forwardRef<
     HTMLParagraphElement,
     React.HTMLAttributes<HTMLParagraphElement> & {
-        i18Fn?: (key: any) => string;
+        i18Fn?: any;
     }
 >(({ className, children, i18Fn, ...props }, ref) => {
     const { error, formMessageId } = useFormField();

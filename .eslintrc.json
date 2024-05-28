@@ -1,13 +1,27 @@
 {
-    "extends": ["next/core-web-vitals", "plugin:@tanstack/eslint-plugin-query/recommended"],
-    "plugins": ["simple-import-sort", "prettier"],
+    "root": true,
+    "env": { "browser": true, "es2020": true },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:@tanstack/eslint-plugin-query/recommended",
+        "plugin:react/recommended",
+        "plugin:react/jsx-runtime"
+    ],
+    "ignorePatterns": ["dist", ".eslintrc.json"],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["react-refresh", "simple-import-sort", "prettier"],
     "rules": {
-        //* sort import
+        "react/prop-types": "off",
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-unused-vars": "warn",
+        // sort import
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error",
-        //* prettier
+        // prettier
         "prettier/prettier": ["error", {}, { "usePrettierrc": true }],
-        //* sort props
+        // sort props
         "react/jsx-sort-props": [
             "error",
             {
@@ -17,7 +31,7 @@
                 "ignoreCase": true
             }
         ],
-        //* sort comp
+        // sort comp
         "react/jsx-handler-names": [
             "warn",
             {
@@ -25,6 +39,19 @@
                 "eventHandlerPropPrefix": "on",
                 "checkLocalVariables": true
             }
+        ],
+        // boolean name
+        "react/boolean-prop-naming": [
+            "error",
+            {
+                "rule": "^(is|has|should|can)[A-Z]([A-Za-z0-9]?)+",
+                "message": "Boolean prop name must be prefixed with 'is', 'has', 'should', or 'can'."
+            }
         ]
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

@@ -1,6 +1,4 @@
 import type { Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
-import plugin from "tailwindcss/plugin";
 
 const config = {
     darkMode: ["class"],
@@ -15,10 +13,21 @@ const config = {
             },
         },
         extend: {
+            fontFamily: {
+                sans: [
+                    "Inter",
+                    "ui-sans-serif",
+                    "system-ui",
+                    "sans-serif",
+                    "Apple Color Emoji",
+                    "Segoe UI Emoji",
+                    "Segoe UI Symbol",
+                    "Noto Color Emoji",
+                ],
+            },
             colors: {
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
-                ring: "hsl(var(--ring))",
                 background: "hsl(var(--background))",
                 foreground: "hsl(var(--foreground))",
                 primary: {
@@ -69,55 +78,9 @@ const config = {
                 "accordion-down": "accordion-down 0.2s ease-out",
                 "accordion-up": "accordion-up 0.2s ease-out",
             },
-            fontFamily: {
-                sans: ["var(--font-sans)", ...fontFamily.sans],
-            },
         },
     },
-    plugins: [
-        plugin(function ({ addUtilities }) {
-            addUtilities({
-                ".flex-center": {
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                },
-                ".flex-column": {
-                    display: "flex",
-                    flexDirection: "column",
-                },
-                ".flex-row": {
-                    display: "flex",
-                    flexDirection: "row",
-                },
-                ".flex-center-x": {
-                    display: "flex",
-                    justifyContent: "center",
-                },
-                ".flex-center-y": {
-                    display: "flex",
-                    alignItems: "center",
-                },
-                ".absolute-center": {
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                },
-                ".absolute-center-x": {
-                    position: "absolute",
-                    left: "50%",
-                    transform: "translate(-50%, 0)",
-                },
-                ".absolute-center-y": {
-                    position: "absolute",
-                    top: "50%",
-                    transform: "translate(0, -50%)",
-                },
-            });
-        }),
-        require("tailwindcss-animate"),
-    ],
+    plugins: [require("tailwindcss-animate"), require("@havaem/tailwindcss-havaem")],
 } satisfies Config;
 
 export default config;

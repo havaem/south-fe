@@ -1,5 +1,7 @@
 import axios from "axios";
 
+import { LOCAL_STORAGE_KEY } from "@/constants";
+
 import { ENV } from "./env";
 
 const axiosService = axios.create({
@@ -8,7 +10,7 @@ const axiosService = axios.create({
 });
 axiosService.interceptors.request.use(
     function (config) {
-        const accessToken = localStorage?.getItem("accessToken");
+        const accessToken = localStorage?.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
         if (accessToken && config.headers) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }
@@ -28,7 +30,7 @@ axiosService.interceptors.response.use(
         const originalRequest = error.config;
         if (error?.response?.status === 401 && !originalRequest._retry) {
             localStorage?.removeItem("accessToken");
-            const refreshToken = localStorage?.getItem("refreshToken");
+            const refreshToken = localStorage?.getItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN);
             if (refreshToken) {
                 originalRequest._retry = true;
                 return axiosService
@@ -39,8 +41,8 @@ axiosService.interceptors.response.use(
                     })
                     .then((res) => {
                         if (res.statusCode === 200) {
-                            localStorage?.setItem("accessToken", res.data.token.accessToken);
-                            localStorage?.setItem("refreshToken", res.data.token.refreshToken);
+                            localStorage?.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, res.data.token.accessToken);
+                            localStorage?.setItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN, res.data.token.refreshToken);
                             originalRequest.headers["Authorization"] = `Bearer ${res.data.token.accessToken}`;
                             return axiosService(originalRequest);
                         }
