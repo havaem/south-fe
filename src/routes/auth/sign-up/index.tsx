@@ -1,53 +1,144 @@
-import { Label } from "@radix-ui/react-label";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { APP_PATH } from "@/constants";
+import { useAuthSignUp } from "@/hooks";
+import { useAuthLoginWithGoogle } from "@/hooks/queries/useAuthLoginGoogle";
+import { useAuthStore } from "@/stores";
+import { combineLoading } from "@/utils";
+
+import { signUpSchema } from "./schema";
 
 const SignUpPage = () => {
-    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { t } = useTranslation(["translation", "zod"]);
+    const { mutateAsync: mutateAsyncAuthSignUp, isPending: isPendingAuthSignUp } = useAuthSignUp();
+    const { mutateAsync: mutateAsyncAuthLoginWithGoogle, isPending: isPendingAuthLoginWithGoogle } =
+        useAuthLoginWithGoogle();
+    const isLoading = combineLoading(isPendingAuthSignUp, isPendingAuthLoginWithGoogle);
+
+    const { logIn: login } = useAuthStore();
+
+    const googleLogin = useGoogleLogin({
+        onSuccess: ({ access_token }) => {
+            mutateAsyncAuthLoginWithGoogle({
+                token: access_token,
+            }).then(({ data }) => {
+                login(data);
+                // navigate to home
+                navigate(APP_PATH.HOME);
+            });
+        },
+    });
+
+    const form = useForm<z.infer<typeof signUpSchema>>({
+        resolver: zodResolver(signUpSchema),
+        defaultValues: {
+            name: {
+                first: "",
+                last: "",
+            },
+            email: "",
+            password: "",
+        },
+    });
+
+    function handleSubmit(values: z.infer<typeof signUpSchema>) {
+        mutateAsyncAuthSignUp(values).then(({ data }) => {
+            // login(data);
+            // navigate to home
+            // navigate(APP_PATH.HOME);
+        });
+    }
 
     return (
         <Card className="mx-auto max-w-sm">
             <CardHeader>
-                <CardTitle className="text-xl">{t("formCommon.signUp")}</CardTitle>
+                <CardTitle className="text-xl">{t("form.signUp")}</CardTitle>
                 <CardDescription>{t("signUp.description")} </CardDescription>
             </CardHeader>
             <CardContent>
-                <div className="grid gap-4">
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="grid gap-2">
-                            <Label htmlFor="first-name">{t("signUp.firstName")}</Label>
-                            <Input required id="first-name" placeholder="Nam" />
+                <Form {...form}>
+                    <form className="space-y-4" id="sign-up" onSubmit={form.handleSubmit(handleSubmit)}>
+                        <div className="grid grid-cols-2 gap-4">
+                            <FormField
+                                control={form.control}
+                                name="name.first"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t("signUp.firstName")}</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Nam" {...field} />
+                                        </FormControl>
+                                        <FormMessage i18Fn={t} />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="name.last"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{t("signUp.lastName")}</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Vo" {...field} />
+                                        </FormControl>
+                                        <FormMessage i18Fn={t} />
+                                    </FormItem>
+                                )}
+                            />
                         </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="last-name">{t("signUp.lastName")}</Label>
-                            <Input required id="last-name" placeholder="Vo Hoai" />
-                        </div>
-                    </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="email">Email</Label>
-                        <Input required id="email" placeholder="m@example.com" type="email" />
-                    </div>
-                    <div className="grid gap-2">
-                        <Label htmlFor="password">{t("formCommon.password")}</Label>
-                        <Input id="password" type="password" />
-                    </div>
-                    <Button className="w-full" type="submit">
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="example@gmail.com" {...field} />
+                                    </FormControl>
+                                    <FormMessage i18Fn={t} />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{t("form.password")}</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="********" type="password" {...field} />
+                                    </FormControl>
+                                    <FormDescription>{t("form.password_description")}</FormDescription>
+                                    <FormMessage i18Fn={t} />
+                                </FormItem>
+                            )}
+                        />
+                    </form>
+                </Form>
+                <div className="mt-8 space-y-4">
+                    <Button className="w-full" form="sign-up" loading={isLoading} type="submit">
                         {t("signUp.createAnAccount")}
                     </Button>
-                    <Button className="w-full" variant="outline">
-                        Sign up with Google
+
+                    <Button className="mt-2 w-full" loading={isLoading} variant="outline" onClick={() => googleLogin()}>
+                        {t("form.login_with_google")}
                     </Button>
-                </div>
-                <div className="mt-4 text-center text-sm">
-                    {t("signUp.alreadyHaveAnAccount")}{" "}
-                    <Link className="underline" to={APP_PATH.AUTH.SIGN_IN}>
-                        {t("formCommon.signIn")}
-                    </Link>
+                    <div className="mt-4 text-center text-sm">
+                        {t("signUp.alreadyHaveAnAccount")}{" "}
+                        <Link className="underline" to={APP_PATH.AUTH.SIGN_IN}>
+                            {t("form.signIn")}
+                        </Link>
+                    </div>
                 </div>
             </CardContent>
         </Card>

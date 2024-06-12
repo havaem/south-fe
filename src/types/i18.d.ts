@@ -1,12 +1,13 @@
-import en from "../../public/locales/en/translation.json";
-import vi from "../../public/locales/vi/translation.json";
-type Lang = typeof en & typeof vi;
+import enApi from "../../public/locales/en/api.json";
+import enTranslation from "../../public/locales/en/translation.json";
+import enZod from "../../public/locales/en/zod.json";
 
 declare module "i18next" {
     interface CustomTypeOptions {
-        defaultNS: "translation";
         resources: {
-            translation: Lang;
+            translation: typeof enTranslation;
+            zod: typeof enZod;
+            api: typeof enApi;
         };
     }
 }

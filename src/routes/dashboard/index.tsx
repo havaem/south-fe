@@ -1,19 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/stores";
 
+import DashboardLayout from "./layout";
+
 const Dashboard = () => {
-    const { user, logOut } = useAuthStore();
+    const { user, logOut: handleLogOut } = useAuthStore();
 
     return (
-        <div>
+        <DashboardLayout>
             {user && (
                 <div>
                     <h1>Welcome, {user.name.first}</h1>
                     <p>This is your dashboard.</p>
                 </div>
             )}
-            <Button onClick={logOut}>Log out</Button>
-        </div>
+            <Button onClick={handleLogOut}>Log out</Button>
+        </DashboardLayout>
     );
 };
 export default Dashboard;

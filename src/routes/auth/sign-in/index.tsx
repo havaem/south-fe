@@ -13,15 +13,18 @@ import { APP_PATH } from "@/constants";
 import { useAuthSignIn } from "@/hooks";
 import { useAuthLoginWithGoogle } from "@/hooks/queries/useAuthLoginGoogle";
 import { useAuthStore } from "@/stores";
+import { combineLoading } from "@/utils";
 
 import { signInSchema } from "./schema";
 
 const SignInPage = () => {
     const navigate = useNavigate();
-    const { t } = useTranslation();
+    const { t } = useTranslation(["translation", "zod"]);
+
     const { mutateAsync: mutateAuthSignIn, isPending: isPendingAuthSignIn } = useAuthSignIn();
     const { mutateAsync: mutateAsyncAuthLoginWithGoogle, isPending: isPendingAuthLoginWithGoogle } =
         useAuthLoginWithGoogle();
+    const isLoading = combineLoading(isPendingAuthSignIn, isPendingAuthLoginWithGoogle);
 
     const { logIn: login } = useAuthStore();
 
@@ -51,7 +54,7 @@ const SignInPage = () => {
     return (
         <Card className="mx-auto max-w-sm">
             <CardHeader>
-                <CardTitle>{t("formCommon.signIn")}</CardTitle>
+                <CardTitle>{t("form.signIn")}</CardTitle>
                 <CardDescription>{t("signIn.description")}</CardDescription>
             </CardHeader>
             <CardContent>
@@ -75,7 +78,7 @@ const SignInPage = () => {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>{t("formCommon.password")}</FormLabel>
+                                    <FormLabel>{t("form.password")}</FormLabel>
                                     <FormControl>
                                         <Input placeholder="********" type="password" {...field} />
                                     </FormControl>
@@ -83,23 +86,19 @@ const SignInPage = () => {
                                 </FormItem>
                             )}
                         />
-                        <Button
-                            className="w-full"
-                            loading={isPendingAuthSignIn || isPendingAuthLoginWithGoogle}
-                            type="submit"
-                        >
+                        <Button className="w-full" loading={isLoading} type="submit">
                             {t("signIn.login")}
                         </Button>
                     </form>
                 </Form>
-                <Button className="mt-4 w-full" variant="outline" onClick={() => googleLogin()}>
-                    Login with Google
+                <Button className="mt-4 w-full" loading={isLoading} variant="outline" onClick={() => googleLogin()}>
+                    {t("form.login_with_google")}
                 </Button>
 
                 <div className="mt-4 text-center text-sm">
                     {t("signIn.noAccount")}{" "}
                     <Link className="underline" to={APP_PATH.AUTH.SIGN_UP}>
-                        {t("formCommon.signUp")}
+                        {t("form.signUp")}
                     </Link>
                 </div>
             </CardContent>

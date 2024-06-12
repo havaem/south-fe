@@ -2,23 +2,25 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 import { LOCAL_STORAGE_KEY } from "@/constants";
-import { IAuthResponse, IUser, zAuthResponse } from "@/types";
-export type TAuthState = {
+import { IAuthResponse, IUser, UserSchema, zAuthResponse } from "@/types";
+
+export type TAuthStore = {
     isLogin: boolean;
     user: IUser | null;
-};
-
-export type TAuthActions = {
     logIn: (data: IAuthResponse) => void;
+    setUser: (user: IUser) => void;
     logOut: () => void;
 };
-
-export type TAuthStore = TAuthState & TAuthActions;
 
 export const useAuthStore = create<TAuthStore>()(
     devtools((set) => ({
         isLogin: false,
         user: null,
+        setUser: (user: IUser) => {
+            const safeParse = UserSchema.safeParse(user);
+            if (!safeParse.success) return;
+            set({ user: safeParse.data, isLogin: true });
+        },
         logIn: (data: IAuthResponse) => {
             const safeParse = zAuthResponse.safeParse(data);
             if (!safeParse.success) return;

@@ -1,11 +1,25 @@
 {
-    "formCommon": {
-        "invalid": "{{name}} không hợp lệ",
+    "object": {
+        "name": "Tên",
+        "email": "Email",
+        "password": "Mật khẩu",
+        "system": "Hệ thống",
+        "try_again": "Thử lại",
+        "username": "Tên tài khoản"
+    },
+    "errorMessage": {
+        "invalid_username": "Tên tài khoản không hợp lệ",
+        "invalid_password": "Mật khẩu không hợp lệ",
+        "min_length": "Độ dài tối thiểu là {{min}} ký tự",
+        "max_length": "Độ dài tối đa là {{max}} ký tự",
+        "invalid": "{{name}} không hợp lệ"
+    },
+    "form": {
         "signUp": "Đăng ký",
         "signIn": "Đăng nhập",
         "password": "Mật khẩu",
-        "invalid_username": "Tên tài khoản không hợp lệ",
-        "invalid_password": "Mật khẩu không hợp lệ"
+        "password_description": "Phải có ít nhất 8 ký tự và chứa ít nhất một chữ cái viết hoa, một chữ cái viết thường và một số.",
+        "login_with_google": "Đăng nhập với Google"
     },
     "signIn": {
         "description": "Nhập email của bạn vào bên dưới để đăng nhập vào tài khoản của bạn.",

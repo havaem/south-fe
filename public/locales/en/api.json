@@ -1,0 +1,7 @@
+{
+    "error": {
+        "USER_NOT_FOUND": "User not found",
+        "EMAIL_IS_EXIST": "Email is exist",
+        "INVALID_CREDENTIALS": "Invalid credentials"
+    }
+}

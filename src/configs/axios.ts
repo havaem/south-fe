@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import { LOCAL_STORAGE_KEY } from "@/constants";
+import { IAuthRefreshTokenResponse } from "@/types";
 
 import { ENV } from "./env";
 
@@ -34,25 +35,24 @@ axiosService.interceptors.response.use(
             if (refreshToken) {
                 originalRequest._retry = true;
                 return axiosService
-                    .get("/auth/refresh-token", {
-                        headers: {
-                            Authorization: `Bearer ${refreshToken}`,
+                    .get<IAuthRefreshTokenResponse>("/auth/refresh-token", {
+                        data: {
+                            refreshToken,
                         },
                     })
                     .then((res) => {
-                        if (res.statusCode === 200) {
-                            localStorage?.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, res.data.token.accessToken);
-                            localStorage?.setItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN, res.data.token.refreshToken);
-                            originalRequest.headers["Authorization"] = `Bearer ${res.data.token.accessToken}`;
-                            return axiosService(originalRequest);
-                        }
+                        const { accessToken, refreshToken } = res.data;
+                        localStorage?.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, accessToken);
+                        localStorage?.setItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN, refreshToken);
+                        originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+                        return axiosService(originalRequest);
                     })
                     .catch(() => {
-                        localStorage?.removeItem("refreshToken");
+                        localStorage?.removeItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN);
                     });
             }
         }
-        return Promise.reject(new Error(error?.response?.data ?? error));
+        return Promise.reject(error?.response?.data ?? error);
     },
 );
 export const { get, post, put, patch, delete: del } = axiosService;

@@ -1,11 +1,24 @@
 {
-    "formCommon": {
-        "invalid": "Invalid {{name}}",
-        "signIn": "Sign in",
-        "signUp": "Sign up",
+    "object": {
+        "name": "Name",
+        "email": "Email",
         "password": "Password",
+        "system": "System",
+        "try_again": "Try again"
+    },
+    "errorMessage": {
         "invalid_username": "Username is invalid",
-        "invalid_password": "Password is invalid"
+        "invalid_password": "Password is invalid",
+        "min_length": "Must be at least {{min}} characters",
+        "max_length": "Must be at most {{max}} characters",
+        "invalid": "{{name}} is invalid"
+    },
+    "form": {
+        "signUp": "Sign up",
+        "signIn": "Sign in",
+        "password": "Password",
+        "password_description": "Must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter and one number.",
+        "login_with_google": "Login with Google"
     },
     "signIn": {
         "description": "Enter your email below to login to your account.",

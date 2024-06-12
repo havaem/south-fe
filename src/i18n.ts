@@ -2,9 +2,8 @@ import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import Backend from "i18next-http-backend";
 import { initReactI18next } from "react-i18next";
-// don't want to use this?
-// have a look at the Quick start guide
-// for passing in lng and translations on init
+import { z } from "zod";
+import { makeZodI18nMap } from "zod-i18n-map";
 
 i18n
     // load translation using http -> see /public/locales (i.e. https://github.com/i18next/react-i18next/tree/master/example/react/public/locales)
@@ -24,7 +23,28 @@ i18n
 
         interpolation: {
             escapeValue: false, // not needed for react as it escapes by default
+            // format: (value, format, lang) => {
+            //     const formats = (format ?? "").split("-");
+            //     let _value = value;
+            //     // translate the value first
+            //     if (formats?.includes("capitalize")) _value = _value.charAt(0).toUpperCase() + _value.slice(1);
+            //     if (formats?.includes("translate"))
+            //         _value = i18n.t(_value, {
+            //             lng: lang,
+            //         });
+            //     return _value;
+            // },
         },
     });
 
+z.setErrorMap(
+    makeZodI18nMap({
+        ns: ["zod", "object"],
+        handlePath: {
+            keyPrefix: "paths",
+        },
+    }),
+);
+
+export { z };
 export default i18n;

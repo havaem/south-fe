@@ -1,12 +1,7 @@
-import { z } from "zod";
-
 import { REGEX } from "@/constants";
+import { z } from "@/i18n";
 
 export const signInSchema = z.object({
-    username: z.string().regex(REGEX.usernameLogin, {
-        message: "invalid_username",
-    }),
-    password: z.string().regex(REGEX.password, {
-        message: "invalid_password",
-    }),
+    username: z.string().regex(REGEX.usernameLogin).default(""),
+    password: z.string().regex(REGEX.password).default(""),
 });
