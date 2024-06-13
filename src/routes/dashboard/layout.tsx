@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
 
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 
 const DashboardLayout: React.FC<PropsWithChildren> = ({ children }) => {
@@ -7,7 +8,7 @@ const DashboardLayout: React.FC<PropsWithChildren> = ({ children }) => {
         <main>
             <Header />
             {children}
-            <footer>Footer</footer>
+            <Footer />
         </main>
     );
 };
