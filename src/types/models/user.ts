@@ -26,6 +26,7 @@ export const UserSchema = z.object({
     status: userStatus,
     roles: z.array(z.string()),
     locale: userLocale,
+    avatar: z.string(),
 });
 
 export type IUser = z.infer<typeof UserSchema>;

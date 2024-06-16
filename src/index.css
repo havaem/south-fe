@@ -73,4 +73,7 @@
         font-optical-sizing: auto;
         font-variation-settings: "slnt" 0;
     }
+    button {
+        @apply outline-0;
+    }
 }

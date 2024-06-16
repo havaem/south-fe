@@ -14,7 +14,6 @@ const Dashboard = () => {
                     <p>This is your dashboard.</p>
                 </div>
             )}
-            <Button onClick={handleLogOut}>Log out</Button>
         </DashboardLayout>
     );
 };
