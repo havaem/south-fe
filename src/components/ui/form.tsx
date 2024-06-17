@@ -113,6 +113,7 @@ FormDescription.displayName = "FormDescription";
 const FormMessage = React.forwardRef<
     HTMLParagraphElement,
     React.HTMLAttributes<HTMLParagraphElement> & {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         i18Fn?: any;
     }
 >(({ className, children, i18Fn, ...props }, ref) => {

@@ -1,6 +1,6 @@
 import { HEADER_NAV } from "@/constants/header-nav";
 
-import NavigationItem from "./NavigationItem";
+import NavigationItem from "./navigation-item";
 
 interface Props {}
 const Navigation: React.FC<Props> = () => {

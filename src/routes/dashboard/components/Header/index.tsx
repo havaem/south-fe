@@ -2,8 +2,8 @@ import { NavLink } from "react-router-dom";
 
 import { APP_PATH } from "@/constants";
 
-import Navigation from "./components/Navigation";
-import UserNavigation from "./components/UserNavigation";
+import Navigation from "./components/navigation";
+import UserNavigation from "./components/user-navigation";
 
 interface Props {}
 const Header: React.FC<Props> = () => {

@@ -53,9 +53,9 @@ const SignUpPage = () => {
 
     function handleSubmit(values: z.infer<typeof signUpSchema>) {
         mutateAsyncAuthSignUp(values).then(({ data }) => {
-            // login(data);
+            login(data);
             // navigate to home
-            // navigate(APP_PATH.HOME);
+            navigate(APP_PATH.HOME);
         });
     }
 
