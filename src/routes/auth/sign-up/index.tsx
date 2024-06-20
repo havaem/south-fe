@@ -127,14 +127,14 @@ const SignUpPage = () => {
                 </Form>
                 <div className="mt-8 space-y-4">
                     <Button className="w-full" form="sign-up" loading={isLoading} type="submit">
-                        {t("signUp.createAnAccount")}
+                        {t("signUp.create_an_account")}
                     </Button>
 
                     <Button className="mt-2 w-full" loading={isLoading} variant="outline" onClick={() => googleLogin()}>
                         {t("form.login_with_google")}
                     </Button>
                     <div className="mt-4 text-center text-sm">
-                        {t("signUp.alreadyHaveAnAccount")}{" "}
+                        {t("signUp.already_have_an_account")}{" "}
                         <Link className="underline" to={APP_PATH.AUTH.SIGN_IN}>
                             {t("form.signIn")}
                         </Link>

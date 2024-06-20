@@ -96,7 +96,7 @@ const SignInPage = () => {
                 </Button>
 
                 <div className="mt-4 text-center text-sm">
-                    {t("signIn.noAccount")}{" "}
+                    {t("signIn.no_account")}{" "}
                     <Link className="underline" to={APP_PATH.AUTH.SIGN_UP}>
                         {t("form.signUp")}
                     </Link>

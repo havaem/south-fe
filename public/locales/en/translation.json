@@ -23,15 +23,18 @@
     "signIn": {
         "description": "Enter your email below to login to your account.",
         "username": "Username",
-        "forgotPassword": "Forgot your password?",
+        "forgot_password": "Forgot your password?",
         "login": "Login",
-        "noAccount": "Don't have an account?"
+        "no_account": "Don't have an account?"
     },
     "signUp": {
         "description": "Enter your information to create an account",
         "firstName": "First name",
         "lastName": "Last name",
-        "createAnAccount": "Create an account",
-        "alreadyHaveAnAccount": "Already have an account?"
+        "create_an_account": "Create an account",
+        "already_have_an_account": "Already have an account?"
+    },
+    "post": {
+        "what_is_on_your_mind": "What's on your mind?"
     }
 }

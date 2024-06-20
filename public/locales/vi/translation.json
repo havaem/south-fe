@@ -24,15 +24,18 @@
     "signIn": {
         "description": "Nhập email của bạn vào bên dưới để đăng nhập vào tài khoản của bạn.",
         "username": "Tên tài khoản",
-        "forgotPassword": "Quên mật khẩu?",
+        "forgot_password": "Quên mật khẩu?",
         "login": "Đăng nhập",
-        "noAccount": "Không có tài khoản?"
+        "no_account": "Không có tài khoản?"
     },
     "signUp": {
         "description": "Nhập thông tin của bạn để tạo tài khoản",
         "firstName": "Tên",
         "lastName": "Họ",
-        "createAnAccount": "Tạo tài khoản",
-        "alreadyHaveAnAccount": "Đã có tài khoản?"
+        "create_an_account": "Tạo tài khoản",
+        "already_have_an_account": "Đã có tài khoản?"
+    },
+    "post": {
+        "what_is_on_your_mind": "Bạn đang nghĩ gì?"
     }
 }

@@ -1,5 +1,5 @@
-import { Plate, PlateContent } from "@udecode/plate-common";
-
+import Post from "@/components/post";
+import PostEditor from "@/components/post-editor";
 import { useAuthStore } from "@/stores";
 
 import DashboardLayout from "./layout";
@@ -12,9 +12,8 @@ const Dashboard = () => {
             <div>
                 <h1>Welcome, {user?.name.first}</h1>
                 <p>This is your dashboard.</p>
-                <Plate>
-                    <PlateContent placeholder="Type..." />
-                </Plate>
+                <PostEditor />
+                <Post />
             </div>
         </DashboardLayout>
     );
