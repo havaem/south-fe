@@ -4,8 +4,7 @@
         "email": "Email",
         "password": "Mật khẩu",
         "system": "Hệ thống",
-        "try_again": "Thử lại",
-        "username": "Tên tài khoản"
+        "try_again": "Thử lại"
     },
     "errorMessage": {
         "invalid_username": "Tên tài khoản không hợp lệ",
@@ -36,6 +35,12 @@
         "already_have_an_account": "Đã có tài khoản?"
     },
     "post": {
-        "what_is_on_your_mind": "Bạn đang nghĩ gì?"
+        "what_is_on_your_mind": "Bạn đang nghĩ gì?",
+        "post": "Đăng",
+        "now": "Bây giờ",
+        "new_post": "Bài viết mới",
+        "max_images": "Bạn chỉ có thể chọn tối đa {{max}} ảnh",
+        "image_only": "Chỉ chấp nhận ảnh",
+        "image_size": "Kích thước ảnh tối đa là {{size}}"
     }
 }

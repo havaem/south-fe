@@ -1,8 +1,7 @@
-import { BookmarkIcon, CircleOff, Ellipsis, FlagTriangleRight, MessageCircle, Share2 } from "lucide-react";
+import { BookmarkIcon, CircleOff, Ellipsis, FlagTriangleRight, Heart, MessageCircle, Share2 } from "lucide-react";
 import { ComponentPropsWithoutRef, forwardRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import Heart from "@/assets/icons/heart.svg?react";
 import { cn } from "@/utils";
 
 import { Avatar } from "../modified-ui";
@@ -16,14 +15,21 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import ImageLayout from "./components/image-layout";
 
 interface IProps extends ComponentPropsWithoutRef<"div"> {}
 const Post = forwardRef<HTMLDivElement, IProps>(function Post(props, ref) {
     const [isLove, setIsLove] = useState<boolean>(false);
+    const [isOpenComment, setIsOpenComment] = useState<boolean>(false);
 
-    const handleLove = () => {
+    const handleClickLove = () => {
         setIsLove((prev) => !prev);
     };
+
+    const handleClickComment = () => {
+        setIsOpenComment((prev) => !prev);
+    };
+
     return (
         <Card className="relative" ref={ref} {...props}>
             <DropdownMenu>
@@ -49,7 +55,7 @@ const Post = forwardRef<HTMLDivElement, IProps>(function Post(props, ref) {
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            <CardHeader className="flex-row gap-4 flex-center-y">
+            <CardHeader className="flex-row gap-4 space-y-0 flex-center-y">
                 <Avatar />
                 <div className="flex flex-col">
                     <Link to="/">
@@ -58,16 +64,32 @@ const Post = forwardRef<HTMLDivElement, IProps>(function Post(props, ref) {
                     <div className="text-xs text-gray-500 dark:text-gray-400">2 hours ago</div>
                 </div>
             </CardHeader>
-            <CardContent>
-                Excited to share my latest project with you all! Check it out and let me know what you think. 🚀
+            <CardContent className="space-y-4">
+                <div>
+                    Excited to share my latest project with you all! Check it out and let me know what you think. 🚀
+                </div>
+                <ImageLayout
+                    images={[
+                        "https://generated.vusercontent.net/placeholder.svg",
+                        "https://generated.vusercontent.net/placeholder.svg",
+                        "https://generated.vusercontent.net/placeholder.svg",
+                        "https://generated.vusercontent.net/placeholder.svg",
+                    ]}
+                />
             </CardContent>
             <CardFooter className="justify-between flex-center-y">
                 <div className="gap-2 flex-center-y">
-                    <Button size="icon" variant="ghost" onClick={handleLove}>
-                        <Heart className={cn("size-5 transition-colors", !isLove && "fill-red-600 stroke-red-600")} />
+                    <Button size="icon" variant="ghost" onClick={handleClickLove}>
+                        <Heart
+                            className={cn("transition-colors", !isLove && "fill-red-600 stroke-red-600")}
+                            size={20}
+                        />
                     </Button>
-                    <Button size="icon" variant="ghost">
-                        <MessageCircle size={20} />
+                    <Button size="icon" variant="ghost" onClick={handleClickComment}>
+                        <MessageCircle
+                            className={cn("transition-colors", isOpenComment && "fill-primary stroke-primary")}
+                            size={20}
+                        />
                     </Button>
                     <Button size="icon" variant="ghost">
                         <Share2 size={20} />

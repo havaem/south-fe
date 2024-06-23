@@ -18,7 +18,7 @@
         "@typescript-eslint/no-unused-vars": "warn",
         // sort import
         "simple-import-sort/imports": "error",
-        "simple-import-sort/exports": "error",
+        "simple-import-sort/exports": "off",
         // prettier
         "prettier/prettier": ["error", {}, { "usePrettierrc": true }],
         // sort props
@@ -47,7 +47,12 @@
                 "rule": "^(is|has|should|can)[A-Z]([A-Za-z0-9]?)+",
                 "message": "Boolean prop name must be prefixed with 'is', 'has', 'should', or 'can'."
             }
-        ]
+        ],
+
+        // remove curly braces
+        "react/jsx-curly-brace-presence": ["error", { "props": "never", "children": "never" }],
+
+        "react-hooks/exhaustive-deps": "off"
     },
     "settings": {
         "react": {

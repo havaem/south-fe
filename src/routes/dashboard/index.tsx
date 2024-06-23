@@ -1,18 +1,14 @@
 import Post from "@/components/post";
-import PostEditor from "@/components/post-editor";
-import { useAuthStore } from "@/stores";
+import PostNew from "@/components/post-new";
 
 import DashboardLayout from "./layout";
 
 const Dashboard = () => {
-    const { user } = useAuthStore();
-
     return (
         <DashboardLayout>
-            <div>
-                <h1>Welcome, {user?.name.first}</h1>
-                <p>This is your dashboard.</p>
-                <PostEditor />
+            <div className="mx-auto max-w-2xl space-y-4">
+                <PostNew />
+                <Post />
                 <Post />
             </div>
         </DashboardLayout>

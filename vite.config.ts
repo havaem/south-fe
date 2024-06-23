@@ -13,6 +13,7 @@ export default defineConfig({
             eslint: {
                 lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
             },
+            overlay: false,
         }),
     ],
     resolve: {

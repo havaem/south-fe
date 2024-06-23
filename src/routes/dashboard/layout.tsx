@@ -6,7 +6,7 @@ const DashboardLayout: React.FC<PropsWithChildren> = ({ children }) => {
     return (
         <>
             <Header />
-            <main className="container">{children}</main>
+            <main className="container py-6">{children}</main>
         </>
     );
 };

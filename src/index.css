@@ -76,4 +76,17 @@
     button {
         @apply outline-0;
     }
+
+    ::-webkit-scrollbar {
+        @apply size-[10px] bg-background;
+    }
+    ::-webkit-scrollbar-track {
+        @apply bg-transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        @apply rounded-full border-2 border-solid border-background bg-border;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-primary;
+    }
 }
