@@ -6,7 +6,9 @@ interface Props {
 const ImageLayout: React.FC<Props> = ({ images }) => {
     const handleRenderImages = () => {
         if (images.length === 1)
-            return images.map((image, index) => <img alt="" className="max-h-80" key={index} src={image} />);
+            return images.map((image, index) => (
+                <img alt="" className="max-h-80" draggable="false" key={index} src={image} />
+            ));
         return (
             <Carousel
                 opts={{
@@ -16,7 +18,7 @@ const ImageLayout: React.FC<Props> = ({ images }) => {
                 <CarouselContent>
                     {images.map((image, index) => (
                         <CarouselItem className="basis-auto" key={index}>
-                            <img alt="" className="h-80" src={image} />
+                            <img alt="" className="h-80" draggable="false" src={image} />
                         </CarouselItem>
                     ))}
                 </CarouselContent>

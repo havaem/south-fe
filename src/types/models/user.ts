@@ -4,7 +4,7 @@ import { ELocale } from "@/constants";
 
 const userName = z.object({
     first: z.string(),
-    middle: z.string(),
+    middle: z.string().optional(),
     last: z.string(),
     display: z.number(),
 });
@@ -18,7 +18,7 @@ const userStatus = z.object({
 const locales = Object.values(ELocale);
 const userLocale = z.enum(locales as [string, ...string[]]);
 
-export const UserSchema = z.object({
+export const userSchema = z.object({
     _id: z.string(),
     name: userName,
     email: z.string(),
@@ -29,4 +29,4 @@ export const UserSchema = z.object({
     avatar: z.string(),
 });
 
-export type IUser = z.infer<typeof UserSchema>;
+export type IUser = z.infer<typeof userSchema>;

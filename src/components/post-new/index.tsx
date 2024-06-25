@@ -15,7 +15,7 @@ const PostNew: React.FC<Props> = () => {
     const { t } = useTranslation();
     const { user } = useAuthStore();
 
-    const [isOpenNewPost, setIsOpenNewPost] = useState<boolean>(true);
+    const [isOpenNewPost, setIsOpenNewPost] = useState<boolean>(false);
 
     const handleToggleOpenNewPost = () => {
         setIsOpenNewPost(true);

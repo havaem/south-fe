@@ -1,8 +1,10 @@
+import { Plate, PlateContent } from "@udecode/plate-common";
 import { BookmarkIcon, CircleOff, Ellipsis, FlagTriangleRight, Heart, MessageCircle, Share2 } from "lucide-react";
 import { ComponentPropsWithoutRef, forwardRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { cn } from "@/utils";
+import { IPost } from "@/types";
+import { cn, renderName } from "@/utils";
 
 import { Avatar } from "../modified-ui";
 import { Badge } from "../ui/badge";
@@ -17,8 +19,10 @@ import {
 } from "../ui/dropdown-menu";
 import ImageLayout from "./components/image-layout";
 
-interface IProps extends ComponentPropsWithoutRef<"div"> {}
-const Post = forwardRef<HTMLDivElement, IProps>(function Post(props, ref) {
+interface IProps extends ComponentPropsWithoutRef<"div"> {
+    data: IPost;
+}
+const Post = forwardRef<HTMLDivElement, IProps>(function Post({ data, ...props }, ref) {
     const [isLove, setIsLove] = useState<boolean>(false);
     const [isOpenComment, setIsOpenComment] = useState<boolean>(false);
 
@@ -59,23 +63,16 @@ const Post = forwardRef<HTMLDivElement, IProps>(function Post(props, ref) {
                 <Avatar />
                 <div className="flex flex-col">
                     <Link to="/">
-                        <h2 className="font-medium">Võ Hoài Nam</h2>
+                        <h2 className="font-medium">{renderName(data.author.name)}</h2>
                     </Link>
                     <div className="text-xs text-gray-500 dark:text-gray-400">2 hours ago</div>
                 </div>
             </CardHeader>
             <CardContent className="space-y-4">
-                <div>
-                    Excited to share my latest project with you all! Check it out and let me know what you think. 🚀
-                </div>
-                <ImageLayout
-                    images={[
-                        "https://generated.vusercontent.net/placeholder.svg",
-                        "https://generated.vusercontent.net/placeholder.svg",
-                        "https://generated.vusercontent.net/placeholder.svg",
-                        "https://generated.vusercontent.net/placeholder.svg",
-                    ]}
-                />
+                <Plate value={data.content}>
+                    <PlateContent readOnly />
+                </Plate>
+                <ImageLayout images={data.media.map((item) => item.url)} />
             </CardContent>
             <CardFooter className="justify-between flex-center-y">
                 <div className="gap-2 flex-center-y">
@@ -97,10 +94,10 @@ const Post = forwardRef<HTMLDivElement, IProps>(function Post(props, ref) {
                 </div>
                 <div className="gap-2 flex-center-y">
                     <Badge className="px-2 py-1 text-xs" variant="outline">
-                        12 Likes
+                        {data.likes.length} Likes
                     </Badge>
                     <Badge className="px-2 py-1 text-xs" variant="outline">
-                        4 Comments
+                        {data.comments.length} Comments
                     </Badge>
                 </div>
             </CardFooter>

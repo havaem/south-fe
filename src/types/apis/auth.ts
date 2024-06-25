@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { UserSchema } from "../models";
+import { userSchema } from "../models";
 
 export interface IAuthRegisterPayload {
     name: {
@@ -27,7 +27,7 @@ export const zAuthResponse = z.object({
         accessToken: z.string(),
         refreshToken: z.string(),
     }),
-    user: UserSchema,
+    user: userSchema,
 });
 
 export interface IAuthRefreshTokenResponse {
