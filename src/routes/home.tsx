@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { APP_PATH } from "@/constants";
 import { useAuthStore } from "@/stores";
 
-import Dashboard from "./dashboard";
+import Dashboard from "./(logined)/dashboard";
 
 function HomePage() {
     const navigate = useNavigate();

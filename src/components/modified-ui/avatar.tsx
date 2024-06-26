@@ -17,11 +17,14 @@ export const Avatar = forwardRef<HTMLDivElement, Props>(function Avatar(
     ref,
 ) {
     return (
-        <div className="relative h-10 w-10" ref={ref} {...props}>
+        <div className="relative" ref={ref} {...props}>
             {hasStory && (
                 <div className="absolute inset-0 rounded-full border-2 border-primary bg-background p-2"></div>
             )}
-            <AvatarBase {...avatarProps} className={cn("", hasStory && "border-[3px] border-transparent")}>
+            <AvatarBase
+                {...avatarProps}
+                className={cn("", avatarProps?.className, hasStory && "border-[3px] border-transparent")}
+            >
                 <AvatarImage src={src} />
                 <AvatarFallback>{text}</AvatarFallback>
             </AvatarBase>
