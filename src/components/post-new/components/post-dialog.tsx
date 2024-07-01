@@ -14,7 +14,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useToast } from "@/components/ui/use-toast";
 import { IMAGE_FILE_SIZE, IMAGE_FILE_TYPE, MAX_IMAGES } from "@/constants";
 import { usePostCreate } from "@/hooks/queries/usePostCreate";
-import { useAuthStore } from "@/stores";
+import { useProfileGetCurrentUser } from "@/hooks/queries/userProfileGetCurrentUser";
 import { renderName, shortestName } from "@/utils";
 
 import { usePostContext } from "../post-context";
@@ -30,7 +30,7 @@ const PostDialog: React.FC<DialogProps> = (props) => {
     const editorRef = useRef<PlateEditor | null>(null);
 
     const { value, handleChangeMedia: handleChangeImages } = usePostContext();
-    const { user } = useAuthStore();
+    const { data: dataProfileCurrentUser } = useProfileGetCurrentUser();
 
     const postImagesRef = useRef<HTMLInputElement>(null);
 
@@ -115,11 +115,14 @@ const PostDialog: React.FC<DialogProps> = (props) => {
                 </DialogHeader>
                 <div className="w-full space-y-4">
                     <div className="flex-row gap-4 space-y-0 flex-center-y">
-                        <Avatar src={user?.avatar} text={shortestName(user!.name)} />
+                        <Avatar
+                            src={dataProfileCurrentUser?.data.avatar}
+                            text={shortestName(dataProfileCurrentUser?.data.name)}
+                        />
 
                         <div className="flex flex-col">
                             <Link to="/">
-                                <h2 className="font-medium">{renderName(user!.name)}</h2>
+                                <h2 className="font-medium">{renderName(dataProfileCurrentUser!.data.name)}</h2>
                             </Link>
                             <div className="text-xs text-gray-500 dark:text-gray-400">{t("post.now")}</div>
                         </div>

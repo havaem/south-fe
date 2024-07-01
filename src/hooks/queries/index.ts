@@ -1,4 +1,4 @@
-export * from "./useAuthGetProfile";
+export * from "./useAuthGetCurrentUser";
 export * from "./useAuthLoginGoogle";
 export * from "./useAuthSignIn";
 export * from "./useAuthSignUp";

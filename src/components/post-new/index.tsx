@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useAuthStore } from "@/stores";
+import { useProfileGetCurrentUser } from "@/hooks/queries/userProfileGetCurrentUser";
 import { shortestName } from "@/utils";
 
 import { Avatar } from "../modified-ui";
@@ -13,7 +13,7 @@ import { PostProvider } from "./post-context";
 interface Props {}
 const PostNew: React.FC<Props> = () => {
     const { t } = useTranslation();
-    const { user } = useAuthStore();
+    const { data: dataProfileCurrentUser } = useProfileGetCurrentUser();
 
     const [isOpenNewPost, setIsOpenNewPost] = useState<boolean>(false);
 
@@ -38,7 +38,10 @@ const PostNew: React.FC<Props> = () => {
             <PostDialog open={isOpenNewPost} onOpenChange={setIsOpenNewPost} />
             <Card className="mb-8 justify-between p-6 flex-center-y">
                 <div className="flex-1 flex-row gap-4 space-y-0 flex-center-y">
-                    <Avatar src={user?.avatar} text={shortestName(user?.name)} />
+                    <Avatar
+                        src={dataProfileCurrentUser?.data.avatar}
+                        text={shortestName(dataProfileCurrentUser?.data.name)}
+                    />
                     <button
                         className="flex-1 cursor-text text-left text-muted-foreground"
                         onClick={handleToggleOpenNewPost}

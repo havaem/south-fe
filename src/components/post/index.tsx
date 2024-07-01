@@ -63,7 +63,8 @@ const Post = forwardRef<HTMLDivElement, IProps>(function Post({ data, ...props }
                 <Avatar />
                 <div className="flex flex-col">
                     <Link to="/">
-                        <h2 className="font-medium">{renderName(data.author.name)}</h2>
+                        {/* TODO: Fix it asap */}
+                        <h2 className="font-medium">{renderName()}</h2>
                     </Link>
                     <div className="text-xs text-gray-500 dark:text-gray-400">2 hours ago</div>
                 </div>

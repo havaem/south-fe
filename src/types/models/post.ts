@@ -5,7 +5,7 @@ import { userSchema } from "./user";
 
 export const postSchema = z.object({
     _id: z.string(),
-    author: userSchema.pick({ _id: true, name: true, avatar: true }),
+    author: userSchema.pick({ _id: true, username: true, email: true }),
     media: z.array(
         z.object({
             type: z.string(),

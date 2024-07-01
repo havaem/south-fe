@@ -2,7 +2,8 @@ import { useLayoutEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 import { APP_PATH, LOCAL_STORAGE_KEY } from "@/constants";
-import { useAuthGetProfile } from "@/hooks/queries/useAuthGetProfile";
+import { useAuthGetCurrentUser } from "@/hooks";
+import { useProfileGetCurrentUser } from "@/hooks/queries/userProfileGetCurrentUser";
 import { useAuthStore } from "@/stores";
 
 import Loading from "./loading";
@@ -16,7 +17,10 @@ const ProtectedRoute: React.FC<IProps> = ({ isCheckOnly }) => {
     //* store
     const { isLogin, setUser } = useAuthStore();
     //* query
-    const { data, refetch } = useAuthGetProfile({ enabled: false });
+    const { data, refetch } = useAuthGetCurrentUser({ enabled: false });
+    const { refetch: refetchProfile } = useProfileGetCurrentUser({
+        enabled: false,
+    });
     //* state
     const [isLoading, setIsLoading] = useState<boolean>(
         Boolean(!data || localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN)),
@@ -35,13 +39,15 @@ const ProtectedRoute: React.FC<IProps> = ({ isCheckOnly }) => {
         } else {
             //* 500ms is minimum delay to show loading if refetch done too fast
             Promise.all([refetch(), new Promise((resolve) => setTimeout(resolve, 500))]).then((data) => {
-                setIsLoading(false);
-                if (!data[0].data?.data) {
-                    localStorage.clear();
-                    navigate(APP_PATH.AUTH.SIGN_IN);
-                    return;
-                }
-                setUser(data[0].data?.data);
+                refetchProfile().then(() => {
+                    setIsLoading(false);
+                    if (!data[0].data?.data) {
+                        localStorage.clear();
+                        navigate(APP_PATH.AUTH.SIGN_IN);
+                        return;
+                    }
+                    setUser(data[0].data?.data);
+                });
             });
         }
     }, [refetch, isLogin, setUser, navigate]);

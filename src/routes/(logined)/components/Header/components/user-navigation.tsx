@@ -12,13 +12,15 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { APP_PATH } from "@/constants";
+import { useProfileGetCurrentUser } from "@/hooks/queries/userProfileGetCurrentUser";
 import { useAuthStore } from "@/stores";
 import { shortestName } from "@/utils";
 
 interface Props {}
 const UserNavigation: React.FC<Props> = () => {
     const navigate = useNavigate();
-    const { user, logOut } = useAuthStore();
+    const { logOut } = useAuthStore();
+    const { data: dataProfileCurrentUser } = useProfileGetCurrentUser();
 
     const handleLogout = () => logOut();
     const handleChangePath = (path: string) => () => navigate(path);
@@ -26,7 +28,10 @@ const UserNavigation: React.FC<Props> = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <Avatar src={user?.avatar} text={shortestName(user?.name)} />
+                <Avatar
+                    src={dataProfileCurrentUser?.data.avatar}
+                    text={shortestName(dataProfileCurrentUser?.data.name)}
+                />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="min-w-80">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
