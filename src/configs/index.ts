@@ -1,4 +1,4 @@
 export * from "./axios";
 export * from "./env";
 export * from "./query";
-export * from "./route";
+export * from "./routes";

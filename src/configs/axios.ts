@@ -30,7 +30,7 @@ axiosService.interceptors.response.use(
     async function (error) {
         const originalRequest = error.config;
         if (error?.response?.status === 401 && !originalRequest._retry) {
-            localStorage?.removeItem("accessToken");
+            localStorage?.removeItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN);
             const refreshToken = localStorage?.getItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN);
             if (refreshToken) {
                 originalRequest._retry = true;

@@ -12,7 +12,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { APP_PATH } from "@/constants";
-import { useProfileGetCurrentUser } from "@/hooks/queries/userProfileGetCurrentUser";
+import { useProfileGetByUserId } from "@/hooks/queries/useProfileGetByUserId";
 import { useAuthStore } from "@/stores";
 import { shortestName } from "@/utils";
 
@@ -20,7 +20,7 @@ interface Props {}
 const UserNavigation: React.FC<Props> = () => {
     const navigate = useNavigate();
     const { logOut } = useAuthStore();
-    const { data: dataProfileCurrentUser } = useProfileGetCurrentUser();
+    const { data: dataProfileCurrentUser } = useProfileGetByUserId();
 
     const handleLogout = () => logOut();
     const handleChangePath = (path: string) => () => navigate(path);

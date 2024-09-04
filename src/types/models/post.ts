@@ -1,11 +1,17 @@
 import { Value } from "@udecode/plate-common";
 import { z } from "zod";
 
-import { userSchema } from "./user";
+import { profileSchema } from "./profile";
 
 export const postSchema = z.object({
     _id: z.string(),
-    author: userSchema.pick({ _id: true, username: true, email: true }),
+    author: z.string(),
+    author_profile: profileSchema.pick({
+        _id: true,
+        user: true,
+        name: true,
+        avatar: true,
+    }),
     media: z.array(
         z.object({
             type: z.string(),

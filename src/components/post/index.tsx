@@ -3,6 +3,7 @@ import { BookmarkIcon, CircleOff, Ellipsis, FlagTriangleRight, Heart, MessageCir
 import { ComponentPropsWithoutRef, forwardRef, useState } from "react";
 import { Link } from "react-router-dom";
 
+import i18n from "@/i18n";
 import { IPost } from "@/types";
 import { cn, renderName } from "@/utils";
 
@@ -22,6 +23,7 @@ import ImageLayout from "./components/image-layout";
 interface IProps extends ComponentPropsWithoutRef<"div"> {
     data: IPost;
 }
+console.log(i18n.language);
 const Post = forwardRef<HTMLDivElement, IProps>(function Post({ data, ...props }, ref) {
     const [isLove, setIsLove] = useState<boolean>(false);
     const [isOpenComment, setIsOpenComment] = useState<boolean>(false);
@@ -60,13 +62,18 @@ const Post = forwardRef<HTMLDivElement, IProps>(function Post({ data, ...props }
             </DropdownMenu>
 
             <CardHeader className="flex-row gap-4 space-y-0 flex-center-y">
-                <Avatar />
+                <Avatar src={data.author_profile.avatar} />
                 <div className="flex flex-col">
                     <Link to="/">
                         {/* TODO: Fix it asap */}
-                        <h2 className="font-medium">{renderName()}</h2>
+                        <h2 className="font-medium">{renderName(data.author_profile.name)}</h2>
                     </Link>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">2 hours ago</div>
+                    <div
+                        className="text-xs text-gray-500 dark:text-gray-400"
+                        title={new Date(data.createdAt).toLocaleString()}
+                    >
+                        {/* {dateFromNowText(data.createdAt)} */}
+                    </div>
                 </div>
             </CardHeader>
             <CardContent className="space-y-4">

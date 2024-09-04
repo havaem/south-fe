@@ -2,20 +2,16 @@ import { CircleCheckBig } from "lucide-react";
 
 import { Avatar } from "@/components/modified-ui";
 import { Button } from "@/components/ui/button";
-import { useProfileGetCurrentUser } from "@/hooks/queries/userProfileGetCurrentUser";
+import { useProfileGetByUserId } from "@/hooks/queries/useProfileGetByUserId";
 import { renderName, shortestName } from "@/utils";
 
 const ProfilePage = () => {
-    const { data: dataProfileCurrentUser } = useProfileGetCurrentUser();
+    const { data: dataProfileCurrentUser } = useProfileGetByUserId();
     return (
         <div>
             <div className="relative aspect-[10/3]">
-                <img
-                    alt="cover"
-                    className="h-full w-full object-cover"
-                    src="https://images.unsplash.com/photo-1719165626474-c7cbb9c6416b?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black to-white opacity-25"></div>
+                <img alt="cover" className="h-full w-full object-cover" src={dataProfileCurrentUser?.data.cover} />
+                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-25"></div>
                 <div className="absolute bottom-4 right-4 z-10 gap-4 flex-center-y">
                     <Button variant="secondary">Change cover</Button>
                 </div>

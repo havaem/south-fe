@@ -1,9 +1,9 @@
 import { useLayoutEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 import { APP_PATH, LOCAL_STORAGE_KEY } from "@/constants";
 import { useAuthGetCurrentUser } from "@/hooks";
-import { useProfileGetCurrentUser } from "@/hooks/queries/userProfileGetCurrentUser";
+import { useProfileGetByUserId } from "@/hooks/queries/useProfileGetByUserId";
 import { useAuthStore } from "@/stores";
 
 import Loading from "./loading";
@@ -17,9 +17,9 @@ const ProtectedRoute: React.FC<IProps> = ({ isCheckOnly }) => {
     //* store
     const { isLogin, setUser } = useAuthStore();
     //* query
-    const { data, refetch } = useAuthGetCurrentUser({ enabled: false });
-    const { refetch: refetchProfile } = useProfileGetCurrentUser({
-        enabled: false,
+    const { data, refetch, isSuccess, isError } = useAuthGetCurrentUser({ enabled: false });
+    useProfileGetByUserId({
+        enabled: isSuccess,
     });
     //* state
     const [isLoading, setIsLoading] = useState<boolean>(
@@ -37,24 +37,31 @@ const ProtectedRoute: React.FC<IProps> = ({ isCheckOnly }) => {
             setIsLoading(false);
             navigate(APP_PATH.AUTH.SIGN_IN);
         } else {
-            //* 500ms is minimum delay to show loading if refetch done too fast
-            Promise.all([refetch(), new Promise((resolve) => setTimeout(resolve, 500))]).then((data) => {
-                refetchProfile().then(() => {
-                    setIsLoading(false);
-                    if (!data[0].data?.data) {
+            const handleGetCurrentUser = async () => {
+                await refetch()
+                    .then(async (data) => {
+                        if (!data.data?.data) return;
+                        setUser(data.data.data);
+                        setIsLoading(false);
+                    })
+                    .catch(() => {
                         localStorage.clear();
                         navigate(APP_PATH.AUTH.SIGN_IN);
-                        return;
-                    }
-                    setUser(data[0].data?.data);
-                });
-            });
+                        setIsLoading(false);
+                    });
+            };
+
+            //* 500ms is minimum delay to show loading if refetch done too fast
+            Promise.all([handleGetCurrentUser(), new Promise((resolve) => setTimeout(resolve, 500))]);
         }
     }, [refetch, isLogin, setUser, navigate]);
 
+    if (isError) return <Navigate to={APP_PATH.AUTH.SIGN_IN} />;
     if (isLoading) return <Loading />;
     if (isLogin) return <Outlet />;
+
     if (isCheckOnly && !isLoading && !isLogin) return <Outlet />;
+
     return <></>;
 };
 export default ProtectedRoute;

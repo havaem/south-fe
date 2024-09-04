@@ -24,6 +24,8 @@ const config = {
                     "Segoe UI Symbol",
                     "Noto Color Emoji",
                 ],
+                game: ['"Press Start 2P", system-ui'],
+                pixel: ["VT323"],
             },
             colors: {
                 border: "hsl(var(--border))",

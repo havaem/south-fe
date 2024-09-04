@@ -19,6 +19,7 @@ export const profileSchema = z.object({
     }),
     name: profileName,
     avatar: z.string(),
+    cover: z.string(),
 });
 
 export type IProfile = z.infer<typeof profileSchema>;

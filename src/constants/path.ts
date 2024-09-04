@@ -10,6 +10,7 @@ export const APP_PATH = {
     STORY: "/stories",
     SETTINGS: "/settings",
     PROFILE: "/profile",
+    HEAVEN: "/heaven",
 
     NOT_FOUND: "/404",
 };

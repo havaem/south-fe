@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
 import ProtectedRoute from "./components/protected-route";
+import HeavenPage from "./routes/(logined)/heaven";
 import DashboardLayout from "./routes/(logined)/layout";
 import ProfilePage from "./routes/(logined)/profile";
 import AuthLayout from "./routes/auth/layout";
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
                         element: <ProfilePage />,
                     },
                 ],
+            },
+            {
+                path: "heaven",
+                element: <HeavenPage />,
             },
         ],
     },

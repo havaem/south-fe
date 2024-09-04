@@ -13,7 +13,7 @@ const PostEditor: React.FC<Props> = ({ editorRef }) => {
     const { handleChangeContent } = usePostContext();
     return (
         <Plate editorRef={editorRef} plugins={plugins} onChange={handleChangeContent}>
-            <PlateContent className="break-words outline-0" placeholder={t("post.what_is_on_your_mind")} />
+            <PlateContent className="w-full outline-0" placeholder={t("post.what_is_on_your_mind")} />
         </Plate>
     );
 };

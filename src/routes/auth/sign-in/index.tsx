@@ -22,14 +22,19 @@ const SignInPage = () => {
     const { t } = useTranslation(["translation", "zod"]);
 
     const { mutateAsync: mutateAuthSignIn, isPending: isPendingAuthSignIn } = useAuthSignIn();
+
     const { mutateAsync: mutateAsyncAuthLoginWithGoogle, isPending: isPendingAuthLoginWithGoogle } =
         useAuthLoginWithGoogle();
     const isLoading = combineLoading(isPendingAuthSignIn, isPendingAuthLoginWithGoogle);
 
-    const { logIn: login } = useAuthStore();
+    const { logIn } = useAuthStore();
 
     const form = useForm<z.infer<typeof signInSchema>>({
         resolver: zodResolver(signInSchema),
+        defaultValues: {
+            username: "",
+            password: "",
+        },
     });
 
     const googleLogin = useGoogleLogin({
@@ -37,8 +42,7 @@ const SignInPage = () => {
             mutateAsyncAuthLoginWithGoogle({
                 token: access_token,
             }).then(({ data }) => {
-                login(data);
-                // navigate to home
+                logIn(data);
                 navigate(APP_PATH.HOME);
             });
         },
@@ -46,8 +50,7 @@ const SignInPage = () => {
 
     function handleSubmit(values: z.infer<typeof signInSchema>) {
         mutateAuthSignIn(values).then(({ data }) => {
-            login(data);
-            // navigate to home
+            logIn(data);
             navigate(APP_PATH.HOME);
         });
     }

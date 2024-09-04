@@ -9,5 +9,6 @@ export const useAuthGetCurrentUser = (props: IProps) =>
     useQuery({
         queryKey: ["getCurrentUser"],
         queryFn: ApiAuth.getCurrentUser,
+        retry: 0,
         ...props,
     });

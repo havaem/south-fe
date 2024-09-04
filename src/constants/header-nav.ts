@@ -6,6 +6,10 @@ export const HEADER_NAV = [
         href: APP_PATH.HOME,
     },
     {
+        title: "Heaven",
+        href: APP_PATH.HEAVEN,
+    },
+    {
         title: "Notes",
         href: APP_PATH.NOTE,
     },

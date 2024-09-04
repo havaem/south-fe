@@ -9,9 +9,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { APP_PATH } from "@/constants";
+import { APP_PATH, LOCAL_STORAGE_KEY } from "@/constants";
 import { useAuthSignUp } from "@/hooks";
 import { useAuthLoginWithGoogle } from "@/hooks/queries/useAuthLoginGoogle";
+import { useProfileGetByUserId } from "@/hooks/queries/useProfileGetByUserId";
 import { useAuthStore } from "@/stores";
 import { combineLoading } from "@/utils";
 
@@ -20,7 +21,12 @@ import { signUpSchema } from "./schema";
 const SignUpPage = () => {
     const navigate = useNavigate();
     const { t } = useTranslation(["translation", "zod"]);
+
     const { mutateAsync: mutateAsyncAuthSignUp, isPending: isPendingAuthSignUp } = useAuthSignUp();
+    const { refetch: refetchProfile } = useProfileGetByUserId({
+        enabled: false,
+    });
+
     const { mutateAsync: mutateAsyncAuthLoginWithGoogle, isPending: isPendingAuthLoginWithGoogle } =
         useAuthLoginWithGoogle();
     const isLoading = combineLoading(isPendingAuthSignUp, isPendingAuthLoginWithGoogle);
@@ -32,9 +38,14 @@ const SignUpPage = () => {
             mutateAsyncAuthLoginWithGoogle({
                 token: access_token,
             }).then(({ data }) => {
+                localStorage.setItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN, data.token.accessToken);
+                localStorage.setItem(LOCAL_STORAGE_KEY.REFRESH_TOKEN, data.token.refreshToken);
+
                 login(data);
-                // navigate to home
-                navigate(APP_PATH.HOME);
+                refetchProfile().then(() => {
+                    // navigate to home
+                    navigate(APP_PATH.HOME);
+                });
             });
         },
     });

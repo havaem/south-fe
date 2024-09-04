@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { useProfileGetCurrentUser } from "@/hooks/queries/userProfileGetCurrentUser";
+import { useProfileGetByUserId } from "@/hooks/queries/useProfileGetByUserId";
 import { shortestName } from "@/utils";
 
 import { Avatar } from "../modified-ui";
@@ -13,7 +13,7 @@ import { PostProvider } from "./post-context";
 interface Props {}
 const PostNew: React.FC<Props> = () => {
     const { t } = useTranslation();
-    const { data: dataProfileCurrentUser } = useProfileGetCurrentUser();
+    const { data: dataProfileCurrentUser } = useProfileGetByUserId();
 
     const [isOpenNewPost, setIsOpenNewPost] = useState<boolean>(false);
 
