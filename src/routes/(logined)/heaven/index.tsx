@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
+import Message from "@/games/components/Message";
 import StartGame from "@/games/components/StartGame";
 import { CONFIGS, EDirection, OBJECT } from "@/games/constants";
 import { Animation } from "@/games/cores/Animation";
@@ -63,7 +64,6 @@ const HeavenPage = () => {
                     }),
                 }),
             });
-            console.log("mapBuild: ", mapBuild);
             world.init({ map: mapBuild });
         }
 
@@ -80,7 +80,7 @@ const HeavenPage = () => {
         <div className="fixed inset-0 bg-[#212121] flex-center">
             <div className="relative w-full border border-white">
                 <canvas className="size-full" ref={canvasRef}></canvas>
-                {/* <Message className="top-2/3 flex min-h-32 w-full min-w-96 max-w-lg absolute-center-x" /> */}
+                <Message className="top-2/3 flex min-h-32 w-full min-w-96 max-w-lg absolute-center-x" />
                 {/* <HUD /> */}
 
                 {/* Show it when map change */}

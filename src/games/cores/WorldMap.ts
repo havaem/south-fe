@@ -42,7 +42,7 @@ export class WorldMap {
 
     drawUpperImage(ctx: CanvasRenderingContext2D) {
         //* Draw walls
-        this.drawWallBlock(ctx);
+        // this.drawWallBlock(ctx);
         if (!this.upperImage) return;
         ctx.drawImage(this.upperImage, 0, 0);
         //* Draw grid
