@@ -1,6 +1,6 @@
 import { OBJECT_TYPE } from "../constants";
 import { IMapObjectConfig } from "../types";
-import { buildMap, toGridSize } from "../utils";
+import { buildMapBlock, toGridSize } from "../utils";
 import { Animation } from "./Animation";
 import { FrameIndexPattern } from "./FrameIndexPattern";
 import { GameObject } from "./GameObject";
@@ -80,7 +80,7 @@ export class MapObject extends GameObject {
         });
 
         //* add wall to map
-        this.mapStructure = buildMap(data.map ?? [], {
+        this.mapStructure = buildMapBlock(data.map ?? [], {
             x: y,
             y: x,
         });

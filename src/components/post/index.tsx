@@ -3,6 +3,13 @@ import { BookmarkIcon, CircleOff, Ellipsis, FlagTriangleRight, Heart, MessageCir
 import { ComponentPropsWithoutRef, forwardRef, useState } from "react";
 import { Link } from "react-router-dom";
 
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import i18n from "@/i18n";
 import { IPost } from "@/types";
 import { cn, renderName } from "@/utils";
@@ -11,13 +18,6 @@ import { Avatar } from "../modified-ui";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import ImageLayout from "./components/image-layout";
 
 interface IProps extends ComponentPropsWithoutRef<"div"> {

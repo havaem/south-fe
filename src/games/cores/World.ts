@@ -1,7 +1,5 @@
 import { OBJECT } from "../constants";
 import { EEventName } from "../constants/event";
-import { MAPS } from "../constants/maps";
-import { IWorldMapConfig } from "../types";
 import { Camera } from "./Camera";
 import { events } from "./Events";
 import { GameObject } from "./GameObject";
@@ -59,7 +57,7 @@ export class World {
         });
     }
 
-    startMap(mapConfig: IWorldMapConfig) {
+    startMap(map: WorldMap) {
         //* remove all children of the body
         this.body.children = [];
 
@@ -79,7 +77,7 @@ export class World {
         this.accumulatedTime = 0;
 
         // Initialize the new map
-        this.map = new WorldMap(mapConfig);
+        this.map = map;
         this.map.world = this;
 
         this.map.mountObjects();
@@ -102,8 +100,9 @@ export class World {
         this.body.addChild(this.camera);
     }
 
-    init() {
-        this.startMap(MAPS.WelcomeMap);
+    init({ map }: { map: WorldMap }) {
+        this.startMap(map);
+
         // this.sounds.push(new Sound("assets/sounds/idle.mp3"));
         // this.sounds[0].play();
 

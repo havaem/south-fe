@@ -17,8 +17,8 @@ import { OBJECT } from "../object";
 import { OTHERS } from "./objects/others";
 
 export const WelcomeMap: IWorldMapConfig = {
-    lowerSrc: SPRITES.MAPS.WELCOME.lowerSrc,
-    upperSrc: "",
+    lowerLayer: SPRITES.MAPS.WELCOME.lowerSrc,
+    upperLayer: "",
     walls: SPRITES.MAPS.WELCOME.map,
     cutsceneAtStart: [
         // {

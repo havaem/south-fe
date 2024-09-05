@@ -2,7 +2,7 @@ import { APP_PATH } from "./path";
 
 export const HEADER_NAV = [
     {
-        title: "Home",
+        title: "navigation.home",
         href: APP_PATH.HOME,
     },
     {
@@ -10,11 +10,11 @@ export const HEADER_NAV = [
         href: APP_PATH.HEAVEN,
     },
     {
-        title: "Notes",
+        title: "navigation.note",
         href: APP_PATH.NOTE,
     },
     {
-        title: "Stories",
+        title: "navigation.story",
         href: APP_PATH.STORY,
     },
 ];

@@ -64,8 +64,8 @@ export type ICutsceneSpace = {
 export type IWorldMapConfig = {
     world?: World;
     gameObjects: Map<string, GameObject>;
-    lowerSrc: string;
-    upperSrc: string;
+    lowerLayer: string;
+    upperLayer?: string;
     walls: number[][];
     isCutscenePlaying?: boolean;
     cutsceneSpaces?: ICutsceneSpace;

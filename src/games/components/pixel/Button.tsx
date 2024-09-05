@@ -3,7 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 
-const buttonVariants = cva("font-game  border-black", {
+const buttonVariants = cva("border-black  font-game", {
     variants: {
         variant: {
             default: "bg-red-500 text-white",

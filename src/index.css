@@ -89,4 +89,8 @@
     ::-webkit-scrollbar-thumb:hover {
         @apply bg-primary;
     }
+
+    canvas {
+        image-rendering: pixelated;
+    }
 }

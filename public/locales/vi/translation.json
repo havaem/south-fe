@@ -42,5 +42,10 @@
         "max_images": "Bạn chỉ có thể chọn tối đa {{max}} ảnh",
         "image_only": "Chỉ chấp nhận ảnh",
         "image_size": "Kích thước ảnh tối đa là {{size}}"
+    },
+    "navigation": {
+        "home": "Trang chủ",
+        "note": "Ghi chú",
+        "story": "Tin"
     }
 }

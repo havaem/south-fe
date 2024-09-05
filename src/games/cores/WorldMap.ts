@@ -1,6 +1,6 @@
 import { EMapType, OBJECT } from "../constants";
 import { IBehavior, ICutsceneSpace, IWorldMapConfig } from "../types";
-import { buildMap } from "../utils";
+import { buildMapBlock } from "../utils";
 import { GameObject } from "./GameObject";
 import { World } from "./World";
 import { WorldEvent } from "./WorldEvent";
@@ -10,7 +10,7 @@ export class WorldMap {
     world?: World;
     gameObjects: Map<string, GameObject>;
     lowerImage: HTMLImageElement;
-    upperImage: HTMLImageElement;
+    upperImage: HTMLImageElement | null = null;
     walls: Set<string> = new Set();
     isCutscenePlaying: boolean;
     cutsceneSpaces: ICutsceneSpace;
@@ -22,15 +22,18 @@ export class WorldMap {
         this.gameObjects = config.gameObjects;
 
         this.lowerImage = new Image();
-        this.lowerImage.src = config.lowerSrc;
+        this.lowerImage.src = config.lowerLayer;
 
-        this.upperImage = new Image();
-        this.upperImage.src = config.upperSrc;
+        if (config.upperLayer) {
+            this.upperImage = new Image();
+            this.upperImage.src = config.upperLayer;
+        }
+
         this.cutsceneSpaces = config.cutsceneSpaces ?? {};
         this.isCutscenePlaying = config.isCutscenePlaying ?? false;
         this.cutsceneAtStart = config.cutsceneAtStart ?? [];
 
-        this.walls = buildMap(config.walls);
+        this.walls = buildMapBlock(config.walls);
     }
 
     drawLowerImage(ctx: CanvasRenderingContext2D) {
@@ -38,9 +41,10 @@ export class WorldMap {
     }
 
     drawUpperImage(ctx: CanvasRenderingContext2D) {
-        ctx.drawImage(this.upperImage, 0, 0);
         //* Draw walls
-        // this.drawWallBlock(ctx);
+        this.drawWallBlock(ctx);
+        if (!this.upperImage) return;
+        ctx.drawImage(this.upperImage, 0, 0);
         //* Draw grid
         // drawGrid(ctx, CONFIGS.WIDTH, CONFIGS.HEIGHT, CONFIGS.TILE_SIZE, SPRITES.MAPS.CITY.map);
     }

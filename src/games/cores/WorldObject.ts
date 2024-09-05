@@ -169,7 +169,6 @@ export class WorldObject extends GameObject {
 
     async doBehaviorEvent() {
         if (this.map?.isCutscenePlaying || this.behaviorLoopArray.length === 0) return;
-
         const eventConfig = this.behaviorLoopArray[this.behaviorIndex];
         if (!eventConfig || !this.map) return;
 
@@ -201,6 +200,10 @@ export class WorldObject extends GameObject {
 
         if (this.movingRemaining > 0) this.updatePosition();
         else {
+            console.log(
+                " this.isPlayerControlled && root.input?.direction: ",
+                this.isPlayerControlled && root.input?.direction,
+            );
             if (!this.map?.isCutscenePlaying && this.isPlayerControlled && root.input?.direction) {
                 const currentTime = Date.now();
                 if (this.lastPressedKey === null) {

@@ -42,5 +42,10 @@
         "max_images": "You can only upload a maximum of {{max}} images",
         "image_only": "Only images are allowed",
         "image_size": "Image size must be less than {{size}}"
+    },
+    "navigation": {
+        "home": "Home",
+        "note": "Notes",
+        "story": "Stories"
     }
 }

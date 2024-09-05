@@ -2,7 +2,7 @@ import PixelBox from "./pixel/Box";
 
 const HUD: React.FC = () => {
     return (
-        <div className="font-game pointer-events-none absolute left-4 top-4 z-40 select-none">
+        <div className="pointer-events-none absolute left-4 top-4 z-40 select-none font-game">
             <PixelBox noPadding>
                 <div>
                     <div className="aspect-square w-28">

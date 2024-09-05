@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 
 import { cn } from "@/utils";
@@ -7,6 +8,7 @@ interface Props {
     href: string;
 }
 const NavigationItem: React.FC<Props> = ({ title, href }) => {
+    const { t } = useTranslation();
     return (
         <li>
             <NavLink
@@ -18,7 +20,8 @@ const NavigationItem: React.FC<Props> = ({ title, href }) => {
                     )
                 }
             >
-                {title}
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {t(title as any)}
             </NavLink>
         </li>
     );
