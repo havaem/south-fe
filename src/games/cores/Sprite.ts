@@ -1,5 +1,5 @@
 import { LAYER_INDEX } from "../constants";
-import { Animation } from "./Animation";
+import { Animations } from "./Animation";
 import { GameObject } from "./GameObject";
 import { Vector2 } from "./Vector2";
 
@@ -13,7 +13,7 @@ export class Sprite extends GameObject {
     scale: number;
     position: Vector2;
     offset: Vector2;
-    animations: Animation | null;
+    animations: Animations | null;
     constructor({
         id,
         resource, // image we want to draw
@@ -36,7 +36,7 @@ export class Sprite extends GameObject {
         frame?: number;
         scale?: number;
         position?: Vector2;
-        animations?: Animation;
+        animations?: Animations;
         zIndex?: number;
     }) {
         super({ id, zIndex });

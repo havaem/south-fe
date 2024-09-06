@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Message from "@/games/components/Message";
 import StartGame from "@/games/components/StartGame";
 import { CONFIGS, EDirection, OBJECT } from "@/games/constants";
-import { Animation } from "@/games/cores/Animation";
+import { Animations } from "@/games/cores/Animation";
 import { FrameIndexPattern } from "@/games/cores/FrameIndexPattern";
 import { resources } from "@/games/cores/Resource";
 import { Sprite } from "@/games/cores/Sprite";
@@ -51,7 +51,7 @@ const HeavenPage = () => {
                         vFrames: 5,
                         frame: 3,
                         position: new Vector2(0, -20),
-                        animations: new Animation({
+                        animations: new Animations({
                             standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
                             standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
                             standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),

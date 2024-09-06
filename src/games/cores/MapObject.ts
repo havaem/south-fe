@@ -1,7 +1,7 @@
 import { OBJECT_TYPE } from "../constants";
 import { IMapObjectConfig } from "../types";
 import { buildMapBlock, toGridSize } from "../utils";
-import { Animation } from "./Animation";
+import { Animations } from "./Animation";
 import { FrameIndexPattern } from "./FrameIndexPattern";
 import { GameObject } from "./GameObject";
 import { resources } from "./Resource";
@@ -35,7 +35,7 @@ export class MapObject extends GameObject {
             frame: data.body.frame,
             scale: data.body.scale,
             animations: data.body.animations
-                ? new Animation(
+                ? new Animations(
                       Object.entries(data.body.animations).reduce(
                           (acc, [key, value]) => {
                               acc[key] = new FrameIndexPattern(value);
@@ -64,7 +64,7 @@ export class MapObject extends GameObject {
                     frame: addOn.frame,
                     scale: addOn.scale,
                     animations: addOn.animations
-                        ? new Animation(
+                        ? new Animations(
                               Object.entries(addOn.animations).reduce(
                                   (acc, [key, value]) => {
                                       acc[key] = new FrameIndexPattern(value);

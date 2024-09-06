@@ -1,4 +1,4 @@
-import { Animation } from "@/games/cores/Animation";
+import { Animations } from "@/games/cores/Animation";
 import { FrameIndexPattern } from "@/games/cores/FrameIndexPattern";
 import { GameObject } from "@/games/cores/GameObject";
 import { MapObject } from "@/games/cores/MapObject";
@@ -64,7 +64,7 @@ export const WelcomeMap: IWorldMapConfig = {
                     vFrames: 5,
                     frame: 3,
                     position: new Vector2(0, -20),
-                    animations: new Animation({
+                    animations: new Animations({
                         standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
                         standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
                         standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
@@ -93,7 +93,7 @@ export const WelcomeMap: IWorldMapConfig = {
                     vFrames: 5,
                     frame: 3,
                     position: new Vector2(0, -20),
-                    animations: new Animation({
+                    animations: new Animations({
                         standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
                         standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
                         standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),

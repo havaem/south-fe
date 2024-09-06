@@ -7,7 +7,7 @@ import { z } from "zod";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { EDirection } from "@/games/constants";
-import { Animation } from "@/games/cores/Animation";
+import { Animations } from "@/games/cores/Animation";
 import { FrameIndexPattern } from "@/games/cores/FrameIndexPattern";
 import { resources } from "@/games/cores/Resource";
 import { Sprite } from "@/games/cores/Sprite";
@@ -86,7 +86,7 @@ const CharacterBuilder: React.FC = () => {
                 vFrames: 20,
                 frame: 28,
                 position: new Vector2(0, -20),
-                animations: new Animation({
+                animations: new Animations({
                     standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
                     standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
                     standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
@@ -100,7 +100,7 @@ const CharacterBuilder: React.FC = () => {
                 vFrames: 20,
                 frame: 28,
                 position: new Vector2(0, -20),
-                animations: new Animation({
+                animations: new Animations({
                     standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
                     standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
                     standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
@@ -114,7 +114,7 @@ const CharacterBuilder: React.FC = () => {
                 vFrames: 20,
                 frame: 28,
                 position: new Vector2(0, -20),
-                animations: new Animation({
+                animations: new Animations({
                     standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
                     standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
                     standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
@@ -128,7 +128,7 @@ const CharacterBuilder: React.FC = () => {
                 vFrames: 20,
                 frame: 28,
                 position: new Vector2(0, -20),
-                animations: new Animation({
+                animations: new Animations({
                     standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
                     standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
                     standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),

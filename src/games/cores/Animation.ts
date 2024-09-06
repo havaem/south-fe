@@ -4,7 +4,7 @@ interface IAnimationConfig {
     [key: string]: FrameIndexPattern;
 }
 
-export class Animation {
+export class Animations {
     patterns: IAnimationConfig;
     activeKey: string;
 
