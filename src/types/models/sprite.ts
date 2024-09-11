@@ -20,6 +20,7 @@ export const spriteSchema = z.object({
         x: z.number(),
         y: z.number(),
     }),
+    defaultFrame: z.number(),
     verticalFrame: z.number(),
     horizontalFrame: z.number(),
     scale: z.number(),

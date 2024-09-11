@@ -5,6 +5,7 @@ import { WorldObject } from "@/games/cores/WorldObject";
 
 export type TGameStore = {
     player: WorldObject | null;
+    setPlayer: (player: WorldObject) => void;
 };
 
 export const useGameStore = create<TGameStore>()(
