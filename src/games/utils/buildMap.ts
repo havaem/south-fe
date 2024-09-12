@@ -1,6 +1,6 @@
 import { IMap } from "@/types";
 
-import { EBehaviorType, EDirection, EMapType, OBJECT } from "../constants";
+import { EAnimation, EBehaviorType, EDirection, EMapType, OBJECT } from "../constants";
 import { OTHERS } from "../constants/maps/objects/others";
 import { Animations } from "../cores/Animation";
 import { FrameIndexPattern } from "../cores/FrameIndexPattern";
@@ -77,19 +77,19 @@ export const buildMap = ({ name, map, player }: IBuildMapProps): WorldMap => {
                     body: new Sprite({
                         resource: resources.images.heroAmelia,
                         frameSize: new Vector2(toGridSize(1), toGridSize(2)),
-                        hFrames: 24,
-                        vFrames: 5,
-                        frame: 3,
+                        hFrames: 28,
+                        vFrames: 20,
+                        frame: 1,
                         position: new Vector2(0, -20),
                         animations: new Animations({
-                            standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
-                            standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
-                            standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
-                            standRight: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_RIGHT),
-                            walkDown: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_DOWN),
-                            walkUp: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_UP),
-                            walkLeft: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_LEFT),
-                            walkRight: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_RIGHT),
+                            [EAnimation.STAND_DOWN]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
+                            [EAnimation.STAND_UP]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
+                            [EAnimation.STAND_LEFT]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
+                            [EAnimation.STAND_RIGHT]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_RIGHT),
+                            [EAnimation.WALK_DOWN]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_DOWN),
+                            [EAnimation.WALK_UP]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_UP),
+                            [EAnimation.WALK_LEFT]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_LEFT),
+                            [EAnimation.WALK_RIGHT]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_RIGHT),
                         }),
                     }),
                     behaviorLoopArray: [],
@@ -123,7 +123,7 @@ export const buildMap = ({ name, map, player }: IBuildMapProps): WorldMap => {
                                     y: toGridSize(10),
                                 },
                                 {
-                                    id: OBJECT.HERO,
+                                    id: player.id,
                                     type: EBehaviorType.MOVE,
                                     direction: EDirection.LEFT,
                                 },
@@ -194,10 +194,11 @@ export const buildMap = ({ name, map, player }: IBuildMapProps): WorldMap => {
     }
 
     return new WorldMap({
+        playerId: player.id,
         lowerLayer: map.lowerLayer.src,
         upperLayer: map.upperLayer?.src,
         walls: map.grid,
-        gameObjects: new Map<string, GameObject>([[OBJECT.HERO, player], ...gameObjects]),
+        gameObjects: new Map<string, GameObject>([[player.id, player], ...gameObjects]),
         cutsceneAtStart,
         cutsceneSpaces,
     });

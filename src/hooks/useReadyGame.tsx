@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { Animations } from "@/games/cores/Animation";
 import { FrameIndexPattern } from "@/games/cores/FrameIndexPattern";
 import { resources } from "@/games/cores/Resource";
 import { Sprite } from "@/games/cores/Sprite";
@@ -32,25 +33,6 @@ export const useReadyGame = () => {
             const data = dataSprite.data;
             resources.pushImage(data.resource._id, data.resource.src);
 
-            const animations = Object.entries(data.animations).reduce(
-                (acc, [key, value]) => {
-                    acc[key] = new FrameIndexPattern(value);
-                    return acc;
-                },
-                {} as Record<string, FrameIndexPattern>,
-            );
-
-            // new Animations({
-            //             standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
-            //             standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
-            //             standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
-            //             standRight: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_RIGHT),
-            //             walkDown: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_DOWN),
-            //             walkUp: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_UP),
-            //             walkLeft: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_LEFT),
-            //             walkRight: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_RIGHT),
-            //         }),
-
             const playerObject = new WorldObject({
                 id: dataGameProfile.data._id,
                 position: new Vector2(toGridSize(4), toGridSize(6)),
@@ -61,7 +43,16 @@ export const useReadyGame = () => {
                     vFrames: data.verticalFrame,
                     frame: data.defaultFrame,
                     position: new Vector2(0, -20),
-                    // animations: new Animations(animations),
+                    animations: new Animations(
+                        Object.entries(data.animations).reduce(
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            (acc, [_, value]) => {
+                                acc[value.name] = new FrameIndexPattern(value);
+                                return acc;
+                            },
+                            {} as Record<string, FrameIndexPattern>,
+                        ),
+                    ),
                 }),
                 isPlayerControlled: true,
             });

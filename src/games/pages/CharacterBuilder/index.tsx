@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { EDirection } from "@/games/constants";
+import { EAnimation, EDirection } from "@/games/constants";
 import { Animations } from "@/games/cores/Animation";
 import { FrameIndexPattern } from "@/games/cores/FrameIndexPattern";
 import { resources } from "@/games/cores/Resource";
@@ -87,10 +87,14 @@ const CharacterBuilder: React.FC = () => {
                 frame: 28,
                 position: new Vector2(0, -20),
                 animations: new Animations({
-                    standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
-                    standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
-                    standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
-                    standRight: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_RIGHT),
+                    [EAnimation.STAND_DOWN]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
+                    [EAnimation.STAND_UP]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
+                    [EAnimation.STAND_LEFT]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
+                    [EAnimation.STAND_RIGHT]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_RIGHT),
+                    [EAnimation.WALK_DOWN]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_DOWN),
+                    [EAnimation.WALK_UP]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_UP),
+                    [EAnimation.WALK_LEFT]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_LEFT),
+                    [EAnimation.WALK_RIGHT]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_RIGHT),
                 }),
             }),
             eyes: new Sprite({
@@ -101,10 +105,14 @@ const CharacterBuilder: React.FC = () => {
                 frame: 28,
                 position: new Vector2(0, -20),
                 animations: new Animations({
-                    standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
-                    standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
-                    standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
-                    standRight: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_RIGHT),
+                    [EAnimation.STAND_DOWN]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
+                    [EAnimation.STAND_UP]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
+                    [EAnimation.STAND_LEFT]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
+                    [EAnimation.STAND_RIGHT]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_RIGHT),
+                    [EAnimation.WALK_DOWN]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_DOWN),
+                    [EAnimation.WALK_UP]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_UP),
+                    [EAnimation.WALK_LEFT]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_LEFT),
+                    [EAnimation.WALK_RIGHT]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_RIGHT),
                 }),
             }),
             hairStyle: new Sprite({
@@ -115,10 +123,14 @@ const CharacterBuilder: React.FC = () => {
                 frame: 28,
                 position: new Vector2(0, -20),
                 animations: new Animations({
-                    standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
-                    standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
-                    standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
-                    standRight: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_RIGHT),
+                    [EAnimation.STAND_DOWN]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
+                    [EAnimation.STAND_UP]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
+                    [EAnimation.STAND_LEFT]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
+                    [EAnimation.STAND_RIGHT]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_RIGHT),
+                    [EAnimation.WALK_DOWN]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_DOWN),
+                    [EAnimation.WALK_UP]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_UP),
+                    [EAnimation.WALK_LEFT]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_LEFT),
+                    [EAnimation.WALK_RIGHT]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_RIGHT),
                 }),
             }),
             outfit: new Sprite({
@@ -129,10 +141,14 @@ const CharacterBuilder: React.FC = () => {
                 frame: 28,
                 position: new Vector2(0, -20),
                 animations: new Animations({
-                    standDown: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
-                    standUp: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
-                    standLeft: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
-                    standRight: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_RIGHT),
+                    [EAnimation.STAND_DOWN]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
+                    [EAnimation.STAND_UP]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
+                    [EAnimation.STAND_LEFT]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
+                    [EAnimation.STAND_RIGHT]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_RIGHT),
+                    [EAnimation.WALK_DOWN]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_DOWN),
+                    [EAnimation.WALK_UP]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_UP),
+                    [EAnimation.WALK_LEFT]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_LEFT),
+                    [EAnimation.WALK_RIGHT]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_RIGHT),
                 }),
             }),
         });

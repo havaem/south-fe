@@ -1,3 +1,57 @@
+export class SoundManager {
+    private sounds: { [key: string]: Sound } = {};
+
+    addSound(key: string, src: string): void {
+        this.sounds[key] = new Sound(src);
+    }
+
+    playSound(key: string, onlyOne: boolean = false): void {
+        const sound = this.sounds[key];
+
+        if (onlyOne) {
+            Object.values(this.sounds).forEach((s) => {
+                s.stop();
+            });
+        }
+
+        if (!sound) {
+            throw new Error(`Sound with key ${key} not found`);
+        }
+        sound.play();
+    }
+
+    pauseSound(key: string): void {
+        const sound = this.sounds[key];
+        if (!sound) {
+            throw new Error(`Sound with key ${key} not found`);
+        }
+        sound.pause();
+    }
+
+    stopSound(key?: string): void {
+        if (!key) {
+            Object.values(this.sounds).forEach((s) => {
+                s.stop();
+            });
+            return;
+        }
+
+        const sound = this.sounds[key];
+        if (!sound) {
+            throw new Error(`Sound with key ${key} not found`);
+        }
+        sound.stop();
+    }
+
+    setVolume(key: string, volume: number): void {
+        const sound = this.sounds[key];
+        if (!sound) {
+            throw new Error(`Sound with key ${key} not found`);
+        }
+        sound.setVolume(volume);
+    }
+}
+
 export class Sound {
     private audio: HTMLAudioElement;
     duration: number = 0;
@@ -27,3 +81,5 @@ export class Sound {
         this.audio.volume = volume;
     }
 }
+
+export const soundManager = new SoundManager();

@@ -1,4 +1,4 @@
-import { EMapType, OBJECT } from "../constants";
+import { EMapType } from "../constants";
 import { IBehavior, ICutsceneSpace, IWorldMapConfig } from "../types";
 import { buildMapBlock } from "../utils";
 import { GameObject } from "./GameObject";
@@ -8,6 +8,9 @@ import { WorldObject } from "./WorldObject";
 
 export class WorldMap {
     world?: World;
+
+    playerId: string = "";
+
     gameObjects: Map<string, GameObject>;
     lowerImage: HTMLImageElement;
     upperImage: HTMLImageElement | null = null;
@@ -17,6 +20,8 @@ export class WorldMap {
     cutsceneAtStart: IBehavior[];
     upperGameObjects: GameObject[] = [];
     constructor(config: IWorldMapConfig) {
+        this.playerId = config.playerId;
+
         this.world = config.world;
 
         this.gameObjects = config.gameObjects;
@@ -42,7 +47,7 @@ export class WorldMap {
 
     drawUpperImage(ctx: CanvasRenderingContext2D) {
         //* Draw walls
-        this.drawWallBlock(ctx);
+        // this.drawWallBlock(ctx);
         if (!this.upperImage) return;
         ctx.drawImage(this.upperImage, 0, 0);
         //* Draw grid
@@ -103,8 +108,8 @@ export class WorldMap {
     }
 
     checkForActionCutscene() {
-        if (this.gameObjects.get(OBJECT.HERO)) {
-            const hero = this.gameObjects.get(OBJECT.HERO) as WorldObject;
+        if (this.gameObjects.get(this.playerId)) {
+            const hero = this.gameObjects.get(this.playerId) as WorldObject;
 
             const nextPosition = hero.calculateNextStep(hero.facingDirection);
 
@@ -121,7 +126,7 @@ export class WorldMap {
         }
     }
     checkForFootstepCutscene() {
-        const hero = this.gameObjects.get(OBJECT.HERO) as WorldObject;
+        const hero = this.gameObjects.get(this.playerId) as WorldObject;
         if (!hero) return;
 
         const match = this.cutsceneSpaces[`${hero.position.x},${hero.position.y}`];

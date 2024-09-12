@@ -1,25 +1,42 @@
+import { useProfileGetByUserId } from "@/hooks/queries/useProfileGetByUserId";
+import { renderName } from "@/utils";
+
 import PixelBox from "./pixel/Box";
 
-const HUD: React.FC = () => {
+const Hud: React.FC = () => {
+    const { data: dataProfileCurrentUser } = useProfileGetByUserId();
+
     return (
-        <div className="pointer-events-none absolute left-4 top-4 z-40 select-none font-game">
-            <PixelBox noPadding>
-                <div>
-                    <div className="aspect-square w-28">
-                        <img
-                            alt=""
-                            className="size-full object-cover"
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZls4xWO-JbAVHXvb_5lsEYqKAW3viqjDavw&s"
-                        />
+        <>
+            {/* USER FRAME */}
+            <div className="pointer-events-none absolute left-4 top-4 z-40 flex select-none items-start gap-4 font-game">
+                <PixelBox noPadding className="relative">
+                    <div>
+                        <div className="aspect-square w-28">
+                            <img
+                                alt=""
+                                className="size-full object-cover object-center"
+                                src={dataProfileCurrentUser?.data.avatar}
+                            />
+                        </div>
                     </div>
+                </PixelBox>
+                <div className="flex flex-col items-start gap-2">
+                    <PixelBox noPadding className="relative">
+                        <div className="px-2 py-1">
+                            <p className="text-sm">{renderName(dataProfileCurrentUser?.data.name)}</p>
+                        </div>
+                    </PixelBox>
+                    <PixelBox noPadding className="relative">
+                        <div className="px-2 py-1">
+                            <p className="text-xs">
+                                1000<span className="text-yellow-700">$</span>
+                            </p>
+                        </div>
+                    </PixelBox>
                 </div>
-            </PixelBox>
-            <div className="text-white">
-                <p className="mt-1 px-2 py-1 text-center text-xs">
-                    1000<span>$</span>
-                </p>
             </div>
-        </div>
+        </>
     );
 };
-export default HUD;
+export default Hud;

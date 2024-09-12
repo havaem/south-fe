@@ -42,7 +42,7 @@ const Message: React.FC<IProps> = ({ className }) => {
                 )}
             </PixelBox>
             <div className="absolute bottom-2 right-2">
-                <div className="animate-show-and-hide size-2 bg-black">
+                <div className="size-2 animate-show-and-hide bg-black">
                     <div className="size-1 bg-white absolute-center"></div>
                 </div>
             </div>

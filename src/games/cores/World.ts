@@ -1,11 +1,10 @@
-import { OBJECT } from "../constants";
 import { EEventName } from "../constants/event";
 import { Camera } from "./Camera";
 import { events } from "./Events";
 import { GameObject } from "./GameObject";
 import { KeyboardInput } from "./KeyboardInput";
 import { KeyPressListener } from "./KeyPressListener";
-import { Sound } from "./Sound";
+import { soundManager } from "./Sound";
 import { Vector2 } from "./Vector2";
 import { WorldMap } from "./WorldMap";
 
@@ -17,16 +16,27 @@ export class World {
         position: new Vector2(0, 0),
     });
     map: WorldMap | null = null;
+    playerId: string | null = null;
+
     isRunning: boolean = false;
     lastFrameTime: number = 0;
     accumulatedTime: number = 0;
     timeStep: number = 1000 / 60;
     camera: Camera | null = null;
     rafId: number | null = null;
-    sounds: Sound[] = [];
 
     currentHeroLocation = { x: 0, y: 0 };
-    constructor({ canvas, ctx }: { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D }) {
+    constructor({
+        canvas,
+        ctx,
+        playerId,
+    }: {
+        canvas: HTMLCanvasElement;
+        ctx: CanvasRenderingContext2D;
+        playerId: string;
+    }) {
+        this.playerId = playerId;
+
         this.canvas = canvas;
         this.ctx = ctx;
     }
@@ -103,19 +113,19 @@ export class World {
     init({ map }: { map: WorldMap }) {
         this.startMap(map);
 
-        // this.sounds.push(new Sound("assets/sounds/idle.mp3"));
-        // this.sounds[0].play();
-
         this.bindActionInput();
         this.bindHeroPositionCheck();
 
         const input = new KeyboardInput();
         input.init();
         this.body.input = input;
+
+        soundManager.addSound("idle", "assets/sounds/idle.mp3");
+        // soundManager.playSound("idle");
     }
     bindHeroPositionCheck() {
         events.on(EEventName.OBJECT_MOVE_COMPLETED, this, ({ whoId }: { whoId: string }) => {
-            if (whoId === OBJECT.HERO) {
+            if (whoId === this.playerId) {
                 this.map?.checkForFootstepCutscene();
             }
         });
@@ -164,6 +174,9 @@ export class World {
         if (this.rafId) {
             cancelAnimationFrame(this.rafId);
         }
+
         this.isRunning = false;
+
+        soundManager.stopSound();
     }
 }

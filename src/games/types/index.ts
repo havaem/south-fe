@@ -62,6 +62,7 @@ export type ICutsceneSpace = {
     [key: string]: [{ events: IBehavior[] }];
 };
 export type IWorldMapConfig = {
+    playerId: string;
     world?: World;
     gameObjects: Map<string, GameObject>;
     lowerLayer: string;

@@ -1,4 +1,4 @@
-import { CONFIGS, EBehaviorType, EDirection, LAYER_INDEX, OBJECT_TYPE } from "../constants";
+import { CONFIGS, EAnimation, EBehaviorType, EDirection, LAYER_INDEX, OBJECT_TYPE } from "../constants";
 import { EEventName } from "../constants/event";
 import { IBehavior, IBehaviorMove, IBehaviorStand, ITalkingBehavior } from "../types";
 import { toGridSize } from "../utils";
@@ -118,7 +118,6 @@ export class WorldObject extends GameObject {
         this.outfit = outfit;
 
         //* END BUILD
-
         this.facingDirection = facingDirection;
         this.isPlayerControlled = isPlayerControlled;
         this.showNameTag = showNameTag ?? this.showNameTag;
@@ -224,31 +223,31 @@ export class WorldObject extends GameObject {
     updateSprite(root: GameObject) {
         if (this.movingRemaining > 0) {
             if (this.facingDirection === EDirection.DOWN) {
-                this.body.animations?.play("walkDown");
+                this.body.animations?.play(EAnimation.WALK_DOWN);
             }
             if (this.facingDirection === EDirection.UP) {
-                this.body.animations?.play("walkUp");
+                this.body.animations?.play(EAnimation.WALK_UP);
             }
             if (this.facingDirection === EDirection.LEFT) {
-                this.body.animations?.play("walkLeft");
+                this.body.animations?.play(EAnimation.WALK_LEFT);
             }
             if (this.facingDirection === EDirection.RIGHT) {
-                this.body.animations?.play("walkRight");
+                this.body.animations?.play(EAnimation.WALK_RIGHT);
             }
         } else {
             const { input } = root;
             if (input && !input.direction) {
                 if (this.facingDirection === EDirection.LEFT) {
-                    this.body.animations?.play("standLeft");
+                    this.body.animations?.play(EAnimation.STAND_LEFT);
                 }
                 if (this.facingDirection === EDirection.RIGHT) {
-                    this.body.animations?.play("standRight");
+                    this.body.animations?.play(EAnimation.STAND_RIGHT);
                 }
                 if (this.facingDirection === EDirection.UP) {
-                    this.body.animations?.play("standUp");
+                    this.body.animations?.play(EAnimation.STAND_UP);
                 }
                 if (this.facingDirection === EDirection.DOWN) {
-                    this.body.animations?.play("standDown");
+                    this.body.animations?.play(EAnimation.STAND_DOWN);
                 }
                 return;
             }

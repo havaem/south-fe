@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
+import Hud from "@/games/components/Hud";
 import Message from "@/games/components/Message";
 import StartGame from "@/games/components/StartGame";
 import { CONFIGS } from "@/games/constants";
@@ -21,9 +22,9 @@ const HeavenPage = () => {
         canvas.height = CONFIGS.HEIGHT;
 
         const ctx = canvas.getContext("2d");
-        if (!ctx) return;
+        if (!ctx || !player) return;
 
-        const world = new World({ canvas, ctx });
+        const world = new World({ canvas, ctx, playerId: player.id });
 
         if (map && player) {
             const mapBuild = buildMap({
@@ -37,7 +38,7 @@ const HeavenPage = () => {
         return () => {
             world.stop();
         };
-    }, [isStart, map]);
+    }, [isStart, map, player]);
 
     if (!isStart) {
         return <StartGame setIsGameStarted={setIsStart} />;
@@ -48,7 +49,7 @@ const HeavenPage = () => {
             <div className="relative w-full border border-white">
                 <canvas className="size-full" ref={canvasRef}></canvas>
                 <Message className="top-2/3 flex min-h-32 w-full min-w-96 max-w-lg absolute-center-x" />
-                {/* <HUD /> */}
+                <Hud />
 
                 {/* Show it when map change */}
                 {/* <IFrame /> */}

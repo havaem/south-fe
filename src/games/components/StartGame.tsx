@@ -1,9 +1,24 @@
+import { useEffect } from "react";
+
 import PixelBox from "./pixel/Box";
 
 interface Props {
     setIsGameStarted: (isGameStarted: boolean) => void;
 }
 const StartGame: React.FC<Props> = ({ setIsGameStarted }) => {
+    useEffect(() => {
+        const handlePressEnter = (e: KeyboardEvent) => {
+            if (e.key === "Enter") {
+                setIsGameStarted(true);
+            }
+        };
+
+        window.addEventListener("keydown", handlePressEnter);
+        return () => {
+            window.removeEventListener("keydown", handlePressEnter);
+        };
+    }, []);
+
     return (
         <div className="fixed inset-0 bg-teal-400 flex-center">
             <PixelBox className="relative w-full max-w-lg">

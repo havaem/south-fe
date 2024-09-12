@@ -1,8 +1,4 @@
-import { OBJECT } from "@/games/constants";
-import { EEventName } from "@/games/constants/event";
-import { events } from "@/games/cores/Events";
 import { GameObject } from "@/games/cores/GameObject";
-import { Sound } from "@/games/cores/Sound";
 import { Vector2 } from "@/games/cores/Vector2";
 import { WorldMap } from "@/games/cores/WorldMap";
 
@@ -19,7 +15,6 @@ export class World {
     accumulatedTime: number = 0;
     timeStep: number = 1000 / 60;
     rafId: number | null = null;
-    sounds: Sound[] = [];
 
     currentHeroLocation = { x: 0, y: 0 };
     constructor({ canvas, ctx }: { canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D }) {
@@ -49,13 +44,6 @@ export class World {
 
     init() {
         // this.sounds.push(new Sound("assets/sounds/idle.mp3"));
-    }
-    bindHeroPositionCheck() {
-        events.on(EEventName.OBJECT_MOVE_COMPLETED, this, ({ whoId }: { whoId: string }) => {
-            if (whoId === OBJECT.HERO) {
-                this.map?.checkForFootstepCutscene();
-            }
-        });
     }
 
     update = (delta: number) => {

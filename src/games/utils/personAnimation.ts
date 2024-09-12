@@ -32,7 +32,7 @@ const makeStandingFrames = (rootFrame = 0) => {
 
 const makeWalkingFrames = (rootFrame = 0) => {
     return {
-        duration: 600,
+        duration: 800,
         frames: [
             {
                 time: 0,
@@ -63,10 +63,10 @@ const makeWalkingFrames = (rootFrame = 0) => {
 };
 
 export const PERSON_ANIMATIONS = {
+    STAND_DOWN: makeStandingFrames(46),
     STAND_RIGHT: makeStandingFrames(28),
     STAND_UP: makeStandingFrames(34),
     STAND_LEFT: makeStandingFrames(40),
-    STAND_DOWN: makeStandingFrames(46),
     WALK_RIGHT: makeWalkingFrames(56),
     WALK_UP: makeWalkingFrames(62),
     WALK_LEFT: makeWalkingFrames(68),

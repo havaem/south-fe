@@ -1,5 +1,6 @@
-import { cn } from "@/utils";
 import { ComponentPropsWithoutRef, forwardRef } from "react";
+
+import { cn } from "@/utils";
 
 interface IProps extends ComponentPropsWithoutRef<"div"> {
     noPadding?: boolean;

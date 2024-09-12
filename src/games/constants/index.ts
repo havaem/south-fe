@@ -1,3 +1,4 @@
+export * from "./animation";
 export * from "./behavior";
 export * from "./configs";
 export * from "./direction";
