@@ -44,9 +44,6 @@ export class WorldObject extends GameObject {
         },
     };
     facingDirection: EDirection = EDirection.DOWN;
-    oldPosition: { x: number; y: number };
-    lastX?: number;
-    lastY?: number;
     //* Behavior
     movingRemaining = 0;
     behaviorIndex: number = 0;
@@ -56,8 +53,6 @@ export class WorldObject extends GameObject {
     status: NPCStatus = NPCStatus.IDLE;
     //* Boolean
     isPlayerControlled: boolean = false;
-    lastWalkingSuccess: boolean = true;
-    hasArrived: boolean = true;
     showNameTag: boolean = false;
     //* Last pressed key
     lastPressedKey: number | null = null;
@@ -109,7 +104,6 @@ export class WorldObject extends GameObject {
 
         this.behaviorLoopArray = behaviorLoopArray;
 
-        this.oldPosition = { x: position.x, y: position.y };
         this.talking = talking;
         //* BODY BUILDER
         this.body = body;
@@ -122,14 +116,14 @@ export class WorldObject extends GameObject {
         this.isPlayerControlled = isPlayerControlled;
         this.showNameTag = showNameTag ?? this.showNameTag;
         this.zIndex = zIndex;
-
-        this.initializeSprites();
     }
 
     ready(): void {
         const input = new KeyboardInput("Shift");
         input.init();
         this.input = input;
+
+        this.initializeSprites();
     }
 
     private initializeSprites() {
@@ -189,7 +183,7 @@ export class WorldObject extends GameObject {
         this.behaviorIndex = (this.behaviorIndex + 1) % this.behaviorLoopArray.length;
     };
 
-    step(delta: number, root: GameObject) {
+    step(_delta: number, root: GameObject) {
         //* Set speed
         if (this.isPlayerControlled) {
             this.isPressedShift = this.input?.isTriggerPressed ?? false;
@@ -206,51 +200,41 @@ export class WorldObject extends GameObject {
                     this.lastPressedKey = currentTime;
                 } else if (currentTime - this.lastPressedKey >= 60) {
                     this.startBehavior({
-                        type: EBehaviorType.MOVE,
+                        type: EBehaviorType.WALK,
                         direction: root.input.direction,
                     });
                 }
             } else {
                 this.lastPressedKey = null;
             }
+            this.updateSprite();
         }
-        this.updateSprite(root);
-        if (this.isPlayerControlled) this.tryEmitPosition();
+
+        //* update camera position
+        if (this.isPlayerControlled) {
+            events.emit("HERO_POSITION", this.position);
+        }
     }
     setSpeed(speed: number = 1) {
         this.speed = speed;
     }
-    updateSprite(root: GameObject) {
+    updateSprite() {
         if (this.movingRemaining > 0) {
-            if (this.facingDirection === EDirection.DOWN) {
-                this.body.animations?.play(EAnimation.WALK_DOWN);
-            }
-            if (this.facingDirection === EDirection.UP) {
-                this.body.animations?.play(EAnimation.WALK_UP);
-            }
-            if (this.facingDirection === EDirection.LEFT) {
-                this.body.animations?.play(EAnimation.WALK_LEFT);
-            }
-            if (this.facingDirection === EDirection.RIGHT) {
-                this.body.animations?.play(EAnimation.WALK_RIGHT);
-            }
+            const walkAnimations = {
+                [EDirection.DOWN]: EAnimation.WALK_DOWN,
+                [EDirection.UP]: EAnimation.WALK_UP,
+                [EDirection.LEFT]: EAnimation.WALK_LEFT,
+                [EDirection.RIGHT]: EAnimation.WALK_RIGHT,
+            };
+            this.body.animations?.play(walkAnimations[this.facingDirection]);
         } else {
-            const { input } = root;
-            if (input && !input.direction) {
-                if (this.facingDirection === EDirection.LEFT) {
-                    this.body.animations?.play(EAnimation.STAND_LEFT);
-                }
-                if (this.facingDirection === EDirection.RIGHT) {
-                    this.body.animations?.play(EAnimation.STAND_RIGHT);
-                }
-                if (this.facingDirection === EDirection.UP) {
-                    this.body.animations?.play(EAnimation.STAND_UP);
-                }
-                if (this.facingDirection === EDirection.DOWN) {
-                    this.body.animations?.play(EAnimation.STAND_DOWN);
-                }
-                return;
-            }
+            const standAnimations = {
+                [EDirection.LEFT]: EAnimation.STAND_LEFT,
+                [EDirection.RIGHT]: EAnimation.STAND_RIGHT,
+                [EDirection.UP]: EAnimation.STAND_UP,
+                [EDirection.DOWN]: EAnimation.STAND_DOWN,
+            };
+            this.body.animations?.play(standAnimations[this.facingDirection]);
         }
     }
 
@@ -275,8 +259,11 @@ export class WorldObject extends GameObject {
         return EDirection.LEFT;
     }
     startBehavior(behavior: IBehaviorMove | IBehaviorStand) {
+        if (!this.hasReadyBeenCalled) return;
+        // set character facing direction
         this.facingDirection = behavior.direction;
-        if (behavior.type === EBehaviorType.MOVE) {
+
+        if (behavior.type === EBehaviorType.WALK) {
             const nextPosition = this.calculateNextStep(this.facingDirection);
             if (!this.map?.isSpaceFree(nextPosition.nextX, nextPosition.nextY)) {
                 if (behavior.isRetry)
@@ -285,8 +272,10 @@ export class WorldObject extends GameObject {
                     }, 2000);
                 return;
             }
-            this.map.moveWall(this.position.x, this.position.y, nextPosition.nextX, nextPosition.nextY);
             this.movingRemaining = CONFIGS.TILE_SIZE / this.speed;
+            this.map.moveWall(this.position.x, this.position.y, nextPosition.nextX, nextPosition.nextY);
+
+            this.updateSprite();
         }
         if (behavior.type === EBehaviorType.STAND) {
             setTimeout(() => {
@@ -295,16 +284,6 @@ export class WorldObject extends GameObject {
                 });
             }, behavior.duration);
         }
-    }
-
-    private tryEmitPosition() {
-        if (this.lastX === this.position.x && this.lastY === this.position.y) {
-            return;
-        }
-        this.lastX = this.position.x;
-        this.lastY = this.position.y;
-
-        events.emit("HERO_POSITION", this.position);
     }
 
     private calculateNextPosition(direction: EDirection) {

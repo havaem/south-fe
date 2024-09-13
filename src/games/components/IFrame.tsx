@@ -9,7 +9,6 @@ const IFrame: React.FC = () => {
 
     useEffect(() => {
         events.on(EEventName.OPEN_IFRAME, null, ({ url, resolve }: { url: string; resolve: Function }) => {
-            console.log(";aa");
             setUrl(url);
             setResolve(() => resolve);
         });
@@ -19,6 +18,6 @@ const IFrame: React.FC = () => {
     }, []);
 
     if (!url) return null;
-    return <iframe className="absolute left-0 top-0 h-full w-full select-none" src="/baucua" title="iframe" />;
+    return <iframe className="absolute left-0 top-0 z-50 h-full w-full select-none" src={url} title="iframe" />;
 };
 export default IFrame;

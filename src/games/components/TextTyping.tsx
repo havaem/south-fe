@@ -11,13 +11,13 @@ const TextTyping: React.FC<Props> = ({ text }) => {
                 if (el === "\n") return <br key={el + i + Math.random()} />;
                 return (
                     <motion.span
-                        initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
+                        initial={{ opacity: 0 }}
+                        key={el + i + Math.random()}
                         transition={{
                             duration: 0.1,
                             delay: i / 50,
                         }}
-                        key={el + i + Math.random()}
                     >
                         {el}
                     </motion.span>

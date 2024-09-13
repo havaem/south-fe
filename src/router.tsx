@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import ProtectedRoute from "./components/protected-route";
 import HeavenPage from "./routes/(logined)/heaven";
+import CharacterBuilder from "./routes/(logined)/heaven/character-builder";
 import DashboardLayout from "./routes/(logined)/layout";
 import ProfilePage from "./routes/(logined)/profile";
 import AuthLayout from "./routes/auth/layout";
@@ -27,7 +28,13 @@ export const router = createBrowserRouter([
             },
             {
                 path: "heaven",
-                element: <HeavenPage />,
+                children: [
+                    { index: true, element: <HeavenPage /> },
+                    {
+                        path: "character-builder",
+                        element: <CharacterBuilder />,
+                    },
+                ],
             },
         ],
     },

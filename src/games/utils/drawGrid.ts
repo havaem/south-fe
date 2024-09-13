@@ -1,10 +1,4 @@
-export const drawGrid = (
-    ctx: CanvasRenderingContext2D,
-    width: number,
-    height: number,
-    tileSize: number,
-    mapData: number[][],
-) => {
+export const drawGrid = (ctx: CanvasRenderingContext2D, tileSize: number, mapData: number[][]) => {
     ctx.strokeStyle = "rgba(255, 255, 255, 0.6)";
     ctx.lineWidth = 1;
 

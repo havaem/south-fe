@@ -1,11 +1,10 @@
+import { APP_PATH } from "@/constants";
 import { IMap } from "@/types";
 
 import { EAnimation, EBehaviorType, EDirection, EMapType, OBJECT } from "../constants";
-import { OTHERS } from "../constants/maps/objects/others";
 import { Animations } from "../cores/Animation";
 import { FrameIndexPattern } from "../cores/FrameIndexPattern";
 import { GameObject } from "../cores/GameObject";
-import { MapObject } from "../cores/MapObject";
 import { resources } from "../cores/Resource";
 import { Sprite } from "../cores/Sprite";
 import { Vector2 } from "../cores/Vector2";
@@ -34,7 +33,7 @@ export const buildMap = ({ name, map, player }: IBuildMapProps): WorldMap => {
                 // },
                 // {
                 //     type: EBehaviorType.MESSAGE,
-                //     message: "I'm Nam, the developer of this world.",
+                //     message: "I'm Nam, who developed of this world.",
                 // },
                 // {
                 //     type: EBehaviorType.MESSAGE,
@@ -42,11 +41,7 @@ export const buildMap = ({ name, map, player }: IBuildMapProps): WorldMap => {
                 // },
                 // {
                 //     type: EBehaviorType.MESSAGE,
-                //     message: "Let's start with moving around. \n Use the arrow keys to move.",
-                // },
-                // {
-                //     type: EBehaviorType.MESSAGE,
-                //     message: "Press E to interact with objects or people.",
+                //     message: "Let's start with moving around. \n Use the arrow keys to move, E to interact.",
                 // },
                 // {
                 //     type: EBehaviorType.MESSAGE,
@@ -105,83 +100,87 @@ export const buildMap = ({ name, map, player }: IBuildMapProps): WorldMap => {
                                     message: "I'm here to help you get started.",
                                 },
                                 {
-                                    type: EBehaviorType.ADD_OBJECT,
-                                    object: new MapObject({
-                                        x: toGridSize(4),
-                                        y: toGridSize(10),
-                                        data: OTHERS.markedLocation,
-                                    }),
-                                },
-                                {
                                     type: EBehaviorType.MESSAGE,
-                                    message:
-                                        "Do you see the marked position? \n Follow me and you will officially become a resident of this city.",
+                                    message: "Firstly, let's change the appearance of your character.",
                                 },
                                 {
-                                    type: EBehaviorType.WALL_REMOVE,
-                                    x: toGridSize(4),
-                                    y: toGridSize(10),
+                                    type: EBehaviorType.OPEN_IFRAME,
+                                    url: APP_PATH.HEAVEN.CHARACTER_BUILDER,
                                 },
-                                {
-                                    id: player.id,
-                                    type: EBehaviorType.MOVE,
-                                    direction: EDirection.LEFT,
-                                },
-                                {
-                                    id: OBJECT.AMELIA,
-                                    type: EBehaviorType.MOVE,
-                                    direction: EDirection.DOWN,
-                                },
-                                {
-                                    id: OBJECT.AMELIA,
-                                    type: EBehaviorType.MOVE,
-                                    direction: EDirection.DOWN,
-                                },
-                                {
-                                    id: OBJECT.AMELIA,
-                                    type: EBehaviorType.MOVE,
-                                    direction: EDirection.DOWN,
-                                },
-                                {
-                                    id: OBJECT.AMELIA,
-                                    type: EBehaviorType.MOVE,
-                                    direction: EDirection.DOWN,
-                                },
-                                {
-                                    id: OBJECT.AMELIA,
-                                    type: EBehaviorType.MOVE,
-                                    direction: EDirection.DOWN,
-                                },
-                                {
-                                    id: OBJECT.AMELIA,
-                                    type: EBehaviorType.MOVE,
-                                    direction: EDirection.DOWN,
-                                },
-                                {
-                                    id: OBJECT.AMELIA,
-                                    type: EBehaviorType.MOVE,
-                                    direction: EDirection.DOWN,
-                                },
-                                {
-                                    id: OBJECT.AMELIA,
-                                    type: EBehaviorType.MOVE,
-                                    direction: EDirection.RIGHT,
-                                },
-                                {
-                                    id: OBJECT.AMELIA,
-                                    type: EBehaviorType.MOVE,
-                                    direction: EDirection.DOWN,
-                                },
-                                {
-                                    id: OBJECT.AMELIA,
-                                    type: EBehaviorType.STAND,
-                                    direction: EDirection.DOWN,
-                                    duration: 1000,
-                                },
-                                {
-                                    id: OBJECT.AMELIA,
-                                    type: EBehaviorType.REMOVE_OBJECT,
-                                },
+                                // {
+                                //     type: EBehaviorType.ADD_OBJECT,
+                                //     object: new MapObject({
+                                //         x: toGridSize(4),
+                                //         y: toGridSize(10),
+                                //         data: OTHERS.markedLocation,
+                                //     }),
+                                // },
+
+                                // {
+                                //     type: EBehaviorType.WALL_REMOVE,
+                                //     x: toGridSize(4),
+                                //     y: toGridSize(10),
+                                // },
+                                // {
+                                //     id: player.id,
+                                //     type: EBehaviorType.WALK,
+                                //     direction: EDirection.LEFT,
+                                // },
+                                // {
+                                //     id: OBJECT.AMELIA,
+                                //     type: EBehaviorType.WALK,
+                                //     direction: EDirection.DOWN,
+                                // },
+                                // {
+                                //     id: OBJECT.AMELIA,
+                                //     type: EBehaviorType.WALK,
+                                //     direction: EDirection.DOWN,
+                                // },
+                                // {
+                                //     id: OBJECT.AMELIA,
+                                //     type: EBehaviorType.WALK,
+                                //     direction: EDirection.DOWN,
+                                // },
+                                // {
+                                //     id: OBJECT.AMELIA,
+                                //     type: EBehaviorType.WALK,
+                                //     direction: EDirection.DOWN,
+                                // },
+                                // {
+                                //     id: OBJECT.AMELIA,
+                                //     type: EBehaviorType.WALK,
+                                //     direction: EDirection.DOWN,
+                                // },
+                                // {
+                                //     id: OBJECT.AMELIA,
+                                //     type: EBehaviorType.WALK,
+                                //     direction: EDirection.DOWN,
+                                // },
+                                // {
+                                //     id: OBJECT.AMELIA,
+                                //     type: EBehaviorType.WALK,
+                                //     direction: EDirection.DOWN,
+                                // },
+                                // {
+                                //     id: OBJECT.AMELIA,
+                                //     type: EBehaviorType.WALK,
+                                //     direction: EDirection.RIGHT,
+                                // },
+                                // {
+                                //     id: OBJECT.AMELIA,
+                                //     type: EBehaviorType.WALK,
+                                //     direction: EDirection.DOWN,
+                                // },
+                                // {
+                                //     id: OBJECT.AMELIA,
+                                //     type: EBehaviorType.STAND,
+                                //     direction: EDirection.DOWN,
+                                //     duration: 1000,
+                                // },
+                                // {
+                                //     id: OBJECT.AMELIA,
+                                //     type: EBehaviorType.REMOVE_OBJECT,
+                                // },
                             ],
                         },
                     ],

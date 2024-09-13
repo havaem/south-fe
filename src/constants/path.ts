@@ -10,7 +10,10 @@ export const APP_PATH = {
     STORY: "/stories",
     SETTINGS: "/settings",
     PROFILE: "/profile",
-    HEAVEN: "/heaven",
+    HEAVEN: {
+        INDEX: "/heaven",
+        CHARACTER_BUILDER: "/heaven/character-builder",
+    },
 
     NOT_FOUND: "/404",
 };

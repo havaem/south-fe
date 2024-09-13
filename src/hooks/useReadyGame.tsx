@@ -32,7 +32,7 @@ export const useReadyGame = () => {
         if (dataGameProfile && dataSprite) {
             const data = dataSprite.data;
             resources.pushImage(data.resource._id, data.resource.src);
-
+            console.log(data.animations);
             const playerObject = new WorldObject({
                 id: dataGameProfile.data._id,
                 position: new Vector2(toGridSize(4), toGridSize(6)),

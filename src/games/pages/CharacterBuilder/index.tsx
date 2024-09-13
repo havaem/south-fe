@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-handler-names */
 import { Button, Separator } from "@ariakit/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useRef } from "react";

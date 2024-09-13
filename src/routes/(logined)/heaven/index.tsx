@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import Hud from "@/games/components/Hud";
+import IFrame from "@/games/components/IFrame";
 import Message from "@/games/components/Message";
 import StartGame from "@/games/components/StartGame";
 import { CONFIGS } from "@/games/constants";
@@ -52,7 +53,7 @@ const HeavenPage = () => {
                 <Hud />
 
                 {/* Show it when map change */}
-                {/* <IFrame /> */}
+                <IFrame />
                 {/* <Transition /> */}
             </div>
         </div>

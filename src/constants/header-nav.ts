@@ -7,7 +7,7 @@ export const HEADER_NAV = [
     },
     {
         title: "Heaven",
-        href: APP_PATH.HEAVEN,
+        href: APP_PATH.HEAVEN.INDEX,
     },
     {
         title: "navigation.note",

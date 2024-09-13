@@ -1,74 +1,234 @@
-const makeStandingFrames = (rootFrame = 0) => {
-    return {
-        duration: 600 * 2,
+export const PERSON_ANIMATIONS = {
+    STAND_DOWN: {
+        duration: 1200,
         frames: [
             {
                 time: 0,
-                frame: rootFrame,
-            },
-            {
-                time: 100 * 2,
-                frame: rootFrame + 1,
-            },
-            {
-                time: 200 * 2,
-                frame: rootFrame + 2,
-            },
-            {
-                time: 300 * 2,
-                frame: rootFrame + 3,
-            },
-            {
-                time: 400 * 2,
-                frame: rootFrame + 4,
-            },
-            {
-                time: 500 * 2,
-                frame: rootFrame + 5,
-            },
-        ],
-    };
-};
-
-const makeWalkingFrames = (rootFrame = 0) => {
-    return {
-        duration: 800,
-        frames: [
-            {
-                time: 0,
-                frame: rootFrame,
-            },
-            {
-                time: 100,
-                frame: rootFrame + 1,
+                frame: 46,
             },
             {
                 time: 200,
-                frame: rootFrame + 2,
-            },
-            {
-                time: 300,
-                frame: rootFrame + 3,
+                frame: 47,
             },
             {
                 time: 400,
-                frame: rootFrame + 4,
+                frame: 48,
+            },
+            {
+                time: 600,
+                frame: 49,
+            },
+            {
+                time: 800,
+                frame: 50,
+            },
+            {
+                time: 1000,
+                frame: 51,
+            },
+        ],
+    },
+    STAND_RIGHT: {
+        duration: 1200,
+        frames: [
+            {
+                time: 0,
+                frame: 40,
+            },
+            {
+                time: 200,
+                frame: 41,
+            },
+            {
+                time: 400,
+                frame: 42,
+            },
+            {
+                time: 600,
+                frame: 43,
+            },
+            {
+                time: 800,
+                frame: 44,
+            },
+            {
+                time: 1000,
+                frame: 45,
+            },
+        ],
+    },
+    STAND_UP: {
+        duration: 1200,
+        frames: [
+            {
+                time: 0,
+                frame: 34,
+            },
+            {
+                time: 200,
+                frame: 35,
+            },
+            {
+                time: 400,
+                frame: 36,
+            },
+            {
+                time: 600,
+                frame: 37,
+            },
+            {
+                time: 800,
+                frame: 38,
+            },
+            {
+                time: 1000,
+                frame: 39,
+            },
+        ],
+    },
+    STAND_LEFT: {
+        duration: 1200,
+        frames: [
+            {
+                time: 0,
+                frame: 40,
+            },
+            {
+                time: 200,
+                frame: 41,
+            },
+            {
+                time: 400,
+                frame: 42,
+            },
+            {
+                time: 600,
+                frame: 43,
+            },
+            {
+                time: 800,
+                frame: 44,
+            },
+            {
+                time: 1000,
+                frame: 45,
+            },
+        ],
+    },
+    WALK_DOWN: {
+        duration: 600,
+        frames: [
+            {
+                time: 0,
+                frame: 74,
+            },
+            {
+                time: 100,
+                frame: 75,
+            },
+            {
+                time: 200,
+                frame: 76,
+            },
+            {
+                time: 300,
+                frame: 77,
+            },
+            {
+                time: 400,
+                frame: 78,
             },
             {
                 time: 500,
-                frame: rootFrame + 5,
+                frame: 79,
             },
         ],
-    };
-};
-
-export const PERSON_ANIMATIONS = {
-    STAND_DOWN: makeStandingFrames(46),
-    STAND_RIGHT: makeStandingFrames(28),
-    STAND_UP: makeStandingFrames(34),
-    STAND_LEFT: makeStandingFrames(40),
-    WALK_RIGHT: makeWalkingFrames(56),
-    WALK_UP: makeWalkingFrames(62),
-    WALK_LEFT: makeWalkingFrames(68),
-    WALK_DOWN: makeWalkingFrames(74),
+    },
+    WALK_RIGHT: {
+        duration: 600,
+        frames: [
+            {
+                time: 0,
+                frame: 56,
+            },
+            {
+                time: 100,
+                frame: 57,
+            },
+            {
+                time: 200,
+                frame: 58,
+            },
+            {
+                time: 300,
+                frame: 59,
+            },
+            {
+                time: 400,
+                frame: 60,
+            },
+            {
+                time: 500,
+                frame: 61,
+            },
+        ],
+    },
+    WALK_UP: {
+        duration: 600,
+        frames: [
+            {
+                time: 0,
+                frame: 62,
+            },
+            {
+                time: 100,
+                frame: 63,
+            },
+            {
+                time: 200,
+                frame: 64,
+            },
+            {
+                time: 300,
+                frame: 65,
+            },
+            {
+                time: 400,
+                frame: 66,
+            },
+            {
+                time: 500,
+                frame: 67,
+            },
+        ],
+    },
+    WALK_LEFT: {
+        duration: 600,
+        frames: [
+            {
+                time: 0,
+                frame: 68,
+            },
+            {
+                time: 100,
+                frame: 69,
+            },
+            {
+                time: 200,
+                frame: 70,
+            },
+            {
+                time: 300,
+                frame: 71,
+            },
+            {
+                time: 400,
+                frame: 72,
+            },
+            {
+                time: 500,
+                frame: 73,
+            },
+        ],
+    },
 };

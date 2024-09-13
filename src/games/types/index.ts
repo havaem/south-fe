@@ -9,7 +9,7 @@ export interface IBehaviorStand {
     id?: string;
 }
 export interface IBehaviorMove {
-    type: EBehaviorType.MOVE;
+    type: EBehaviorType.WALK;
     direction: EDirection;
     isRetry?: boolean;
     id?: string;

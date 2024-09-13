@@ -1,6 +1,5 @@
 import { EBehaviorType, OBJECT } from "../constants";
 import { EEventName } from "../constants/event";
-import { MAPS } from "../constants/maps";
 import {
     IBehavior,
     IBehaviorAddObject,
@@ -49,7 +48,7 @@ export class WorldEvent {
         if (!who) return;
 
         who.startBehavior({
-            type: EBehaviorType.MOVE,
+            type: EBehaviorType.WALK,
             direction: event.direction,
             isRetry: true,
         });
@@ -90,7 +89,7 @@ export class WorldEvent {
         });
 
         const event = this.event as IBehaviorChangeMap;
-        this.map.world?.startMap(MAPS[event.id]);
+        // this.map.world?.startMap(MAPS[event.id]);
         resolve();
     }
     wallRemove(resolve: Function) {
@@ -142,7 +141,7 @@ export class WorldEvent {
                 case EBehaviorType.STAND:
                     this.stand(resolve);
                     break;
-                case EBehaviorType.MOVE:
+                case EBehaviorType.WALK:
                     this.move(resolve);
                     break;
                 case EBehaviorType.MESSAGE:

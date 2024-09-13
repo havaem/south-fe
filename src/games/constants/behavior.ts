@@ -1,6 +1,6 @@
 export enum EBehaviorType {
     STAND = "stand",
-    MOVE = "move",
+    WALK = "walk",
     MESSAGE = "message",
     CHANGE_MAP = "change_map",
 

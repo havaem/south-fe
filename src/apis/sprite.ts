@@ -1,5 +1,5 @@
 import { get } from "@/configs";
-import { ISprite } from "@/types";
+import { ISprite, ISpriteGetCharacterBuilderResponse } from "@/types";
 
 const ENDPOINT = "/sprite";
 export const ApiSprite = {
@@ -11,4 +11,5 @@ export const ApiSprite = {
     // update: (id: string, data: IMapUpdatePayload) => post<ISprite>(`${ENDPOINT}/${id}`, data),
     find: (id: string) => get<ISprite>(`${ENDPOINT}/${id}`),
     // remove: (id:            string) => del<ISprite>(`${ENDPOINT}/${id}`),
+    getCharacterBuilder: () => get<ISpriteGetCharacterBuilderResponse>(`${ENDPOINT}/character-builder`),
 };

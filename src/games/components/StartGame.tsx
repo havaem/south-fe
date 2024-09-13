@@ -27,6 +27,7 @@ const StartGame: React.FC<Props> = ({ setIsGameStarted }) => {
                     <div className="flex flex-col items-stretch gap-2 font-pixel text-3xl">
                         <button
                             className="border-2 border-slate-100 px-6 py-2 transition-all hover:border-teal-400"
+                            // eslint-disable-next-line react/jsx-handler-names
                             onClick={setIsGameStarted.bind(null, true)}
                         >
                             Start
