@@ -8,6 +8,7 @@ import ProfilePage from "./routes/(logined)/profile";
 import AuthLayout from "./routes/auth/layout";
 import SignInPage from "./routes/auth/sign-in";
 import SignUpPage from "./routes/auth/sign-up";
+import NotFoundPage from "./routes/errors/NotFound";
 import HomePage from "./routes/home";
 
 export const router = createBrowserRouter([
@@ -51,5 +52,9 @@ export const router = createBrowserRouter([
                 element: <SignUpPage />,
             },
         ],
+    },
+    {
+        path: "*",
+        element: <NotFoundPage />,
     },
 ]);

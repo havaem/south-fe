@@ -1,19 +1,25 @@
 /* eslint-disable react/jsx-handler-names */
-import { Button, Separator } from "@ariakit/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select";
 import PixelBox from "@/games/components/pixel/Box";
+import { EDirection } from "@/games/constants";
+import { Animations } from "@/games/cores/Animation";
+import { FrameIndexPattern } from "@/games/cores/FrameIndexPattern";
 import { resources } from "@/games/cores/Resource";
+import { Sprite } from "@/games/cores/Sprite";
+import { Vector2 } from "@/games/cores/Vector2";
 import { WorldObject } from "@/games/cores/WorldObject";
-import characterAssets from "@/games/mocks/character.json";
-import { useSpriteGetCharacterBuilder } from "@/hooks/queries/useSpriteGetCharacterBuilder";
+import { toGridSize } from "@/games/utils";
+import { useGameProfileUpdateCurrent } from "@/hooks/mutations";
 
 import { World } from "./cores/World";
+import { useReadyCharacterbuilder } from "./hooks/useReadyCharacterbuilder";
 
 const formSchema = z.object({
     body: z.string(),
@@ -26,31 +32,70 @@ const CharacterBuilder: React.FC = () => {
     const worldRef = useRef<World | null>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
+    const { mutate } = useGameProfileUpdateCurrent();
+
+    const { characterBodies, characterEyes, characterHair, characterOutfits } = useReadyCharacterbuilder();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
-            // body: Object.keys(characterAssets.characters.bodies)[0],
-        },
     });
-
-    const { data: dataSpriteGetCharacterBuilder } = useSpriteGetCharacterBuilder({});
 
     const person = useRef<WorldObject>();
 
+    const handleRandomize = () => {
+        const body = characterBodies[Math.floor(Math.random() * characterBodies.length)];
+        const eyes = characterEyes[Math.floor(Math.random() * characterEyes.length)];
+        const hairStyle = characterHair[Math.floor(Math.random() * characterHair.length)];
+        const outfit = characterOutfits[Math.floor(Math.random() * characterOutfits.length)];
+
+        form.setValue("body", body._id);
+        form.setValue("eyes", eyes._id);
+        form.setValue("hairStyle", hairStyle._id);
+        form.setValue("outfit", outfit._id);
+    };
+
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+        mutate({
+            data: {
+                body: values.body,
+                eye: values.eyes,
+                hair: values.hairStyle,
+                outfit: values.outfit,
+            },
+        });
     }
 
     useEffect(() => {
-        if (!dataSpriteGetCharacterBuilder) return;
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext("2d");
+        if (!ctx || !canvas) return;
 
-        const characterAccessories = dataSpriteGetCharacterBuilder.data.CHARACTER_ACCESSORY;
-        const characterBodies = dataSpriteGetCharacterBuilder.data.CHARACTER_BODY;
-        const characterEyes = dataSpriteGetCharacterBuilder.data.CHARACTER_EYES;
-        const characterHair = dataSpriteGetCharacterBuilder.data.CHARACTER_HAIR;
-        const characterOutfits = dataSpriteGetCharacterBuilder.data.CHARACTER_OUTFIT;
+        canvas.width = 48;
+        canvas.height = 48;
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
 
-        //* Init resources
+        worldRef.current = new World({ canvas, ctx });
+
+        person.current = new WorldObject({
+            facingDirection: EDirection.DOWN,
+            isPlayerControlled: true,
+            position: {
+                x: toGridSize(1),
+                y: toGridSize(1.5),
+            },
+        });
+
+        worldRef.current.body.addChild(person.current);
+        worldRef.current.start();
+
+        return () => {
+            worldRef.current?.stop();
+        };
+    }, []);
+
+    //* Init resources
+    useEffect(() => {
         characterBodies.forEach((sprite) => {
             resources.pushImage(sprite.resource._id, sprite.resource.src);
         });
@@ -63,91 +108,116 @@ const CharacterBuilder: React.FC = () => {
         characterOutfits.forEach((sprite) => {
             resources.pushImage(sprite.resource._id, sprite.resource.src);
         });
-        characterAccessories.forEach((sprite) => {
-            resources.pushImage(sprite.resource._id, sprite.resource.src);
-        });
-
-        const canvas = canvasRef.current;
-        const ctx = canvas?.getContext("2d");
-        if (!ctx || !canvas) return;
-
-        canvas.width = 48;
-        canvas.height = 48;
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-
-        worldRef.current = new World({ canvas, ctx });
-
-        // person.current = new WorldObject({
-        //     facingDirection: EDirection.DOWN,
-        //     isPlayerControlled: true,
-        //     position: {
-        //         x: toGridSize(1),
-        //         y: toGridSize(1.5),
-        //     },
-        //     // body: new Sprite({
-        //     //     resource: resources.images[form.watch("body")],
-        //     //     frameSize: new Vector2(toGridSize(1), toGridSize(2)),
-        //     //     hFrames: 28,
-        //     //     vFrames: 20,
-        //     //     frame: 28,
-        //     //     position: new Vector2(0, -20),
-        //     //     animations: new Animations({
-        //     //         [EAnimation.STAND_DOWN]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_DOWN),
-        //     //         [EAnimation.STAND_UP]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_UP),
-        //     //         [EAnimation.STAND_LEFT]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_LEFT),
-        //     //         [EAnimation.STAND_RIGHT]: new FrameIndexPattern(PERSON_ANIMATIONS.STAND_RIGHT),
-        //     //         [EAnimation.WALK_DOWN]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_DOWN),
-        //     //         [EAnimation.WALK_UP]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_UP),
-        //     //         [EAnimation.WALK_LEFT]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_LEFT),
-        //     //         [EAnimation.WALK_RIGHT]: new FrameIndexPattern(PERSON_ANIMATIONS.WALK_RIGHT),
-        //     //     }),
-        //     // }),
-        // });
-
-        // world.body.addChild(person.current);
-        // world.start();
-
-        return () => {
-            worldRef.current?.stop();
-        };
-    }, [dataSpriteGetCharacterBuilder]);
+    }, [characterBodies, characterEyes, characterHair, characterOutfits]);
 
     useEffect(() => {
         if (!person.current) return;
 
-        const body = form.watch("body");
-        if (body) {
-            // person.current.body = new Sprite({
-            //     resource: resources.images[data.resource._id],
-            //     frameSize: new Vector2(data.frameSize.x, data.frameSize.y),
-            //     hFrames: data.horizontalFrame,
-            //     vFrames: data.verticalFrame,
-            //     frame: data.defaultFrame,
-            //     position: new Vector2(0, -20),
-            //     animations: new Animations(
-            //         Object.entries(data.animations).reduce(
-            //             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            //             (acc, [_, value]) => {
-            //                 acc[value.name] = new FrameIndexPattern(value);
-            //                 return acc;
-            //             },
-            //             {} as Record<string, FrameIndexPattern>,
-            //         ),
-            //     ),
-            // });
+        const bodySprite = characterBodies.find((data) => data._id === form.watch("body"));
+        if (bodySprite) {
+            person.current.setAppearance({
+                body: new Sprite({
+                    resource: resources.images[bodySprite.resource._id],
+                    frameSize: new Vector2(bodySprite.frameSize.x, bodySprite.frameSize.y),
+                    hFrames: bodySprite.horizontalFrame,
+                    vFrames: bodySprite.verticalFrame,
+                    frame: bodySprite.defaultFrame,
+                    position: new Vector2(bodySprite.position.x, bodySprite.position.y),
+                    animations: new Animations(
+                        Object.entries(bodySprite.animations).reduce(
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            (acc, [_, value]) => {
+                                acc[value.name] = new FrameIndexPattern(value);
+                                return acc;
+                            },
+                            {} as Record<string, FrameIndexPattern>,
+                        ),
+                    ),
+                    scale: bodySprite.scale,
+                }),
+            });
         }
 
-        // if (person.current.eyes) person.current.eyes.resource = resources.images[form.watch("eyes")];
-        // if (person.current.hairStyle) person.current.hairStyle.resource = resources.images[form.watch("hairStyle")];
-        // if (person.current.outfit) person.current.outfit.resource = resources.images[form.watch("outfit")];
-        return () => {};
+        const eyesSprite = characterEyes.find((data) => data._id === form.watch("eyes"));
+        if (eyesSprite) {
+            person.current.setAppearance({
+                eyes: new Sprite({
+                    resource: resources.images[eyesSprite.resource._id],
+                    frameSize: new Vector2(eyesSprite.frameSize.x, eyesSprite.frameSize.y),
+                    hFrames: eyesSprite.horizontalFrame,
+                    vFrames: eyesSprite.verticalFrame,
+                    frame: eyesSprite.defaultFrame,
+                    position: new Vector2(eyesSprite.position.x, eyesSprite.position.y),
+                    animations: new Animations(
+                        Object.entries(eyesSprite.animations).reduce(
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            (acc, [_, value]) => {
+                                acc[value.name] = new FrameIndexPattern(value);
+                                return acc;
+                            },
+                            {} as Record<string, FrameIndexPattern>,
+                        ),
+                    ),
+                    scale: eyesSprite.scale,
+                }),
+            });
+        }
+
+        const hairSprite = characterHair.find((data) => data._id === form.watch("hairStyle"));
+        if (hairSprite) {
+            person.current.setAppearance({
+                hairStyle: new Sprite({
+                    resource: resources.images[hairSprite.resource._id],
+                    frameSize: new Vector2(hairSprite.frameSize.x, hairSprite.frameSize.y),
+                    hFrames: hairSprite.horizontalFrame,
+                    vFrames: hairSprite.verticalFrame,
+                    frame: hairSprite.defaultFrame,
+                    position: new Vector2(hairSprite.position.x, hairSprite.position.y),
+                    animations: new Animations(
+                        Object.entries(hairSprite.animations).reduce(
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            (acc, [_, value]) => {
+                                acc[value.name] = new FrameIndexPattern(value);
+                                return acc;
+                            },
+                            {} as Record<string, FrameIndexPattern>,
+                        ),
+                    ),
+                    scale: hairSprite.scale,
+                }),
+            });
+        }
+
+        const outfitSprite = characterOutfits.find((data) => data._id === form.watch("outfit"));
+        if (outfitSprite) {
+            person.current.setAppearance({
+                outfit: new Sprite({
+                    resource: resources.images[outfitSprite.resource._id],
+                    frameSize: new Vector2(outfitSprite.frameSize.x, outfitSprite.frameSize.y),
+                    hFrames: outfitSprite.horizontalFrame,
+                    vFrames: outfitSprite.verticalFrame,
+                    frame: outfitSprite.defaultFrame,
+                    position: new Vector2(outfitSprite.position.x, outfitSprite.position.y),
+                    animations: new Animations(
+                        Object.entries(outfitSprite.animations).reduce(
+                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                            (acc, [_, value]) => {
+                                acc[value.name] = new FrameIndexPattern(value);
+                                return acc;
+                            },
+                            {} as Record<string, FrameIndexPattern>,
+                        ),
+                    ),
+                    scale: outfitSprite.scale,
+                }),
+            });
+        }
     }, [form.watch()]);
 
     return (
         <div className="relative aspect-video w-full overflow-auto bg-white p-4">
             <h1 className="font-game">CHARACTER BUILDER</h1>
-            <Separator className="mb-4 mt-2" />
+            <SelectSeparator className="mb-4 mt-2" />
             <div className="flex gap-8">
                 <PixelBox noPadding className="relative z-10 size-80">
                     <canvas ref={canvasRef}></canvas>
@@ -168,13 +238,11 @@ const CharacterBuilder: React.FC = () => {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                {(dataSpriteGetCharacterBuilder?.data.CHARACTER_BODY ?? []).map(
-                                                    (data, index) => (
-                                                        <SelectItem key={data._id} value={data._id}>
-                                                            Body {index}
-                                                        </SelectItem>
-                                                    ),
-                                                )}
+                                                {characterBodies.map((data, index) => (
+                                                    <SelectItem key={data._id} value={data._id}>
+                                                        {data.name}
+                                                    </SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -194,13 +262,11 @@ const CharacterBuilder: React.FC = () => {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                {(dataSpriteGetCharacterBuilder?.data.CHARACTER_EYES ?? []).map(
-                                                    (data, index) => (
-                                                        <SelectItem key={data._id} value={data._id}>
-                                                            Eyes {index}
-                                                        </SelectItem>
-                                                    ),
-                                                )}
+                                                {characterEyes.map((data, index) => (
+                                                    <SelectItem key={data._id} value={data._id}>
+                                                        {data.name}
+                                                    </SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -220,13 +286,11 @@ const CharacterBuilder: React.FC = () => {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                {(dataSpriteGetCharacterBuilder?.data.CHARACTER_EYES ?? []).map(
-                                                    (data, index) => (
-                                                        <SelectItem key={data._id} value={data._id}>
-                                                            Eyes {index}
-                                                        </SelectItem>
-                                                    ),
-                                                )}
+                                                {characterHair.map((data) => (
+                                                    <SelectItem key={data._id} value={data._id}>
+                                                        {data.name}
+                                                    </SelectItem>
+                                                ))}
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -246,9 +310,9 @@ const CharacterBuilder: React.FC = () => {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                {Object.entries(characterAssets.characters.outfits).map(([key]) => (
-                                                    <SelectItem key={key} value={key}>
-                                                        {key}
+                                                {characterOutfits.map((data) => (
+                                                    <SelectItem key={data._id} value={data._id}>
+                                                        {data.name}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
@@ -257,7 +321,12 @@ const CharacterBuilder: React.FC = () => {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit">Submit</Button>
+                            <div className="justify-end gap-4 flex-center-y">
+                                <Button type="button" variant="secondary" onClick={handleRandomize}>
+                                    Randomize
+                                </Button>
+                                <Button type="submit">Submit</Button>
+                            </div>
                         </form>
                     </Form>
                 </div>

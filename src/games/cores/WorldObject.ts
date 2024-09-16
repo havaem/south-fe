@@ -58,7 +58,7 @@ export class WorldObject extends GameObject {
     lastPressedKey: number | null = null;
 
     //* Build
-    body: Sprite;
+    body?: Sprite;
     eyes?: Sprite;
     hairStyle?: Sprite;
     outfit?: Sprite;
@@ -67,7 +67,7 @@ export class WorldObject extends GameObject {
         id?: string;
         position: { x: number; y: number };
 
-        body: Sprite;
+        body?: Sprite;
         eyes?: Sprite;
         hairStyle?: Sprite;
         outfit?: Sprite;
@@ -119,21 +119,19 @@ export class WorldObject extends GameObject {
     }
 
     ready(): void {
-        const input = new KeyboardInput("Shift");
-        input.init();
-        this.input = input;
-
-        this.initializeSprites();
-    }
-
-    private initializeSprites() {
         //* SHADOW
-        const shadow = new Sprite({
-            resource: resources.images.shadowHero,
-            frameSize: new Vector2(toGridSize(2), toGridSize(2)),
-            position: new Vector2(-8, -18),
-        });
-        this.addChild(shadow);
+        this.addChild(
+            new Sprite({
+                resource: resources.images.shadowHero,
+                frameSize: new Vector2(toGridSize(2), toGridSize(2)),
+                position: new Vector2(-8, -18),
+            }),
+        );
+
+        if (this.body) this.addChild(this.body);
+        if (this.eyes) this.addChild(this.eyes);
+        if (this.hairStyle) this.addChild(this.hairStyle);
+
         //* NAME TAG
         if (this.showNameTag)
             this.addChild(
@@ -143,10 +141,50 @@ export class WorldObject extends GameObject {
                 }),
             );
 
-        this.addChild(this.body);
-        if (this.eyes) this.addChild(this.eyes);
-        if (this.hairStyle) this.addChild(this.hairStyle);
-        if (this.outfit) this.addChild(this.outfit);
+        const input = new KeyboardInput("Shift");
+        input.init();
+        this.input = input;
+    }
+
+    setAppearance({
+        body,
+        eyes,
+        hairStyle,
+        outfit,
+    }: {
+        body?: Sprite;
+        eyes?: Sprite;
+        hairStyle?: Sprite;
+        outfit?: Sprite;
+    }) {
+        if (body) {
+            //* remove old body
+            this.children = this.children.filter((child) => child !== this.body);
+
+            this.body = body;
+            this.addChild(this.body);
+        }
+        if (eyes) {
+            //* remove old eyes
+            this.children = this.children.filter((child) => child !== this.eyes);
+
+            this.eyes = eyes;
+            this.addChild(this.eyes);
+        }
+        if (hairStyle) {
+            //* remove old hairStyle
+            this.children = this.children.filter((child) => child !== this.hairStyle);
+
+            this.hairStyle = hairStyle;
+            this.addChild(this.hairStyle);
+        }
+        if (outfit) {
+            //* remove old outfit
+            this.children = this.children.filter((child) => child !== this.outfit);
+
+            this.outfit = outfit;
+            this.addChild(this.outfit);
+        }
     }
 
     //* map event ready
@@ -226,7 +264,9 @@ export class WorldObject extends GameObject {
                 [EDirection.LEFT]: EAnimation.WALK_LEFT,
                 [EDirection.RIGHT]: EAnimation.WALK_RIGHT,
             };
-            this.body.animations?.play(walkAnimations[this.facingDirection]);
+            this.body?.animations?.play(walkAnimations[this.facingDirection]);
+            this.eyes?.animations?.play(walkAnimations[this.facingDirection]);
+            this.hairStyle?.animations?.play(walkAnimations[this.facingDirection]);
         } else {
             const standAnimations = {
                 [EDirection.LEFT]: EAnimation.STAND_LEFT,
@@ -234,7 +274,9 @@ export class WorldObject extends GameObject {
                 [EDirection.UP]: EAnimation.STAND_UP,
                 [EDirection.DOWN]: EAnimation.STAND_DOWN,
             };
-            this.body.animations?.play(standAnimations[this.facingDirection]);
+            this.body?.animations?.play(standAnimations[this.facingDirection]);
+            this.eyes?.animations?.play(standAnimations[this.facingDirection]);
+            this.hairStyle?.animations?.play(standAnimations[this.facingDirection]);
         }
     }
 
