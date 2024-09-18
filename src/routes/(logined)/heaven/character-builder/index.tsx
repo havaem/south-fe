@@ -16,28 +16,35 @@ import { Sprite } from "@/games/cores/Sprite";
 import { Vector2 } from "@/games/cores/Vector2";
 import { WorldObject } from "@/games/cores/WorldObject";
 import { toGridSize } from "@/games/utils";
-import { useGameProfileUpdateCurrent } from "@/hooks/mutations";
+import { useGameProfileGetCurrentUser } from "@/hooks";
+import { useGameObjectUpdateCurrent } from "@/hooks/mutations/useGameObjectUpdateCurrent";
 
 import { World } from "./cores/World";
 import { useReadyCharacterbuilder } from "./hooks/useReadyCharacterbuilder";
 
 const formSchema = z.object({
-    body: z.string(),
-    eyes: z.string(),
-    hairStyle: z.string(),
-    outfit: z.string(),
+    body: z.string().min(1, "Please select body type"),
+    eyes: z.string().min(1, "Please select eyes type"),
+    hairStyle: z.string().min(1, "Please select hair type"),
+    outfit: z.string().min(1, "Please select outfit"),
 });
 
 const CharacterBuilder: React.FC = () => {
     const worldRef = useRef<World | null>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const { mutate } = useGameProfileUpdateCurrent();
-
+    const { data: dataGameProfile } = useGameProfileGetCurrentUser({});
+    const { mutate: mutateGameObjectUpdate } = useGameObjectUpdateCurrent({});
     const { characterBodies, characterEyes, characterHair, characterOutfits } = useReadyCharacterbuilder();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            body: "",
+            eyes: "",
+            hairStyle: "",
+            outfit: "",
+        },
     });
 
     const person = useRef<WorldObject>();
@@ -55,7 +62,7 @@ const CharacterBuilder: React.FC = () => {
     };
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        mutate({
+        mutateGameObjectUpdate({
             data: {
                 body: values.body,
                 eye: values.eyes,
@@ -231,14 +238,14 @@ const CharacterBuilder: React.FC = () => {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Body</FormLabel>
-                                        <Select defaultValue={field.value} onValueChange={field.onChange}>
+                                        <Select value={field.value} onValueChange={field.onChange}>
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select body type" />
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                {characterBodies.map((data, index) => (
+                                                {characterBodies.map((data) => (
                                                     <SelectItem key={data._id} value={data._id}>
                                                         {data.name}
                                                     </SelectItem>
@@ -255,7 +262,7 @@ const CharacterBuilder: React.FC = () => {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Eyes</FormLabel>
-                                        <Select defaultValue={field.value} onValueChange={field.onChange}>
+                                        <Select value={field.value} onValueChange={field.onChange}>
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select eyes type" />
@@ -279,7 +286,7 @@ const CharacterBuilder: React.FC = () => {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Hair Style</FormLabel>
-                                        <Select defaultValue={field.value} onValueChange={field.onChange}>
+                                        <Select value={field.value} onValueChange={field.onChange}>
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select hair type" />
@@ -303,7 +310,7 @@ const CharacterBuilder: React.FC = () => {
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Outfit</FormLabel>
-                                        <Select defaultValue={field.value} onValueChange={field.onChange}>
+                                        <Select value={field.value} onValueChange={field.onChange}>
                                             <FormControl>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select outfit" />

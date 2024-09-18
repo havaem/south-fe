@@ -1,1 +1,1 @@
-export * from "./useGameProfileUpdateCurrent";
+export * from "./useGameObjectUpdate";

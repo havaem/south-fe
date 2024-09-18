@@ -62,6 +62,7 @@ export class WorldObject extends GameObject {
     eyes?: Sprite;
     hairStyle?: Sprite;
     outfit?: Sprite;
+    shadow?: Sprite;
 
     constructor(config: {
         id?: string;
@@ -99,7 +100,7 @@ export class WorldObject extends GameObject {
         super({
             position: new Vector2(position.x, position.y),
             id,
-            type: OBJECT_TYPE.WORLD_OBJECT,
+            type: OBJECT_TYPE.LIVEABLE,
         });
 
         this.behaviorLoopArray = behaviorLoopArray;
@@ -120,13 +121,12 @@ export class WorldObject extends GameObject {
 
     ready(): void {
         //* SHADOW
-        this.addChild(
-            new Sprite({
-                resource: resources.images.shadowHero,
-                frameSize: new Vector2(toGridSize(2), toGridSize(2)),
-                position: new Vector2(-8, -18),
-            }),
-        );
+        this.shadow = new Sprite({
+            resource: resources.images.shadowHero,
+            frameSize: new Vector2(toGridSize(2), toGridSize(2)),
+            position: new Vector2(-8, -18),
+        });
+        this.addChild(this.shadow);
 
         if (this.body) this.addChild(this.body);
         if (this.eyes) this.addChild(this.eyes);
@@ -184,6 +184,12 @@ export class WorldObject extends GameObject {
 
             this.outfit = outfit;
             this.addChild(this.outfit);
+        }
+
+        const shadow = this.children.find((child) => child === this.shadow);
+        if (shadow) {
+            this.children = this.children.filter((child) => child !== this.shadow);
+            this.addChild(shadow);
         }
     }
 

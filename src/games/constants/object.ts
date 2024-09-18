@@ -7,7 +7,12 @@ export enum OBJECT {
 }
 
 export enum OBJECT_TYPE {
-    GAME_OBJECT = "GameObject",
-    WORLD_OBJECT = "WorldObject",
-    MAP_OBJECT = "MapObject",
+    NORMAL = "NORMAL",
+    MAP = "MAP",
+    LIVEABLE = "LIVEABLE",
+}
+
+export enum INDEX {
+    NORMAL = 1,
+    LIVEABLE = 2,
 }

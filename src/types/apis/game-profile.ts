@@ -1,3 +1,5 @@
+import { IGameProfile } from "../models";
+
 export interface IGameProfileUpdateCurrent {
     data: {
         body?: string;
@@ -7,3 +9,4 @@ export interface IGameProfileUpdateCurrent {
         accessory?: string;
     };
 }
+export type IGameProfileUpdateCurrentResponse = IResponse<IGameProfile>;
