@@ -10,4 +10,5 @@ export enum EEventName {
 
     OPEN_IFRAME = "OPEN_IFRAME",
     CLOSE_IFRAME = "CLOSE_IFRAME",
+    INVALIDATE_QUERY = "INVALIDATE_QUERY",
 }

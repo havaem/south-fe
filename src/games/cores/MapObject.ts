@@ -18,7 +18,7 @@ export class MapObject extends GameObject {
         super({
             id: data.body.id,
             position: new Vector2(x, y),
-            type: OBJECT_TYPE.MAP_OBJECT,
+            type: OBJECT_TYPE.MAP,
         });
         this.name = name ?? this.name;
         //* init resource

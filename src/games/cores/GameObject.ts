@@ -22,7 +22,7 @@ export class GameObject {
         position,
         id = "",
         zIndex = 0,
-        type = OBJECT_TYPE.GAME_OBJECT,
+        type = OBJECT_TYPE.NORMAL,
     }: {
         position?: Vector2;
         id?: string;
@@ -103,7 +103,7 @@ export class GameObject {
         //sort by zIndex then sort by y position if type is world object
         this.children.sort((a, b) => {
             if (a.zIndex === b.zIndex) {
-                if (a.type === OBJECT_TYPE.WORLD_OBJECT && b.type === OBJECT_TYPE.WORLD_OBJECT) {
+                if (a.type === OBJECT_TYPE.LIVEABLE && b.type === OBJECT_TYPE.LIVEABLE) {
                     return a.position.y - b.position.y;
                 }
             }

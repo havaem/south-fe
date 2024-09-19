@@ -10,11 +10,21 @@ const IFrame: React.FC = () => {
     useEffect(() => {
         events.on(EEventName.OPEN_IFRAME, null, ({ url, resolve }: { url: string; resolve: Function }) => {
             setUrl(url);
-            setResolve(() => resolve);
+            setResolve(resolve);
         });
-        events.on(EEventName.CLOSE_IFRAME, null, () => {
-            setUrl("");
-        });
+
+        const handleMessage = (event: MessageEvent) => {
+            if (event.data.type === EEventName.CLOSE_IFRAME) {
+                setUrl("");
+                resolve && resolve();
+            }
+        };
+        window.addEventListener("message", handleMessage);
+
+        return () => {
+            events.off(EEventName.OPEN_IFRAME);
+            window.removeEventListener("message", handleMessage);
+        };
     }, []);
 
     if (!url) return null;

@@ -9,7 +9,7 @@ export const ApiSprite = {
     //         params: data,
     //     }),
     // update: (id: string, data: IMapUpdatePayload) => post<ISprite>(`${ENDPOINT}/${id}`, data),
-    find: (id: string) => get<ISprite>(`${ENDPOINT}/${id}`),
+    findById: (id: string) => get<ISprite>(`${ENDPOINT}/${id}`),
     // remove: (id:            string) => del<ISprite>(`${ENDPOINT}/${id}`),
     getCharacterBuilder: () => get<ISpriteGetCharacterBuilderResponse>(`${ENDPOINT}/character-builder`),
 };

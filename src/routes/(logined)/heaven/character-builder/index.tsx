@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select";
 import PixelBox from "@/games/components/pixel/Box";
 import { EDirection } from "@/games/constants";
+import { EEventName } from "@/games/constants/event";
 import { Animations } from "@/games/cores/Animation";
 import { FrameIndexPattern } from "@/games/cores/FrameIndexPattern";
 import { resources } from "@/games/cores/Resource";
@@ -16,7 +17,6 @@ import { Sprite } from "@/games/cores/Sprite";
 import { Vector2 } from "@/games/cores/Vector2";
 import { WorldObject } from "@/games/cores/WorldObject";
 import { toGridSize } from "@/games/utils";
-import { useGameProfileGetCurrentUser } from "@/hooks";
 import { useGameObjectUpdateCurrent } from "@/hooks/mutations/useGameObjectUpdateCurrent";
 
 import { World } from "./cores/World";
@@ -33,8 +33,7 @@ const CharacterBuilder: React.FC = () => {
     const worldRef = useRef<World | null>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const { data: dataGameProfile } = useGameProfileGetCurrentUser({});
-    const { mutate: mutateGameObjectUpdate } = useGameObjectUpdateCurrent({});
+    const { mutateAsync: mutateGameObjectUpdate } = useGameObjectUpdateCurrent({});
     const { characterBodies, characterEyes, characterHair, characterOutfits } = useReadyCharacterbuilder();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -69,6 +68,19 @@ const CharacterBuilder: React.FC = () => {
                 hair: values.hairStyle,
                 outfit: values.outfit,
             },
+        }).then((data) => {
+            window.parent.postMessage({ type: EEventName.CLOSE_IFRAME }, "*");
+
+            window.parent.postMessage(
+                {
+                    type: EEventName.INVALIDATE_QUERY,
+                    data: {
+                        filters: ["game-object", data.data._id],
+                        options: { exact: true },
+                    },
+                },
+                "*",
+            );
         });
     }
 
@@ -120,105 +132,39 @@ const CharacterBuilder: React.FC = () => {
     useEffect(() => {
         if (!person.current) return;
 
-        const bodySprite = characterBodies.find((data) => data._id === form.watch("body"));
-        if (bodySprite) {
-            person.current.setAppearance({
-                body: new Sprite({
-                    resource: resources.images[bodySprite.resource._id],
-                    frameSize: new Vector2(bodySprite.frameSize.x, bodySprite.frameSize.y),
-                    hFrames: bodySprite.horizontalFrame,
-                    vFrames: bodySprite.verticalFrame,
-                    frame: bodySprite.defaultFrame,
-                    position: new Vector2(bodySprite.position.x, bodySprite.position.y),
-                    animations: new Animations(
-                        Object.entries(bodySprite.animations).reduce(
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            (acc, [_, value]) => {
-                                acc[value.name] = new FrameIndexPattern(value);
-                                return acc;
-                            },
-                            {} as Record<string, FrameIndexPattern>,
-                        ),
-                    ),
-                    scale: bodySprite.scale,
-                }),
-            });
-        }
+        const appearanceTypes = [
+            { key: "body", sprites: characterBodies },
+            { key: "eyes", sprites: characterEyes },
+            { key: "hairStyle", sprites: characterHair },
+            { key: "outfit", sprites: characterOutfits },
+        ];
 
-        const eyesSprite = characterEyes.find((data) => data._id === form.watch("eyes"));
-        if (eyesSprite) {
-            person.current.setAppearance({
-                eyes: new Sprite({
-                    resource: resources.images[eyesSprite.resource._id],
-                    frameSize: new Vector2(eyesSprite.frameSize.x, eyesSprite.frameSize.y),
-                    hFrames: eyesSprite.horizontalFrame,
-                    vFrames: eyesSprite.verticalFrame,
-                    frame: eyesSprite.defaultFrame,
-                    position: new Vector2(eyesSprite.position.x, eyesSprite.position.y),
-                    animations: new Animations(
-                        Object.entries(eyesSprite.animations).reduce(
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            (acc, [_, value]) => {
-                                acc[value.name] = new FrameIndexPattern(value);
-                                return acc;
-                            },
-                            {} as Record<string, FrameIndexPattern>,
+        appearanceTypes.forEach(({ key, sprites }) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const selectedSprite = sprites.find((data) => data._id === form.getValues(key as any));
+            if (selectedSprite) {
+                person.current!.setAppearance({
+                    [key]: new Sprite({
+                        resource: resources.images[selectedSprite.resource._id],
+                        frameSize: new Vector2(selectedSprite.frameSize.x, selectedSprite.frameSize.y),
+                        hFrames: selectedSprite.horizontalFrame,
+                        vFrames: selectedSprite.verticalFrame,
+                        frame: selectedSprite.defaultFrame,
+                        position: new Vector2(selectedSprite.position.x, selectedSprite.position.y),
+                        animations: new Animations(
+                            Object.values(selectedSprite.animations).reduce(
+                                (acc, value) => {
+                                    acc[value.name] = new FrameIndexPattern(value);
+                                    return acc;
+                                },
+                                {} as Record<string, FrameIndexPattern>,
+                            ),
                         ),
-                    ),
-                    scale: eyesSprite.scale,
-                }),
-            });
-        }
-
-        const hairSprite = characterHair.find((data) => data._id === form.watch("hairStyle"));
-        if (hairSprite) {
-            person.current.setAppearance({
-                hairStyle: new Sprite({
-                    resource: resources.images[hairSprite.resource._id],
-                    frameSize: new Vector2(hairSprite.frameSize.x, hairSprite.frameSize.y),
-                    hFrames: hairSprite.horizontalFrame,
-                    vFrames: hairSprite.verticalFrame,
-                    frame: hairSprite.defaultFrame,
-                    position: new Vector2(hairSprite.position.x, hairSprite.position.y),
-                    animations: new Animations(
-                        Object.entries(hairSprite.animations).reduce(
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            (acc, [_, value]) => {
-                                acc[value.name] = new FrameIndexPattern(value);
-                                return acc;
-                            },
-                            {} as Record<string, FrameIndexPattern>,
-                        ),
-                    ),
-                    scale: hairSprite.scale,
-                }),
-            });
-        }
-
-        const outfitSprite = characterOutfits.find((data) => data._id === form.watch("outfit"));
-        if (outfitSprite) {
-            person.current.setAppearance({
-                outfit: new Sprite({
-                    resource: resources.images[outfitSprite.resource._id],
-                    frameSize: new Vector2(outfitSprite.frameSize.x, outfitSprite.frameSize.y),
-                    hFrames: outfitSprite.horizontalFrame,
-                    vFrames: outfitSprite.verticalFrame,
-                    frame: outfitSprite.defaultFrame,
-                    position: new Vector2(outfitSprite.position.x, outfitSprite.position.y),
-                    animations: new Animations(
-                        Object.entries(outfitSprite.animations).reduce(
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            (acc, [_, value]) => {
-                                acc[value.name] = new FrameIndexPattern(value);
-                                return acc;
-                            },
-                            {} as Record<string, FrameIndexPattern>,
-                        ),
-                    ),
-                    scale: outfitSprite.scale,
-                }),
-            });
-        }
+                        scale: selectedSprite.scale,
+                    }),
+                });
+            }
+        });
     }, [form.watch()]);
 
     return (

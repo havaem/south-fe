@@ -24,6 +24,7 @@ const HeavenPage = () => {
 
         const ctx = canvas.getContext("2d");
         if (!ctx || !player) return;
+        console.log("player: ", player);
 
         const world = new World({ canvas, ctx, playerId: player.id });
 

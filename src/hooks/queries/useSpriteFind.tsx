@@ -11,6 +11,6 @@ interface IProps {
 export const useSpriteFind = ({ id, opts }: IProps) =>
     useQuery({
         queryKey: ["spriteFind", id],
-        queryFn: () => ApiSprite.find(id),
+        queryFn: () => ApiSprite.findById(id),
         ...opts,
     });

@@ -69,8 +69,8 @@ export class WorldObject extends GameObject {
         position: { x: number; y: number };
 
         body?: Sprite;
-        eyes?: Sprite;
-        hairStyle?: Sprite;
+        eye?: Sprite;
+        hair?: Sprite;
         outfit?: Sprite;
 
         behaviorLoopArray?: IBehavior[];
@@ -85,8 +85,8 @@ export class WorldObject extends GameObject {
             position,
 
             body,
-            eyes,
-            hairStyle,
+            eye,
+            hair,
             outfit,
 
             behaviorLoopArray = [],
@@ -108,8 +108,8 @@ export class WorldObject extends GameObject {
         this.talking = talking;
         //* BODY BUILDER
         this.body = body;
-        this.eyes = eyes;
-        this.hairStyle = hairStyle;
+        this.eyes = eye;
+        this.hairStyle = hair;
         this.outfit = outfit;
 
         //* END BUILD
@@ -120,7 +120,7 @@ export class WorldObject extends GameObject {
     }
 
     ready(): void {
-        //* SHADOW
+        //* DEFAULT SHADOW
         this.shadow = new Sprite({
             resource: resources.images.shadowHero,
             frameSize: new Vector2(toGridSize(2), toGridSize(2)),
@@ -131,6 +131,7 @@ export class WorldObject extends GameObject {
         if (this.body) this.addChild(this.body);
         if (this.eyes) this.addChild(this.eyes);
         if (this.hairStyle) this.addChild(this.hairStyle);
+        if (this.outfit) this.addChild(this.outfit);
 
         //* NAME TAG
         if (this.showNameTag)
@@ -147,16 +148,26 @@ export class WorldObject extends GameObject {
     }
 
     setAppearance({
+        shadow,
         body,
         eyes,
         hairStyle,
         outfit,
     }: {
+        shadow?: Sprite;
         body?: Sprite;
         eyes?: Sprite;
         hairStyle?: Sprite;
         outfit?: Sprite;
     }) {
+        //* remove old shadow
+        if (shadow) {
+            this.children = this.children.filter((child) => child !== this.shadow);
+
+            this.shadow = shadow;
+            this.addChild(this.shadow);
+        }
+
         if (body) {
             //* remove old body
             this.children = this.children.filter((child) => child !== this.body);
@@ -184,12 +195,6 @@ export class WorldObject extends GameObject {
 
             this.outfit = outfit;
             this.addChild(this.outfit);
-        }
-
-        const shadow = this.children.find((child) => child === this.shadow);
-        if (shadow) {
-            this.children = this.children.filter((child) => child !== this.shadow);
-            this.addChild(shadow);
         }
     }
 
@@ -270,9 +275,11 @@ export class WorldObject extends GameObject {
                 [EDirection.LEFT]: EAnimation.WALK_LEFT,
                 [EDirection.RIGHT]: EAnimation.WALK_RIGHT,
             };
+
             this.body?.animations?.play(walkAnimations[this.facingDirection]);
             this.eyes?.animations?.play(walkAnimations[this.facingDirection]);
             this.hairStyle?.animations?.play(walkAnimations[this.facingDirection]);
+            this.outfit?.animations?.play(walkAnimations[this.facingDirection]);
         } else {
             const standAnimations = {
                 [EDirection.LEFT]: EAnimation.STAND_LEFT,
@@ -283,6 +290,7 @@ export class WorldObject extends GameObject {
             this.body?.animations?.play(standAnimations[this.facingDirection]);
             this.eyes?.animations?.play(standAnimations[this.facingDirection]);
             this.hairStyle?.animations?.play(standAnimations[this.facingDirection]);
+            this.outfit?.animations?.play(standAnimations[this.facingDirection]);
         }
     }
 

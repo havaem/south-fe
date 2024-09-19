@@ -9,16 +9,6 @@ export const gameProfileSchema = z.object({
         email: true,
         username: true,
     }),
-    hero: z.object({
-        _id: z.string(),
-        name: z.string(),
-        type: z.string(),
-        position: z.object({
-            x: z.number(),
-            y: z.number(),
-        }),
-        index: z.number(),
-        data: z.any(),
-    }),
+    hero: z.string(),
 });
 export type IGameProfile = z.infer<typeof gameProfileSchema>;

@@ -27,6 +27,7 @@
         "@radix-ui/react-tooltip": "^1.1.1",
         "@react-oauth/google": "^0.12.1",
         "@tanstack/react-query": "^5.39.0",
+        "@tanstack/react-query-devtools": "^5.56.2",
         "@udecode/plate-combobox": "^34.0.8",
         "@udecode/plate-common": "^34.0.5",
         "@udecode/plate-emoji": "^34.0.8",

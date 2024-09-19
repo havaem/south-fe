@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+import { queryClient } from "@/configs";
+import { EEventName } from "@/games/constants/event";
 import { Animations } from "@/games/cores/Animation";
 import { FrameIndexPattern } from "@/games/cores/FrameIndexPattern";
 import { resources } from "@/games/cores/Resource";
@@ -9,18 +11,17 @@ import { WorldObject } from "@/games/cores/WorldObject";
 import { toGridSize } from "@/games/utils";
 import { useGameStore } from "@/stores";
 
-import { useSpriteFind } from "./queries";
+import { useGameObjectFindById } from "./queries/useGameObjectFindById";
 import { useGameProfileGetCurrentUser } from "./queries/useGameProfileGetCurrent";
 import { useMapGetAll } from "./queries/useMapFindAll";
 
 export const useReadyGame = () => {
     const { data: dataGameProfile, isSuccess } = useGameProfileGetCurrentUser({});
-    const { data: dataSprite } = useSpriteFind({
-        id: dataGameProfile?.data.hero.data.body,
-        opts: {
-            enabled: isSuccess,
-        },
+    const { data: dataGameObject } = useGameObjectFindById({
+        id: dataGameProfile?.data.hero ?? "",
+        opts: { enabled: isSuccess },
     });
+
     const { player, setPlayer } = useGameStore();
 
     const { data } = useMapGetAll({
@@ -29,37 +30,56 @@ export const useReadyGame = () => {
     const map = data?.data[0];
 
     useEffect(() => {
-        if (dataGameProfile && dataSprite) {
-            const data = dataSprite.data;
-            resources.pushImage(data.resource._id, data.resource.src);
-            console.log(data.animations);
-            const playerObject = new WorldObject({
-                id: dataGameProfile.data._id,
-                position: new Vector2(toGridSize(4), toGridSize(6)),
-                body: new Sprite({
-                    resource: resources.images[data.resource._id],
-                    frameSize: new Vector2(data.frameSize.x, data.frameSize.y),
-                    hFrames: data.horizontalFrame,
-                    vFrames: data.verticalFrame,
-                    frame: data.defaultFrame,
-                    position: new Vector2(0, -20),
+        if (dataGameProfile && dataGameObject) {
+            Object.values(dataGameObject.data.data).forEach((sprite) => {
+                resources.pushImage(sprite.resource._id, sprite.resource.src);
+            });
+
+            const readyParts: {
+                [key: string]: Sprite;
+            } = {};
+
+            // get old Position of player
+            const oldPosition = player?.position;
+
+            Object.entries(dataGameObject.data.data).forEach(([key, value]) => {
+                readyParts[key] = new Sprite({
+                    resource: resources.images[value.resource._id],
+                    frameSize: new Vector2(value.frameSize.x, value.frameSize.y),
+                    hFrames: value.horizontalFrame,
+                    vFrames: value.verticalFrame,
+                    frame: value.defaultFrame,
+                    position: new Vector2(value.position.x, value.position.y),
                     animations: new Animations(
-                        Object.entries(data.animations).reduce(
-                            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                            (acc, [_, value]) => {
+                        Object.values(value.animations).reduce(
+                            (acc, value) => {
                                 acc[value.name] = new FrameIndexPattern(value);
                                 return acc;
                             },
                             {} as Record<string, FrameIndexPattern>,
                         ),
                     ),
-                }),
+                });
+            });
+
+            const playerObject = new WorldObject({
+                id: dataGameProfile.data._id,
+                position: oldPosition ?? new Vector2(toGridSize(4), toGridSize(6)),
+                ...readyParts,
                 isPlayerControlled: true,
             });
             setPlayer(playerObject);
         }
+    }, [isSuccess, dataGameObject]);
+
+    useEffect(() => {
+        window.addEventListener("message", (event) => {
+            if (event.data.type === EEventName.INVALIDATE_QUERY) {
+                queryClient.invalidateQueries(event.data.filters, event.data.options);
+            }
+        });
         return () => {};
-    }, [isSuccess, dataSprite]);
+    }, []);
 
     return {
         map,
