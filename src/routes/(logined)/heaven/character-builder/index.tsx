@@ -24,8 +24,8 @@ import { useReadyCharacterbuilder } from "./hooks/useReadyCharacterbuilder";
 
 const formSchema = z.object({
     body: z.string().min(1, "Please select body type"),
-    eyes: z.string().min(1, "Please select eyes type"),
-    hairStyle: z.string().min(1, "Please select hair type"),
+    eye: z.string().min(1, "Please select eyes type"),
+    hair: z.string().min(1, "Please select hair type"),
     outfit: z.string().min(1, "Please select outfit"),
 });
 
@@ -33,15 +33,17 @@ const CharacterBuilder: React.FC = () => {
     const worldRef = useRef<World | null>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const { mutateAsync: mutateGameObjectUpdate } = useGameObjectUpdateCurrent({});
+    const { mutateAsync: mutateGameObjectUpdate, isPending: isPendingGameObjectUpdate } = useGameObjectUpdateCurrent(
+        {},
+    );
     const { characterBodies, characterEyes, characterHair, characterOutfits } = useReadyCharacterbuilder();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             body: "",
-            eyes: "",
-            hairStyle: "",
+            eye: "",
+            hair: "",
             outfit: "",
         },
     });
@@ -55,22 +57,16 @@ const CharacterBuilder: React.FC = () => {
         const outfit = characterOutfits[Math.floor(Math.random() * characterOutfits.length)];
 
         form.setValue("body", body._id);
-        form.setValue("eyes", eyes._id);
-        form.setValue("hairStyle", hairStyle._id);
+        form.setValue("eye", eyes._id);
+        form.setValue("hair", hairStyle._id);
         form.setValue("outfit", outfit._id);
     };
 
     function onSubmit(values: z.infer<typeof formSchema>) {
         mutateGameObjectUpdate({
-            data: {
-                body: values.body,
-                eye: values.eyes,
-                hair: values.hairStyle,
-                outfit: values.outfit,
-            },
+            data: values,
         }).then((data) => {
             window.parent.postMessage({ type: EEventName.CLOSE_IFRAME }, "*");
-
             window.parent.postMessage(
                 {
                     type: EEventName.INVALIDATE_QUERY,
@@ -134,8 +130,8 @@ const CharacterBuilder: React.FC = () => {
 
         const appearanceTypes = [
             { key: "body", sprites: characterBodies },
-            { key: "eyes", sprites: characterEyes },
-            { key: "hairStyle", sprites: characterHair },
+            { key: "eye", sprites: characterEyes },
+            { key: "hair", sprites: characterHair },
             { key: "outfit", sprites: characterOutfits },
         ];
 
@@ -204,7 +200,7 @@ const CharacterBuilder: React.FC = () => {
                             />
                             <FormField
                                 control={form.control}
-                                name="eyes"
+                                name="eye"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Eyes</FormLabel>
@@ -215,7 +211,7 @@ const CharacterBuilder: React.FC = () => {
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
-                                                {characterEyes.map((data, index) => (
+                                                {characterEyes.map((data) => (
                                                     <SelectItem key={data._id} value={data._id}>
                                                         {data.name}
                                                     </SelectItem>
@@ -228,7 +224,7 @@ const CharacterBuilder: React.FC = () => {
                             />
                             <FormField
                                 control={form.control}
-                                name="hairStyle"
+                                name="hair"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Hair Style</FormLabel>
@@ -278,7 +274,9 @@ const CharacterBuilder: React.FC = () => {
                                 <Button type="button" variant="secondary" onClick={handleRandomize}>
                                     Randomize
                                 </Button>
-                                <Button type="submit">Submit</Button>
+                                <Button loading={isPendingGameObjectUpdate} type="submit">
+                                    Submit
+                                </Button>
                             </div>
                         </form>
                     </Form>

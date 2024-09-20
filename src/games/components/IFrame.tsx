@@ -5,12 +5,13 @@ import { events } from "../cores/Events";
 
 const IFrame: React.FC = () => {
     const [url, setUrl] = useState("");
-    const [resolve, setResolve] = useState<Function | null>(null);
+
+    const [resolve, setResolve] = useState<(() => void) | null>(null);
 
     useEffect(() => {
         events.on(EEventName.OPEN_IFRAME, null, ({ url, resolve }: { url: string; resolve: Function }) => {
             setUrl(url);
-            setResolve(resolve);
+            setResolve(() => resolve);
         });
 
         const handleMessage = (event: MessageEvent) => {
@@ -22,10 +23,10 @@ const IFrame: React.FC = () => {
         window.addEventListener("message", handleMessage);
 
         return () => {
-            events.off(EEventName.OPEN_IFRAME);
+            window.removeEventListener("message", handleMessage);
             window.removeEventListener("message", handleMessage);
         };
-    }, []);
+    }, [resolve]);
 
     if (!url) return null;
     return <iframe className="absolute left-0 top-0 z-50 h-full w-full select-none" src={url} title="iframe" />;

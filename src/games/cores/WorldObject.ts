@@ -59,8 +59,8 @@ export class WorldObject extends GameObject {
 
     //* Build
     body?: Sprite;
-    eyes?: Sprite;
-    hairStyle?: Sprite;
+    eye?: Sprite;
+    hair?: Sprite;
     outfit?: Sprite;
     shadow?: Sprite;
 
@@ -108,8 +108,8 @@ export class WorldObject extends GameObject {
         this.talking = talking;
         //* BODY BUILDER
         this.body = body;
-        this.eyes = eye;
-        this.hairStyle = hair;
+        this.eye = eye;
+        this.hair = hair;
         this.outfit = outfit;
 
         //* END BUILD
@@ -129,8 +129,8 @@ export class WorldObject extends GameObject {
         this.addChild(this.shadow);
 
         if (this.body) this.addChild(this.body);
-        if (this.eyes) this.addChild(this.eyes);
-        if (this.hairStyle) this.addChild(this.hairStyle);
+        if (this.eye) this.addChild(this.eye);
+        if (this.hair) this.addChild(this.hair);
         if (this.outfit) this.addChild(this.outfit);
 
         //* NAME TAG
@@ -151,13 +151,13 @@ export class WorldObject extends GameObject {
         shadow,
         body,
         eyes,
-        hairStyle,
+        hair,
         outfit,
     }: {
         shadow?: Sprite;
         body?: Sprite;
         eyes?: Sprite;
-        hairStyle?: Sprite;
+        hair?: Sprite;
         outfit?: Sprite;
     }) {
         //* remove old shadow
@@ -177,17 +177,17 @@ export class WorldObject extends GameObject {
         }
         if (eyes) {
             //* remove old eyes
-            this.children = this.children.filter((child) => child !== this.eyes);
+            this.children = this.children.filter((child) => child !== this.eye);
 
-            this.eyes = eyes;
-            this.addChild(this.eyes);
+            this.eye = eyes;
+            this.addChild(this.eye);
         }
-        if (hairStyle) {
+        if (hair) {
             //* remove old hairStyle
-            this.children = this.children.filter((child) => child !== this.hairStyle);
+            this.children = this.children.filter((child) => child !== this.hair);
 
-            this.hairStyle = hairStyle;
-            this.addChild(this.hairStyle);
+            this.hair = hair;
+            this.addChild(this.hair);
         }
         if (outfit) {
             //* remove old outfit
@@ -277,8 +277,8 @@ export class WorldObject extends GameObject {
             };
 
             this.body?.animations?.play(walkAnimations[this.facingDirection]);
-            this.eyes?.animations?.play(walkAnimations[this.facingDirection]);
-            this.hairStyle?.animations?.play(walkAnimations[this.facingDirection]);
+            this.eye?.animations?.play(walkAnimations[this.facingDirection]);
+            this.hair?.animations?.play(walkAnimations[this.facingDirection]);
             this.outfit?.animations?.play(walkAnimations[this.facingDirection]);
         } else {
             const standAnimations = {
@@ -288,8 +288,8 @@ export class WorldObject extends GameObject {
                 [EDirection.DOWN]: EAnimation.STAND_DOWN,
             };
             this.body?.animations?.play(standAnimations[this.facingDirection]);
-            this.eyes?.animations?.play(standAnimations[this.facingDirection]);
-            this.hairStyle?.animations?.play(standAnimations[this.facingDirection]);
+            this.eye?.animations?.play(standAnimations[this.facingDirection]);
+            this.hair?.animations?.play(standAnimations[this.facingDirection]);
             this.outfit?.animations?.play(standAnimations[this.facingDirection]);
         }
     }

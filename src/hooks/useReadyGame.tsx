@@ -38,10 +38,6 @@ export const useReadyGame = () => {
             const readyParts: {
                 [key: string]: Sprite;
             } = {};
-
-            // get old Position of player
-            const oldPosition = player?.position;
-
             Object.entries(dataGameObject.data.data).forEach(([key, value]) => {
                 readyParts[key] = new Sprite({
                     resource: resources.images[value.resource._id],
@@ -61,14 +57,18 @@ export const useReadyGame = () => {
                     ),
                 });
             });
-
-            const playerObject = new WorldObject({
-                id: dataGameProfile.data._id,
-                position: oldPosition ?? new Vector2(toGridSize(4), toGridSize(6)),
-                ...readyParts,
-                isPlayerControlled: true,
-            });
-            setPlayer(playerObject);
+            if (!player) {
+                const playerObject = new WorldObject({
+                    id: dataGameProfile.data._id,
+                    position: new Vector2(toGridSize(4), toGridSize(6)),
+                    ...readyParts,
+                    isPlayerControlled: true,
+                });
+                setPlayer(playerObject);
+            } else {
+                console.log("readyParts: ", readyParts);
+                player?.setAppearance(readyParts);
+            }
         }
     }, [isSuccess, dataGameObject]);
 

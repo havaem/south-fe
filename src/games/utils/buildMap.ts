@@ -2,9 +2,11 @@ import { APP_PATH } from "@/constants";
 import { IMap } from "@/types";
 
 import { EAnimation, EBehaviorType, EDirection, EMapType, OBJECT } from "../constants";
+import { OTHERS } from "../constants/maps/objects/others";
 import { Animations } from "../cores/Animation";
 import { FrameIndexPattern } from "../cores/FrameIndexPattern";
 import { GameObject } from "../cores/GameObject";
+import { MapObject } from "../cores/MapObject";
 import { resources } from "../cores/Resource";
 import { Sprite } from "../cores/Sprite";
 import { Vector2 } from "../cores/Vector2";
@@ -101,86 +103,118 @@ export const buildMap = ({ name, map, player }: IBuildMapProps): WorldMap => {
                                 },
                                 {
                                     type: EBehaviorType.MESSAGE,
-                                    message: "Firstly, let's change the appearance of your character.",
+                                    message: "Let's change the appearance of your character.",
                                 },
                                 {
                                     type: EBehaviorType.OPEN_IFRAME,
                                     url: APP_PATH.HEAVEN.CHARACTER_BUILDER,
                                 },
-                                // {
-                                //     type: EBehaviorType.ADD_OBJECT,
-                                //     object: new MapObject({
-                                //         x: toGridSize(4),
-                                //         y: toGridSize(10),
-                                //         data: OTHERS.markedLocation,
-                                //     }),
-                                // },
+                                {
+                                    id: player.id,
+                                    type: EBehaviorType.STAND,
+                                    direction: EDirection.UP,
+                                    duration: 1000,
+                                },
+                                {
+                                    type: EBehaviorType.ADD_OBJECT,
+                                    object: new MapObject({
+                                        x: toGridSize(4),
+                                        y: toGridSize(10),
+                                        data: OTHERS.markedLocation,
+                                    }),
+                                },
+                                {
+                                    type: EBehaviorType.MESSAGE,
+                                    message: "You look great! \n Do you see the marked location on the map?",
+                                },
+                                {
+                                    id: player.id,
+                                    type: EBehaviorType.STAND,
+                                    direction: EDirection.DOWN,
+                                    duration: 1000,
+                                },
+                                {
+                                    id: player.id,
+                                    type: EBehaviorType.STAND,
+                                    direction: EDirection.UP,
+                                    duration: 1000,
+                                },
+                                {
+                                    type: EBehaviorType.MESSAGE,
+                                    message: "Let's go there!",
+                                },
 
-                                // {
-                                //     type: EBehaviorType.WALL_REMOVE,
-                                //     x: toGridSize(4),
-                                //     y: toGridSize(10),
-                                // },
-                                // {
-                                //     id: player.id,
-                                //     type: EBehaviorType.WALK,
-                                //     direction: EDirection.LEFT,
-                                // },
-                                // {
-                                //     id: OBJECT.AMELIA,
-                                //     type: EBehaviorType.WALK,
-                                //     direction: EDirection.DOWN,
-                                // },
-                                // {
-                                //     id: OBJECT.AMELIA,
-                                //     type: EBehaviorType.WALK,
-                                //     direction: EDirection.DOWN,
-                                // },
-                                // {
-                                //     id: OBJECT.AMELIA,
-                                //     type: EBehaviorType.WALK,
-                                //     direction: EDirection.DOWN,
-                                // },
-                                // {
-                                //     id: OBJECT.AMELIA,
-                                //     type: EBehaviorType.WALK,
-                                //     direction: EDirection.DOWN,
-                                // },
-                                // {
-                                //     id: OBJECT.AMELIA,
-                                //     type: EBehaviorType.WALK,
-                                //     direction: EDirection.DOWN,
-                                // },
-                                // {
-                                //     id: OBJECT.AMELIA,
-                                //     type: EBehaviorType.WALK,
-                                //     direction: EDirection.DOWN,
-                                // },
-                                // {
-                                //     id: OBJECT.AMELIA,
-                                //     type: EBehaviorType.WALK,
-                                //     direction: EDirection.DOWN,
-                                // },
-                                // {
-                                //     id: OBJECT.AMELIA,
-                                //     type: EBehaviorType.WALK,
-                                //     direction: EDirection.RIGHT,
-                                // },
-                                // {
-                                //     id: OBJECT.AMELIA,
-                                //     type: EBehaviorType.WALK,
-                                //     direction: EDirection.DOWN,
-                                // },
-                                // {
-                                //     id: OBJECT.AMELIA,
-                                //     type: EBehaviorType.STAND,
-                                //     direction: EDirection.DOWN,
-                                //     duration: 1000,
-                                // },
-                                // {
-                                //     id: OBJECT.AMELIA,
-                                //     type: EBehaviorType.REMOVE_OBJECT,
-                                // },
+                                {
+                                    type: EBehaviorType.WALL_REMOVE,
+                                    x: toGridSize(4),
+                                    y: toGridSize(10),
+                                },
+                                {
+                                    id: player.id,
+                                    type: EBehaviorType.WALK,
+                                    direction: EDirection.LEFT,
+                                },
+                                {
+                                    id: player.id,
+                                    type: EBehaviorType.STAND,
+                                    direction: EDirection.DOWN,
+                                    duration: 500,
+                                },
+                                {
+                                    id: OBJECT.AMELIA,
+                                    type: EBehaviorType.WALK,
+                                    direction: EDirection.DOWN,
+                                },
+                                {
+                                    id: OBJECT.AMELIA,
+                                    type: EBehaviorType.WALK,
+                                    direction: EDirection.DOWN,
+                                },
+                                {
+                                    id: OBJECT.AMELIA,
+                                    type: EBehaviorType.WALK,
+                                    direction: EDirection.DOWN,
+                                },
+                                {
+                                    id: OBJECT.AMELIA,
+                                    type: EBehaviorType.WALK,
+                                    direction: EDirection.DOWN,
+                                },
+                                {
+                                    id: OBJECT.AMELIA,
+                                    type: EBehaviorType.WALK,
+                                    direction: EDirection.DOWN,
+                                },
+                                {
+                                    id: OBJECT.AMELIA,
+                                    type: EBehaviorType.WALK,
+                                    direction: EDirection.DOWN,
+                                },
+                                {
+                                    id: OBJECT.AMELIA,
+                                    type: EBehaviorType.WALK,
+                                    direction: EDirection.DOWN,
+                                },
+                                {
+                                    id: OBJECT.AMELIA,
+                                    type: EBehaviorType.WALK,
+                                    direction: EDirection.RIGHT,
+                                },
+                                {
+                                    id: OBJECT.AMELIA,
+                                    type: EBehaviorType.WALK,
+                                    direction: EDirection.DOWN,
+                                },
+                                {
+                                    id: OBJECT.AMELIA,
+                                    type: EBehaviorType.STAND,
+                                    direction: EDirection.DOWN,
+                                    duration: 1000,
+                                },
+                                {
+                                    id: OBJECT.AMELIA,
+                                    type: EBehaviorType.REMOVE_OBJECT,
+                                },
                             ],
                         },
                     ],
