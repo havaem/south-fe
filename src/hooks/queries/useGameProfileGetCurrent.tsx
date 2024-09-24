@@ -4,10 +4,11 @@ import { ApiGameProfile } from "@/apis/game-profile";
 import { TQueryConfig } from "@/types";
 
 interface IProps {
-    config?: TQueryConfig<typeof ApiGameProfile.current>;
+    opts?: TQueryConfig<typeof ApiGameProfile.current>;
 }
 export const useGameProfileGetCurrentUser = (props: IProps) =>
     useQuery({
+        ...props.opts,
         queryKey: ["gameProfileGetCurrentuser"],
         queryFn: ApiGameProfile.current,
         retry: 0,

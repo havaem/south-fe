@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import ProtectedRoute from "./components/protected-route";
+import ProtectedRoute from "./components/routes/protected-route";
 import HeavenPage from "./routes/(logined)/heaven";
 import CharacterBuilder from "./routes/(logined)/heaven/character-builder";
 import DashboardLayout from "./routes/(logined)/layout";

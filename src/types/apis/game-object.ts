@@ -1,6 +1,6 @@
 import { INDEX, OBJECT_TYPE } from "@/games/constants";
 
-import { IGameObject, ISprite } from "../models";
+import { IGameObject } from "../models";
 
 export type IGameObjectUpdatePayload =
     | {
@@ -23,13 +23,4 @@ export type IGameObjectUpdatePayload =
           };
       };
 
-export type IGameObjectUpdateResponse = IResponse<
-    IGameObject & {
-        data: {
-            body?: ISprite;
-            eye?: ISprite;
-            hair?: ISprite;
-            outfit?: ISprite;
-        };
-    }
->;
+export type IGameObjectUpdateResponse = IResponse<IGameObject>;

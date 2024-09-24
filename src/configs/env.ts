@@ -9,6 +9,11 @@ class Environment {
         if (!value) throw new Error("GOOGLE_CLIENT_ID is not defined");
         return value;
     }
+    get GAME_SOCKET_URL(): string {
+        const value = import.meta.env.VITE_GAME_SOCKET_URL;
+        if (!value) throw new Error("SOCKET_URL is not defined");
+        return value;
+    }
 }
 
 export const ENV = new Environment();

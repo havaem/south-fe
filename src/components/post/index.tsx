@@ -10,7 +10,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import i18n from "@/i18n";
 import { IPost } from "@/types";
 import { cn, renderName } from "@/utils";
 
@@ -23,7 +22,6 @@ import ImageLayout from "./components/image-layout";
 interface IProps extends ComponentPropsWithoutRef<"div"> {
     data: IPost;
 }
-console.log(i18n.language);
 const Post = forwardRef<HTMLDivElement, IProps>(function Post({ data, ...props }, ref) {
     const [isLove, setIsLove] = useState<boolean>(false);
     const [isOpenComment, setIsOpenComment] = useState<boolean>(false);
@@ -77,7 +75,7 @@ const Post = forwardRef<HTMLDivElement, IProps>(function Post({ data, ...props }
                 </div>
             </CardHeader>
             <CardContent className="space-y-4">
-                <Plate value={data.content}>
+                <Plate value={JSON.parse(data.content)}>
                     <PlateContent readOnly />
                 </Plate>
                 <ImageLayout images={data.media.map((item) => item.url)} />

@@ -146,17 +146,23 @@ export class WorldObject extends GameObject {
         input.init();
         this.input = input;
     }
-
+    setPostion(x: number, y: number) {
+        this.position.x = x;
+        this.position.y = y;
+    }
+    setSpeed(speed: number = 1) {
+        this.speed = speed;
+    }
     setAppearance({
         shadow,
         body,
-        eyes,
+        eye,
         hair,
         outfit,
     }: {
         shadow?: Sprite;
         body?: Sprite;
-        eyes?: Sprite;
+        eye?: Sprite;
         hair?: Sprite;
         outfit?: Sprite;
     }) {
@@ -175,11 +181,11 @@ export class WorldObject extends GameObject {
             this.body = body;
             this.addChild(this.body);
         }
-        if (eyes) {
+        if (eye) {
             //* remove old eyes
             this.children = this.children.filter((child) => child !== this.eye);
 
-            this.eye = eyes;
+            this.eye = eye;
             this.addChild(this.eye);
         }
         if (hair) {
@@ -201,8 +207,8 @@ export class WorldObject extends GameObject {
     //* map event ready
     mount() {
         //* add wall to person position
-        if (!this.map) return;
-        this.map?.addWall(this.position.x, this.position.y);
+        // if (!this.map) return;
+        // this.map?.addWall(this.position.x, this.position.y);
 
         setTimeout(() => {
             this.doBehaviorEvent();
@@ -263,9 +269,6 @@ export class WorldObject extends GameObject {
         if (this.isPlayerControlled) {
             events.emit("HERO_POSITION", this.position);
         }
-    }
-    setSpeed(speed: number = 1) {
-        this.speed = speed;
     }
     updateSprite() {
         if (this.movingRemaining > 0) {

@@ -9,7 +9,7 @@ export type TGameStore = {
 };
 
 export const useGameStore = create<TGameStore>()(
-    devtools((set) => ({
+    devtools<TGameStore>((set) => ({
         player: null,
         setPlayer: (player: WorldObject) => set({ player }),
     })),

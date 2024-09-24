@@ -1,6 +1,4 @@
-import { z } from "zod";
-
-import { userSchema } from "../models";
+import { IUser } from "../models";
 
 export interface IAuthRegisterPayload {
     name: {
@@ -22,17 +20,15 @@ export interface IAuthRefreshTokenPayload {
     refreshToken: string;
 }
 
-export const zAuthResponse = z.object({
-    token: z.object({
-        accessToken: z.string(),
-        refreshToken: z.string(),
-    }),
-    user: userSchema,
-});
-
 export interface IAuthRefreshTokenResponse {
     accessToken: string;
     refreshToken: string;
 }
 
-export type IAuthResponse = z.infer<typeof zAuthResponse>;
+export interface IAuthResponse {
+    user: IUser;
+    token: {
+        accessToken: string;
+        refreshToken: string;
+    };
+}

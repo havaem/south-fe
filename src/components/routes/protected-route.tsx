@@ -2,17 +2,14 @@ import { useLayoutEffect, useState } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 import { APP_PATH, LOCAL_STORAGE_KEY } from "@/constants";
+import { SocketProvider } from "@/contexts";
 import { useAuthGetCurrentUser } from "@/hooks";
 import { useProfileGetByUserId } from "@/hooks/queries/useProfileGetByUserId";
 import { useAuthStore } from "@/stores";
 
-import Loading from "./loading";
+import Loading from "../loading";
 
-interface IProps {
-    isCheckOnly?: boolean;
-}
-
-const ProtectedRoute: React.FC<IProps> = ({ isCheckOnly }) => {
+const ProtectedRoute: React.FC = () => {
     const navigate = useNavigate();
     //* store
     const { isLogin, setUser } = useAuthStore();
@@ -58,9 +55,12 @@ const ProtectedRoute: React.FC<IProps> = ({ isCheckOnly }) => {
 
     if (isError) return <Navigate to={APP_PATH.AUTH.SIGN_IN} />;
     if (isLoading) return <Loading />;
-    if (isLogin) return <Outlet />;
-
-    if (isCheckOnly && !isLoading && !isLogin) return <Outlet />;
+    if (isLogin)
+        return (
+            <SocketProvider>
+                <Outlet />
+            </SocketProvider>
+        );
 
     return <></>;
 };

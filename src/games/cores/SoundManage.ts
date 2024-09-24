@@ -1,11 +1,13 @@
 export class SoundManager {
+    currentSound: Sound | null = null;
+    volume: number = 1;
     private sounds: { [key: string]: Sound } = {};
 
     addSound(key: string, src: string): void {
         this.sounds[key] = new Sound(src);
     }
 
-    playSound(key: string, onlyOne: boolean = false): void {
+    playSound(key: string, onlyOne: boolean = false, loop = false): void {
         const sound = this.sounds[key];
 
         if (onlyOne) {
@@ -17,6 +19,9 @@ export class SoundManager {
         if (!sound) {
             throw new Error(`Sound with key ${key} not found`);
         }
+        sound.setLoop(loop);
+
+        this.currentSound = sound;
         sound.play();
     }
 
@@ -40,15 +45,16 @@ export class SoundManager {
         if (!sound) {
             throw new Error(`Sound with key ${key} not found`);
         }
+
+        this.currentSound = null;
         sound.stop();
     }
 
-    setVolume(key: string, volume: number): void {
-        const sound = this.sounds[key];
-        if (!sound) {
-            throw new Error(`Sound with key ${key} not found`);
-        }
-        sound.setVolume(volume);
+    setVolume(volume: number): void {
+        Object.values(this.sounds).forEach((sound) => {
+            sound.setVolume(volume);
+        });
+        this.volume = volume;
     }
 }
 
@@ -79,6 +85,9 @@ export class Sound {
             throw new Error("Volume must be between 0.0 and 1.0");
         }
         this.audio.volume = volume;
+    }
+    setLoop(loop: boolean): void {
+        this.audio.loop = loop;
     }
 }
 

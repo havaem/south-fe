@@ -1,21 +1,19 @@
-import { z } from "zod";
-
-export const mapSchema = z.object({
-    _id: z.string(),
-    name: z.string(),
-    upperLayer: z
-        .object({
-            _id: z.string(),
-            src: z.string(),
-        })
-        .nullable(),
-    lowerLayer: z.object({
-        _id: z.string(),
-        src: z.string(),
-    }),
-    grid: z.array(z.array(z.number())),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-});
-
-export type IMap = z.infer<typeof mapSchema>;
+export interface IMap {
+    _id: string;
+    name: string;
+    upperLayer: {
+        _id: string;
+        src: string;
+    } | null;
+    lowerLayer: {
+        _id: string;
+        src: string;
+    };
+    grid: number[][];
+    defaultPlayerPosition: {
+        x: number;
+        y: number;
+    };
+    createdAt: string;
+    updatedAt: string;
+}

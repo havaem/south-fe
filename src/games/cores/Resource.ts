@@ -1,23 +1,11 @@
-import { SPRITES } from "../assets/sprites";
-
+import shadowHero from "@/games/assets/sprites/shadows/hero.png";
 export class Resource {
     toLoad: { [key: string]: string };
     images: { [key: string]: { image: HTMLImageElement; isLoaded: boolean } };
     constructor() {
         // Everything we plan to download
         this.toLoad = {
-            //*HEROS
-            //--Alex
-            heroAlex: SPRITES.HEROS.ALEX,
-            heroBob: SPRITES.HEROS.BOB,
-            heroAmelia: SPRITES.HEROS.AMELIA,
-            heroScott: SPRITES.HEROS.SCOTT,
-            //* MAPS
-            //--Dining Room
-            mapDiningRoomLower: SPRITES.MAPS.DINING_ROOM.lowerSrc,
-            mapDiningRoomUpper: SPRITES.MAPS.DINING_ROOM.upperSrc,
-            //* SHADOWS
-            shadowHero: SPRITES.SHADOWS.HERO,
+            shadowHero,
         };
 
         // A bucket to keep all of our images

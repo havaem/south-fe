@@ -17,16 +17,15 @@ import { PERSON_ANIMATIONS } from "./personAnimation";
 import { toGridSize } from "./toGridSize";
 
 interface IBuildMapProps {
-    name?: string;
     map: IMap;
     player: GameObject;
 }
-export const buildMap = ({ name, map, player }: IBuildMapProps): WorldMap => {
+export const buildMap = ({ map, player }: IBuildMapProps): WorldMap => {
     let cutsceneAtStart: IBehavior[] | undefined = undefined;
     let cutsceneSpaces: ICutsceneSpace | undefined = undefined;
     const gameObjects = new Map<string, GameObject>();
 
-    switch (name) {
+    switch (map.name) {
         case "Welcome":
             cutsceneAtStart = [
                 // {
@@ -221,7 +220,8 @@ export const buildMap = ({ name, map, player }: IBuildMapProps): WorldMap => {
                 }),
             );
             break;
-
+        case "City":
+            break;
         default:
             break;
     }

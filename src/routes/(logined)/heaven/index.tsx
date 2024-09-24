@@ -9,8 +9,10 @@ import { World } from "@/games/cores/World";
 import { buildMap } from "@/games/utils";
 import { useReadyGame } from "@/hooks";
 
+import EventWrapper from "./events";
+
 const HeavenPage = () => {
-    const { map, player } = useReadyGame();
+    const { isLoading, map, player } = useReadyGame();
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isStart, setIsStart] = useState<boolean>(false);
@@ -24,13 +26,11 @@ const HeavenPage = () => {
 
         const ctx = canvas.getContext("2d");
         if (!ctx || !player) return;
-        console.log("player: ", player);
 
         const world = new World({ canvas, ctx, playerId: player.id });
 
-        if (map && player) {
+        if (map && player && !isLoading) {
             const mapBuild = buildMap({
-                name: "Welcome",
                 map,
                 player,
             });
@@ -40,24 +40,26 @@ const HeavenPage = () => {
         return () => {
             world.stop();
         };
-    }, [isStart, map, player]);
+    }, [isStart, map, player, isLoading]);
 
     if (!isStart) {
-        return <StartGame setIsGameStarted={setIsStart} />;
+        return <StartGame isStartButtonDisabled={isLoading} setIsGameStarted={setIsStart} />;
     }
-
+    console.log("GAME RE_RENDER");
     return (
-        <div className="fixed inset-0 bg-[#212121] flex-center">
-            <div className="relative w-full border border-white">
-                <canvas className="size-full" ref={canvasRef}></canvas>
-                <Message className="top-2/3 flex min-h-32 w-full min-w-96 max-w-lg absolute-center-x" />
-                <Hud />
+        <EventWrapper>
+            <div className="fixed inset-0 bg-[#212121] flex-center">
+                <div className="relative w-full border border-white">
+                    <canvas className="size-full" ref={canvasRef}></canvas>
+                    <Message className="top-2/3 flex min-h-32 w-full min-w-96 max-w-lg absolute-center-x" />
+                    <Hud />
 
-                {/* Show it when map change */}
-                <IFrame />
-                {/* <Transition /> */}
+                    {/* Show it when map change */}
+                    <IFrame />
+                    {/* <Transition /> */}
+                </div>
             </div>
-        </div>
+        </EventWrapper>
     );
 };
 export default HeavenPage;

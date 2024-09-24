@@ -4,7 +4,7 @@ import { events } from "./Events";
 import { GameObject } from "./GameObject";
 import { KeyboardInput } from "./KeyboardInput";
 import { KeyPressListener } from "./KeyPressListener";
-import { soundManager } from "./Sound";
+import { soundManager } from "./SoundManage";
 import { Vector2 } from "./Vector2";
 import { WorldMap } from "./WorldMap";
 
@@ -121,7 +121,7 @@ export class World {
         this.body.input = input;
 
         soundManager.addSound("idle", "assets/sounds/idle.mp3");
-        // soundManager.playSound("idle");
+        soundManager.playSound("idle", false, true);
     }
     bindHeroPositionCheck() {
         events.on(EEventName.OBJECT_MOVE_COMPLETED, this, ({ whoId }: { whoId: string }) => {

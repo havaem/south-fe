@@ -1,25 +1,16 @@
-import { z } from "zod";
+import { IUser } from "./user";
 
-import { userSchema } from "./user";
+export interface IProfileName {
+    first: string;
+    middle?: string;
+    last: string;
+    display: number;
+}
 
-const profileName = z.object({
-    first: z.string(),
-    middle: z.string().optional(),
-    last: z.string(),
-    display: z.number(),
-});
-
-export const profileSchema = z.object({
-    _id: z.string(),
-
-    user: userSchema.pick({
-        _id: true,
-        email: true,
-        username: true,
-    }),
-    name: profileName,
-    avatar: z.string(),
-    cover: z.string(),
-});
-
-export type IProfile = z.infer<typeof profileSchema>;
+export interface IProfile {
+    _id: string;
+    user: Pick<IUser, "_id" | "email" | "username">;
+    name: IProfileName;
+    avatar: string;
+    cover: string;
+}

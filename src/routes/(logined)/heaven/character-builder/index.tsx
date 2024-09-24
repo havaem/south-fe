@@ -66,7 +66,8 @@ const CharacterBuilder: React.FC = () => {
         mutateGameObjectUpdate({
             data: values,
         }).then((data) => {
-            window.parent.postMessage({ type: EEventName.CLOSE_IFRAME }, "*");
+            window.parent.postMessage({ type: EEventName.CLOSE_IFRAME }, window.location.origin);
+
             window.parent.postMessage(
                 {
                     type: EEventName.INVALIDATE_QUERY,
@@ -75,7 +76,7 @@ const CharacterBuilder: React.FC = () => {
                         options: { exact: true },
                     },
                 },
-                "*",
+                window.location.origin,
             );
         });
     }

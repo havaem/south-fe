@@ -1,10 +1,24 @@
+import { Volume2, VolumeOff } from "lucide-react";
+import { useEffect, useState } from "react";
+
+import { Button } from "@/components/ui/button";
 import { useProfileGetByUserId } from "@/hooks/queries/useProfileGetByUserId";
 import { renderName } from "@/utils";
 
+import { soundManager } from "../cores/SoundManage";
 import PixelBox from "./pixel/Box";
 
 const Hud: React.FC = () => {
     const { data: dataProfileCurrentUser } = useProfileGetByUserId();
+    const [isMuted, setIsMuted] = useState<boolean>(false);
+
+    const handleToggleMusicMute = () => {
+        setIsMuted((prev) => !prev);
+    };
+
+    useEffect(() => {
+        soundManager.setVolume(isMuted ? 0 : 1);
+    }, [isMuted]);
 
     return (
         <>
@@ -35,6 +49,12 @@ const Hud: React.FC = () => {
                         </div>
                     </PixelBox>
                 </div>
+            </div>
+            {/* SETTING */}
+            <div className="absolute right-4 top-4 z-40 gap-4 flex-center-y">
+                <Button size="icon" variant="outline" onClick={handleToggleMusicMute}>
+                    {isMuted ? <VolumeOff size={16} /> : <Volume2 size={16} />}
+                </Button>
             </div>
         </>
     );

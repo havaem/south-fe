@@ -1,12 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { ApiGameObject } from "@/apis";
-import { ApiGameProfile } from "@/apis/game-profile";
 import { TQueryConfig } from "@/types";
 
 interface IProps {
     id: string;
-    opts?: TQueryConfig<typeof ApiGameProfile.current>;
+    opts?: TQueryConfig<typeof ApiGameObject.findById>;
 }
 export const useGameObjectFindById = ({ id, opts }: IProps) =>
     useQuery({
