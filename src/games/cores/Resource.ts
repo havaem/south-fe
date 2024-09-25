@@ -1,3 +1,4 @@
+import heroAmelia from "@/games/assets/sprites/heros/amelia.png";
 import shadowHero from "@/games/assets/sprites/shadows/hero.png";
 export class Resource {
     toLoad: { [key: string]: string };
@@ -6,6 +7,7 @@ export class Resource {
         // Everything we plan to download
         this.toLoad = {
             shadowHero,
+            heroAmelia,
         };
 
         // A bucket to keep all of our images

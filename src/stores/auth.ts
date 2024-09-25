@@ -21,6 +21,9 @@ export const useAuthStore = create<TAuthStore>()(
         setUser: (user: IUser) => {
             set({ user, isLogin: true });
         },
+        setToken: (accessToken: string) => {
+            set({ accessToken });
+        },
         logIn: (data: IAuthResponse) => {
             const { user, token } = data;
 

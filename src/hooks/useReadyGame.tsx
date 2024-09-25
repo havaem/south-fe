@@ -10,12 +10,42 @@ import { Sprite } from "@/games/cores/Sprite";
 import { Vector2 } from "@/games/cores/Vector2";
 import { WorldObject } from "@/games/cores/WorldObject";
 import { useGameStore } from "@/stores";
-import { IMap } from "@/types";
+import { IGameObjectUpdateResponse, IMap } from "@/types";
 import { combineLoading } from "@/utils";
 
 import { useGameObjectFindById } from "./queries/useGameObjectFindById";
 import { useGameProfileGetCurrentUser } from "./queries/useGameProfileGetCurrent";
 import { useMapGetAll } from "./queries/useMapFindAll";
+
+const prepareGameObjectResources = (dataGameObject: IGameObjectUpdateResponse) => {
+    // ready resources for player
+    Object.values(dataGameObject.data.data).forEach((sprite) => {
+        resources.pushImage(sprite.resource._id, sprite.resource.src);
+    });
+
+    const readyParts: { [key: string]: Sprite } = {};
+    Object.entries(dataGameObject.data.data).forEach(([key, value]) => {
+        readyParts[key] = new Sprite({
+            resource: resources.images[value.resource._id],
+            frameSize: new Vector2(value.frameSize.x, value.frameSize.y),
+            hFrames: value.horizontalFrame,
+            vFrames: value.verticalFrame,
+            frame: value.defaultFrame,
+            position: new Vector2(value.position.x, value.position.y),
+            animations: new Animations(
+                Object.values(value.animations).reduce(
+                    (acc, value) => {
+                        acc[value.name] = new FrameIndexPattern(value);
+                        return acc;
+                    },
+                    {} as Record<string, FrameIndexPattern>,
+                ),
+            ),
+        });
+    });
+
+    return readyParts;
+};
 
 export const useReadyGame = () => {
     const { data: dataGameProfile, isLoading: isLoadingGameProfile, isSuccess } = useGameProfileGetCurrentUser({});
@@ -40,28 +70,7 @@ export const useReadyGame = () => {
                 resources.pushImage(sprite.resource._id, sprite.resource.src);
             });
 
-            const readyParts: {
-                [key: string]: Sprite;
-            } = {};
-            Object.entries(dataGameObject.data.data).forEach(([key, value]) => {
-                readyParts[key] = new Sprite({
-                    resource: resources.images[value.resource._id],
-                    frameSize: new Vector2(value.frameSize.x, value.frameSize.y),
-                    hFrames: value.horizontalFrame,
-                    vFrames: value.verticalFrame,
-                    frame: value.defaultFrame,
-                    position: new Vector2(value.position.x, value.position.y),
-                    animations: new Animations(
-                        Object.values(value.animations).reduce(
-                            (acc, value) => {
-                                acc[value.name] = new FrameIndexPattern(value);
-                                return acc;
-                            },
-                            {} as Record<string, FrameIndexPattern>,
-                        ),
-                    ),
-                });
-            });
+            const readyParts = prepareGameObjectResources(dataGameObject);
             if (!player) {
                 //* if player not exists, create new player
                 const playerObject = new WorldObject({

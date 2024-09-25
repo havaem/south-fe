@@ -5,7 +5,7 @@ import { ENV } from "@/configs";
 import { useAuthStore } from "@/stores";
 
 interface SocketContextProps {
-    sockets: { [namespace: string]: Socket };
+    sockets: { [namespace: string]: Socket | undefined };
     connect: (namespace: string) => void;
     disconnect: (namespace: string) => void;
 }
@@ -28,10 +28,7 @@ export const SocketProvider: React.FC<IProps> = ({ children }) => {
                 extraHeaders: {
                     Authorization: `Bearer ${accessToken}`,
                 },
-                autoConnect: false,
             });
-
-            socket.connect();
 
             socket.on("connect", () => {
                 console.log(`Connected to namespace: ${namespace}`);

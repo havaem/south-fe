@@ -8,12 +8,13 @@ import { CONFIGS } from "@/games/constants";
 import { World } from "@/games/cores/World";
 import { buildMap } from "@/games/utils";
 import { useReadyGame } from "@/hooks";
+import { useGameStore } from "@/stores";
 
 import EventWrapper from "./events";
 
 const HeavenPage = () => {
     const { isLoading, map, player } = useReadyGame();
-
+    const { world, setWorld } = useGameStore();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isStart, setIsStart] = useState<boolean>(false);
 
@@ -27,25 +28,26 @@ const HeavenPage = () => {
         const ctx = canvas.getContext("2d");
         if (!ctx || !player) return;
 
-        const world = new World({ canvas, ctx, playerId: player.id });
+        const newWorld = new World({ canvas, ctx, playerId: player.id });
 
         if (map && player && !isLoading) {
+            if (!world) setWorld(newWorld);
+
             const mapBuild = buildMap({
                 map,
                 player,
             });
-            world.init({ map: mapBuild });
+            newWorld.init({ map: mapBuild });
         }
 
         return () => {
-            world.stop();
+            newWorld.stop();
         };
     }, [isStart, map, player, isLoading]);
 
     if (!isStart) {
         return <StartGame isStartButtonDisabled={isLoading} setIsGameStarted={setIsStart} />;
     }
-    console.log("GAME RE_RENDER");
     return (
         <EventWrapper>
             <div className="fixed inset-0 bg-[#212121] flex-center">

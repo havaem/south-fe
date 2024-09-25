@@ -12,7 +12,7 @@ import Loading from "../loading";
 const ProtectedRoute: React.FC = () => {
     const navigate = useNavigate();
     //* store
-    const { isLogin, setUser } = useAuthStore();
+    const { isLogin, setUser, setToken } = useAuthStore();
     //* query
     const { data, refetch, isSuccess, isError } = useAuthGetCurrentUser({ enabled: false });
     useProfileGetByUserId({
@@ -39,6 +39,7 @@ const ProtectedRoute: React.FC = () => {
                     .then(async (data) => {
                         if (!data.data?.data) return;
                         setUser(data.data.data);
+                        setToken(localStorage.getItem(LOCAL_STORAGE_KEY.ACCESS_TOKEN));
                         setIsLoading(false);
                     })
                     .catch(() => {
